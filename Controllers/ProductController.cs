@@ -1,0 +1,169 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Personal_Shop.Interfaces;
+using Personal_Shop.Models.Data;
+
+namespace Personal_Shop.Controllers
+{
+    [Route("Products")]
+    public class ProductController : Controller
+    {
+        private readonly IProductService _productService;
+        private readonly IUserService _userService;
+
+        public ProductController(IProductService productService, IUserService userService)
+        {
+            _productService = productService;
+            _userService = userService;
+        }
+
+        #region Index
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Product>>> Index()
+        {
+            try
+            {
+                return View(await _productService.GetProducts());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        #endregion
+
+        #region AddProduct
+        [Authorize]
+        [HttpGet]
+        [Route("AddProduct")]
+        public ActionResult AddProduct()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("AddProduct")]
+        public async Task<ActionResult> AddProduct(Product product)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(product);
+            }
+
+            try
+            {
+                if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    product.CreatorName = User.Identity.Name!;
+                }
+                else
+                {
+                    return BadRequest("اطلاعات کاربری شما پیدا نشد لطفا دوباره وارد سایت شوید");
+                }
+
+                await _productService.AddProduct(product);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        #endregion
+
+        #region DeleteProduct
+        [Authorize]
+        [HttpPost]
+        [Route("DeleteProduct/{productId:long}",Name = "DeleteProduct")]
+        public async Task<ActionResult> DeleteProduct(long productId)
+        {
+            try
+            {
+                var product = await _productService.GetProductById(productId);
+                if (product is null)
+                {
+                    return View(nameof(Index));
+                }
+
+                if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    if (!User.Identity.Name!.Equals(product.CreatorName))
+                    {
+                        return BadRequest("فقط سازنده محصول ، می تواند این محصول را حذف کند");
+                    }
+                }
+                else
+                {
+                    return BadRequest("اطلاعات کاربری شما پیدا نشد لطفا دوباره وارد سایت شوید");
+                }
+
+                await _productService.DeleteProductById(productId);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        #endregion
+
+        #region UpdateProduct
+        [Authorize]
+        [HttpGet]
+        [Route("UpdateProduct/{productId:long}", Name = "UpdateProduct")]
+        public async Task<ActionResult> UpdateProduct(long productId)
+        {
+            try
+            {
+                var product = await _productService.GetProductById(productId);
+                if (product is null)
+                {
+                    return View(nameof(Index));
+                }
+
+                if(User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    if (!User.Identity.Name!.Equals(product.CreatorName))
+                    {
+                        return BadRequest("فقط سازنده محصول ، می تواند این محصول را ویرایش کند");
+                    }
+                }
+                else
+                {
+                    return BadRequest("اطلاعات کاربری شما پیدا نشد لطفا دوباره وارد سایت شوید");
+                }
+
+                return View(product);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("UpdateProduct/{productId:long}", Name = "UpdateProduct")]
+        public async Task<ActionResult> UpdateProduct(long productId,Product product)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(product);
+                }
+
+                await _productService.UpdateProductById(productId, product);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        #endregion
+    }
+}

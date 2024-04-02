@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Personal_Shop.Models.Data.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <form asp-action="addProduct" method="get" class="d-inline">
+        <button type="submit" class="btn btn-primary">افزودن محصول</button>
+    </form>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @item.Price.ToString("00")
+                </td>
+                <td>
+                    <form asp-action="DeleteProduct" asp-route-productId="@item.Id" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('آیا از حذف این محصول مطمئن هستید؟')">حذف</button>
+                    </form>
+                    <form asp-action="UpdateProduct" asp-route-productId="@item.Id" method="get" class="d-inline">
+                        <button type="submit" class="btn btn-success">ویرایش</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
