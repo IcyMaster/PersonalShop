@@ -79,5 +79,22 @@ public class AccountController : Controller
         }
     }
     #endregion
+
+    #region Logout User
+    [HttpPost]
+    [Route("Logout")]
+    public async Task<ActionResult> LogOut()
+    {
+        try
+        {
+            await _authenticationService.LogoutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    #endregion
 }
 

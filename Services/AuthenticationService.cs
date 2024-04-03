@@ -33,5 +33,10 @@ public class AuthenticationService : IAuthenticationService
 
         return true;
     }
+
+    public async Task LogoutAsync()
+    {
+        await _signInManager.SignOutAsync();
+    }
 }
 

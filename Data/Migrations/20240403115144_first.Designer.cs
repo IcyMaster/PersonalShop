@@ -11,7 +11,7 @@ using Personal_Shop.Data;
 namespace Personal_Shop.data.migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240402190424_first")]
+    [Migration("20240403115144_first")]
     partial class first
     {
         /// <inheritdoc />
