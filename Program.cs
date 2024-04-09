@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Personal_Shop.Configuration;
 using Personal_Shop.Data;
 using Personal_Shop.Interfaces;
+using Personal_Shop.Middleware;
 using Personal_Shop.Models.Identity;
 using Personal_Shop.Services;
 using System;
@@ -17,52 +19,10 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
-        builder.Services.AddScoped<IProductService, ProductService>();
-        builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-        builder.Services.AddScoped<IUserService, UserService>();
 
-        builder.Services.AddDbContext<ApplicationDbContext>(ops => ops.UseSqlite(@"Data Source=Data/DataBase/DataBase.db"));
-        builder.Services.AddIdentity<CustomUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-
-        builder.Services.Configure<IdentityOptions>(
-        options =>
-        {
-            options.Password.RequireDigit = false;
-            options.Password.RequireUppercase = false;
-            options.Password.RequireNonAlphanumeric = false;
-            options.User.RequireUniqueEmail = false;
-        });
-
-        builder.Services.AddSession(options =>
-        {
-            options.Cookie.Name = "PersonalShop";
-            options.IdleTimeout = TimeSpan.FromMinutes(30);
-            options.Cookie.IsEssential = true;
-            options.Cookie.HttpOnly = true;
-            options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-            options.Cookie.SameSite = SameSiteMode.Lax;
-            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        });
-
-        builder.Services.ConfigureApplicationCookie(options =>
-        {
-            // Cookie options
-            options.ExpireTimeSpan = TimeSpan.FromHours(8);
-            options.SlidingExpiration = true;
-            options.LoginPath = "/Account/Login";
-            options.Cookie = new()
-            {
-                Name = "IdentityCookie",
-                HttpOnly = true,
-                SameSite = SameSiteMode.Lax,
-                SecurePolicy = CookieSecurePolicy.Always
-            };
-        });
-
-        builder.Services.AddAuthentication();
-        builder.Services.AddAuthorization();
-
-        builder.Services.AddScoped<SignInManager<CustomUser>>();
+        // Use Configuration Services
+        builder.Services.RegisterExternalServices();
+        builder.Services.SetupIdentity();
 
         var app = builder.Build();
 
@@ -81,6 +41,8 @@ public class Program
 
         app.UseAuthentication();
         app.UseAuthorization();
+
+        app.UseExceptionHandler();
 
         app.MapControllerRoute(
             name: "default",

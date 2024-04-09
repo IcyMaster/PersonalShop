@@ -14,13 +14,10 @@ public class UserService : IUserService
     }
 
     public async Task<bool> CreateUserAsync(string userName,
-                                            string password,
-                                            string email,
-                                            string? firstName,
-                                            string? lastName,
-                                            string? phoneNumber)
+        string password,string email,string? firstName,
+        string? lastName,string? phoneNumber)
     {
-        var user = new CustomUser() { UserName = userName, Email = email };
+        var user = new CustomUser { UserName = userName, Email = email };
 
         if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName))
         {

@@ -12,7 +12,6 @@ public class ProductService : IProductService
     public ProductService(ApplicationDbContext context)
     {
         _context = context;
-        _context.Database.EnsureCreated();
     }
 
     public async Task<Product> AddProduct(Product productModel)

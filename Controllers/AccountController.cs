@@ -17,7 +17,6 @@ public class AccountController : Controller
         _authenticationService = authenticationService;
     }
 
-    #region Register User
     [HttpGet]
     [Route("Register")]
     public ActionResult Register()
@@ -49,9 +48,7 @@ public class AccountController : Controller
             return View(registerModel);
         }
     }
-    #endregion
 
-    #region Login User
     [HttpGet]
     [Route("Login")]
     public ActionResult Login()
@@ -78,9 +75,7 @@ public class AccountController : Controller
             return BadRequest(ex.Message);
         }
     }
-    #endregion
 
-    #region Logout User
     [HttpPost]
     [Route("Logout")]
     public async Task<ActionResult> LogOut()
@@ -95,6 +90,5 @@ public class AccountController : Controller
             return BadRequest(ex.Message);
         }
     }
-    #endregion
 }
 
