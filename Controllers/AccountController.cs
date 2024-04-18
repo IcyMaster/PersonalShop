@@ -33,20 +33,13 @@ public class AccountController : Controller
             return View(registerModel);
         }
 
-        try
-        {
-            await _userService.CreateUserAsync(registerModel.UserName,
-                                               registerModel.Password,
-                                               registerModel.Email,
-                                               registerModel.FirstName,
-                                               registerModel.LastName,
-                                               registerModel.PhoneNumber);
-            return RedirectToAction("Index", "Home");
-        }
-        catch (Exception)
-        {
-            return View(registerModel);
-        }
+        await _userService.CreateUserAsync(registerModel.UserName,
+                                           registerModel.Password,
+                                           registerModel.Email,
+                                           registerModel.FirstName,
+                                           registerModel.LastName,
+                                           registerModel.PhoneNumber);
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpGet]
@@ -64,31 +57,16 @@ public class AccountController : Controller
         {
             return View(loginModel);
         }
-
-        try
-        {
-            await _authenticationService.LoginAsync(loginModel.Email,loginModel.Password);
-            return RedirectToAction("Index", "Home");
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        await _authenticationService.LoginAsync(loginModel.Email, loginModel.Password);
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpPost]
     [Route("Logout")]
     public async Task<ActionResult> LogOut()
     {
-        try
-        {
-            await _authenticationService.LogoutAsync();
-            return RedirectToAction("Index", "Home");
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        await _authenticationService.LogoutAsync();
+        return RedirectToAction("Index", "Home");
     }
 }
 

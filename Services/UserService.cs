@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Personal_Shop.Interfaces;
 using Personal_Shop.Models.Identity;
+using System.Security.Claims;
 
 namespace Personal_Shop.Services;
 
@@ -39,16 +41,10 @@ public class UserService : IUserService
         return true;
     }
 
-    public async Task<CustomUser?> GetCustomUserDetailAsync(string userId)
+    public async Task<CustomUser> GetUserAsync(ClaimsPrincipal userIdentity)
     {
-        var user = await _userManager.FindByIdAsync(userId);
-
-        if (user is null)
-        {
-            return null;
-        }
-
-        return user;
+        var user = await _userManager.FindByNameAsync(userIdentity.Identity!.Name!);
+        return user!;
     }
 }
 

@@ -1,27 +1,32 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Personal_Shop.Resources;
+using System.ComponentModel.DataAnnotations;
 
 namespace Personal_Shop.Models.Data;
 
 public class Register
 {
-    [MaxLength(20,ErrorMessage = "مقدار فیلد نام از 20 کاراکتر بیشتر است"), MinLength(3, ErrorMessage = "مقدار فیلد نام از 3 کاراکتر کمتر است")]
+    [MaxLength(20,ErrorMessageResourceType = typeof(RegisterMessages),ErrorMessageResourceName =nameof(RegisterMessages.FirstNameMaxLengthError))
+        ,MinLength(3, ErrorMessageResourceType = typeof(RegisterMessages), ErrorMessageResourceName = nameof(RegisterMessages.FirstNameMinLengthError))]
     public string? FirstName { get; set; } = string.Empty;
 
-    [MaxLength(20, ErrorMessage = "مقدار فیلد نام  خانوادگی از 20 کاراکتر بیشتر است"), MinLength(3, ErrorMessage = "مقدار فیلد نام خانوادگی از 3 کاراکتر کمتر است")]
+    [MaxLength(20, ErrorMessageResourceType = typeof(RegisterMessages), ErrorMessageResourceName = nameof(RegisterMessages.LastNameMaxLengthError))
+        ,MinLength(3, ErrorMessageResourceType = typeof(RegisterMessages), ErrorMessageResourceName = nameof(RegisterMessages.LastNameMinLengthError))]
     public string? LastName { get; set; } = string.Empty;
 
-    [MaxLength(20, ErrorMessage = "مقدار فیلد نام  کاربری از 20 کاراکتر بیشتر است"), MinLength(3, ErrorMessage = "مقدار فیلد نام  کاربری از 3 کاراکتر کمتر است")]
-    [Required(ErrorMessage = "لطفا فیلد نام کاربری را تکمیل نمایید")]
+    [MaxLength(20,ErrorMessageResourceType = typeof(RegisterMessages),ErrorMessageResourceName =nameof(RegisterMessages.UserNameMaxLengthError))
+        ,MinLength(3,ErrorMessageResourceType = typeof(RegisterMessages),ErrorMessageResourceName =nameof(RegisterMessages.UserNameMinLengthError))]
+    [Required(ErrorMessageResourceType =typeof(RegisterMessages),ErrorMessageResourceName =nameof(RegisterMessages.PasswordRequiredError))]
     public string UserName { get; set; } = string.Empty;
 
-    [EmailAddress(ErrorMessage = "ایمیل وارد شده معتبر نیست")]
-    [Required(ErrorMessage = "لطفا فیلد ایمیل را تکمیل نمایید")]
+    [EmailAddress(ErrorMessageResourceType = typeof(RegisterMessages),ErrorMessageResourceName = nameof(RegisterMessages.EmailValidateError))]
+    [Required(ErrorMessageResourceType = typeof(RegisterMessages), ErrorMessageResourceName = nameof(RegisterMessages.EmailRequiredError))]
     public string Email { get; set; } = string.Empty;
 
-    [RegularExpression("/((0?9)|(\\+?989))\\d{9}/g", ErrorMessage = "شماره تلفن وارد شده معتبر نیست")]
+    [RegularExpression("/((0?9)|(\\+?989))\\d{9}/g",ErrorMessageResourceType =typeof(RegisterMessages)
+        ,ErrorMessageResourceName =nameof(RegisterMessages.PhoneNumberValidateError))]
     public string? PhoneNumber { get; set; } = string.Empty;
 
-    [MinLength(6,ErrorMessage = "پسورد وارد شده باید بالای 6 کاراکتر باشد")]
-    [Required(ErrorMessage = "لطفا فیلد رمز عبور را تکمیل نمایید")]
+    [MinLength(6,ErrorMessageResourceType = typeof(RegisterMessages),ErrorMessageResourceName = nameof(RegisterMessages.PasswordMinLengthError))]
+    [Required(ErrorMessageResourceType = typeof(RegisterMessages), ErrorMessageResourceName = nameof(RegisterMessages.PasswordRequiredError))]
     public string Password { get; set; } = string.Empty;
 }

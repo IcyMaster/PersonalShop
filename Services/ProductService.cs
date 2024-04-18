@@ -16,7 +16,7 @@ public class ProductService : IProductService
 
     public async Task<Product> AddProduct(Product productModel)
     {
-        await _context.AddAsync(productModel);
+        await _context.Products.AddAsync(productModel);
         await _context.SaveChangesAsync();
         return productModel;
     }

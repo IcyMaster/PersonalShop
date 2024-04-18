@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Humanizer.Localisation;
+using Newtonsoft.Json.Linq;
+using Personal_Shop.Models.Identity;
+using Personal_Shop.Resources;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
@@ -7,17 +10,25 @@ namespace Personal_Shop.Models.Data;
 public class Product
 {
     public long Id { get; set; }
-    public string CreatorName { get; set; } = string.Empty;
+    public string UserId { get; set; } = string.Empty;
+    public CustomUser? User { get; set; }
 
-    [MaxLength(20, ErrorMessage = "مقدار فیلد نام از 20 کاراکتر بیشتر است")]
-    [Required(ErrorMessage = "لطفا فیلد نام را تکمیل نمایید")]
+    [MaxLength(20,ErrorMessageResourceType = typeof(ProductMessages)
+        ,ErrorMessageResourceName = nameof(ProductMessages.NameLengthError))]
+    [Required(ErrorMessageResourceType = typeof(ProductMessages)
+        ,ErrorMessageResourceName = nameof(ProductMessages.NameRequired))]
     public string Name { get; set; } = string.Empty;
 
-    [MaxLength(50, ErrorMessage = "مقدار فیلد توضیحات از 50 کاراکتر بیشتر است")]
-    [Required(ErrorMessage = "لطفا فیلد توضیحات را تکمیل نمایید")]
+    [MaxLength(50,ErrorMessageResourceType = typeof(ProductMessages)
+        ,ErrorMessageResourceName = nameof(ProductMessages.DescriptionLengthError))]
+    [Required(ErrorMessageResourceType = typeof(ProductMessages)
+        ,ErrorMessageResourceName = nameof(ProductMessages.DescriptionRequired))]
     public string Description { get; set; } = string.Empty;
 
-    [Range(0.0, (double)decimal.MaxValue, ErrorMessage = "مقدار فیلد قیمت نباید منفی باشد")]
-    [Required(ErrorMessage = "لطفا فیلد قیمت را تکمیل نمایید")]
+    [Range(0.0, (double)decimal.MaxValue
+        ,ErrorMessageResourceType = typeof(ProductMessages)
+        ,ErrorMessageResourceName = nameof(ProductMessages.PriceRangeError))]
+    [Required(ErrorMessageResourceType = typeof(ProductMessages)
+        ,ErrorMessageResourceName = nameof(ProductMessages.PriceRequired))]
     public decimal Price { get; set; }
 }

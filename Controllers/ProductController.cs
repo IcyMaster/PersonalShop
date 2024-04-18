@@ -43,7 +43,10 @@ namespace Personal_Shop.Controllers
                 return View(product);
             }
 
-            product.CreatorName = User.Identity!.Name!;
+            var user = await _userService.GetUserAsync(User);
+
+            product.User = user;
+            product.UserId = user.Id;
 
             await _productService.AddProduct(product);
             return RedirectToAction(nameof(Index));
@@ -60,7 +63,9 @@ namespace Personal_Shop.Controllers
                 return View(nameof(Index));
             }
 
-            if (!User.Identity!.Name!.Equals(product.CreatorName))
+            var user = await _userService.GetUserAsync(User);
+
+            if (!product.UserId.Equals(user.Id))
             {
                 return BadRequest("فقط سازنده محصول ، می تواند این محصول را حذف کند");
             }
@@ -80,7 +85,9 @@ namespace Personal_Shop.Controllers
                 return View(nameof(Index));
             }
 
-            if (!User.Identity!.Name!.Equals(product.CreatorName))
+            var user = await _userService.GetUserAsync(User);
+
+            if (!product.UserId.Equals(user.Id))
             {
                 return BadRequest("فقط سازنده محصول ، می تواند این محصول را ویرایش کند");
             }
