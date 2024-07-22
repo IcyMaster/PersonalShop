@@ -20,22 +20,11 @@ namespace Personal_Shop.Controllers
             _httpFactory = httpFactory;
         }
 
-        //[Authorize]
-        //[HttpGet]
+        [Authorize]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> Index()
         {
-            var client = _httpFactory.CreateClient();
-            var response = await client.GetAsync("https://localhost:7140/Products");
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadFromJsonAsync<List<ProductDTO>>();
-                return View(content);
-            }
-            else
-            {
-                return BadRequest();
-            }
-            //return View(await _productService.GetProducts());
+            return View(await _productService.GetProducts());
         }
 
         [Authorize]
