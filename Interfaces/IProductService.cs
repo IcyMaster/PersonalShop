@@ -1,13 +1,13 @@
-﻿using Personal_Shop.Models.Data;
+﻿using Personal_Shop.Domain.Products.DTO;
 
 namespace Personal_Shop.Interfaces;
 
 public interface IProductService
 {
-    Task<Product> AddProduct(Product productModel);
+    Task<ProductDTO> AddProduct(ProductDTO productModel);
     Task<bool> DeleteProductById(long id);
-    Task<Product?> GetProductById(long id);
-    Task<List<Product>> GetProducts();
-    Task<bool> UpdateProductById(long id, Product productModel);
+    Task<ProductDTO?> GetProductById(long id);
+    Task<List<ProductDTO>> GetProducts();
+    Task<bool> UpdateProductById(long id, ProductDTO productModel);
 }
 

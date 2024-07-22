@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Personal_Shop.Data;
+using Personal_Shop.Features.Authentication;
+using Personal_Shop.Features.Product;
+using Personal_Shop.Features.User;
 using Personal_Shop.Interfaces;
 using Personal_Shop.Middleware;
-using Personal_Shop.Services;
 
 namespace Personal_Shop.Configuration;
 
@@ -16,5 +18,6 @@ internal static class ServicesConfig
         services.AddDbContext<ApplicationDbContext>(ops => ops.UseSqlite(@"Data Source=Data/DataBase/DataBase.db"));
         services.AddExceptionHandler<ExceptionHelper>();
         services.AddProblemDetails();
+        services.AddHttpClient();
     }
 }

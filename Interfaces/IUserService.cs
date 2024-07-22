@@ -1,4 +1,4 @@
-﻿using Personal_Shop.Models.Identity;
+﻿using Personal_Shop.Domain.Users;
 using System.Security.Claims;
 
 namespace Personal_Shop.Interfaces

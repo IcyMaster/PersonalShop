@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Personal_Shop.Api.Product;
 using Personal_Shop.Configuration;
 using Personal_Shop.Data;
 using Personal_Shop.Interfaces;
 using Personal_Shop.Middleware;
-using Personal_Shop.Models.Identity;
-using Personal_Shop.Services;
 using System;
 
 namespace Personal_Shop;
@@ -22,7 +21,9 @@ public class Program
 
         // Use Configuration Services
         builder.Services.RegisterExternalServices();
+
         builder.Services.SetupIdentity();
+        builder.Services.SetupJwt();
 
         var app = builder.Build();
 
@@ -47,6 +48,8 @@ public class Program
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        app.SetupProductApi();
 
         app.Run();
     }

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Personal_Shop.Domain.Users;
 using Personal_Shop.Interfaces;
-using Personal_Shop.Models.Identity;
 using System.Security.Claims;
 
-namespace Personal_Shop.Services;
+namespace Personal_Shop.Features.User;
 
 public class UserService : IUserService
 {
@@ -16,8 +16,8 @@ public class UserService : IUserService
     }
 
     public async Task<bool> CreateUserAsync(string userName,
-        string password,string email,string? firstName,
-        string? lastName,string? phoneNumber)
+        string password, string email, string? firstName,
+        string? lastName, string? phoneNumber)
     {
         var user = new CustomUser { UserName = userName, Email = email };
 

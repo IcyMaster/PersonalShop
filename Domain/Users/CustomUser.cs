@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Personal_Shop.Models.Data;
+using Personal_Shop.Domain.Products.DTO;
 
-namespace Personal_Shop.Models.Identity;
+namespace Personal_Shop.Domain.Users;
 
 public class CustomUser : IdentityUser
 {
     public string FirstName { get; private set; } = string.Empty;
     public string LastName { get; private set; } = string.Empty;
-    public List<Product> Products { get; set; } = new List<Product>();
+    public List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
 
     public void SetPersonalName(string firstName, string lastName)
     {

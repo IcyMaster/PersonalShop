@@ -1,17 +1,17 @@
 ﻿using Personal_Shop.Resources;
 using System.ComponentModel.DataAnnotations;
 
-namespace Personal_Shop.Models.Data;
+namespace Personal_Shop.Domain.Users.DTO;
 
-public class Login
+public class LoginDTO
 {
     [EmailAddress(ErrorMessageResourceType = typeof(LoginMessages)
-        ,ErrorMessageResourceName = nameof(LoginMessages.EmailValidateError))]
+        , ErrorMessageResourceName = nameof(LoginMessages.EmailValidateError))]
     [Required(ErrorMessageResourceType = typeof(LoginMessages)
-        ,ErrorMessageResourceName = nameof(LoginMessages.EmailRequired))]
+        , ErrorMessageResourceName = nameof(LoginMessages.EmailRequired))]
     public string Email { get; set; } = string.Empty;
 
     [Required(ErrorMessageResourceType = typeof(LoginMessages)
-        ,ErrorMessageResourceName = nameof(LoginMessages.PasswordRequired))]
+        , ErrorMessageResourceName = nameof(LoginMessages.PasswordRequired))]
     public string Password { get; set; } = string.Empty;
 }

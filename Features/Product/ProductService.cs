@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Personal_Shop.Data;
+using Personal_Shop.Domain.Products.DTO;
 using Personal_Shop.Interfaces;
-using Personal_Shop.Models.Data;
 
-namespace Personal_Shop.Services;
+namespace Personal_Shop.Features.Product;
 
 public class ProductService : IProductService
 {
@@ -14,17 +14,17 @@ public class ProductService : IProductService
         _context = context;
     }
 
-    public async Task<Product> AddProduct(Product productModel)
+    public async Task<ProductDTO> AddProduct(ProductDTO productModel)
     {
         await _context.Products.AddAsync(productModel);
         await _context.SaveChangesAsync();
         return productModel;
     }
-    public async Task<Product?> GetProductById(long id)
+    public async Task<ProductDTO?> GetProductById(long id)
     {
         return await _context.Products.FindAsync(id);
     }
-    public async Task<List<Product>> GetProducts()
+    public async Task<List<ProductDTO>> GetProducts()
     {
         return await _context.Products.ToListAsync();
     }
@@ -45,7 +45,7 @@ public class ProductService : IProductService
 
         return true;
     }
-    public async Task<bool> UpdateProductById(long id, Product productModel)
+    public async Task<bool> UpdateProductById(long id, ProductDTO productModel)
     {
         var product = await _context.Products.FindAsync(id);
         if (product is null)

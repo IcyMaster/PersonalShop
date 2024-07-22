@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.VisualStudio.Web.CodeGeneration.CommandLine;
-using Personal_Shop.Models;
+using Personal_Shop.Domain.Errors;
 using System.Diagnostics;
 using System.Net;
 

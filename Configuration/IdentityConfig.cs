@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Personal_Shop.Data;
-using Personal_Shop.Models.Identity;
+using Personal_Shop.Domain.Users;
 
 namespace Personal_Shop.Configuration;
 

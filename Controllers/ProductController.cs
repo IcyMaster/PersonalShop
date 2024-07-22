@@ -1,28 +1,41 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Personal_Shop.Domain.Products.DTO;
 using Personal_Shop.Interfaces;
-using Personal_Shop.Models.Data;
 
 namespace Personal_Shop.Controllers
 {
-    [Route("Products")]
+    //[Route("Products")]
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
         private readonly IUserService _userService;
+        private readonly IHttpClientFactory _httpFactory;
 
-        public ProductController(IProductService productService, IUserService userService)
+        public ProductController(IProductService productService, IUserService userService, IHttpClientFactory httpFactory)
         {
             _productService = productService;
             _userService = userService;
+            _httpFactory = httpFactory;
         }
 
-        [Authorize]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> Index()
+        //[Authorize]
+        //[HttpGet]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> Index()
         {
-            return View(await _productService.GetProducts());
+            var client = _httpFactory.CreateClient();
+            var response = await client.GetAsync("https://localhost:7140/Products");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadFromJsonAsync<List<ProductDTO>>();
+                return View(content);
+            }
+            else
+            {
+                return BadRequest();
+            }
+            //return View(await _productService.GetProducts());
         }
 
         [Authorize]
@@ -36,7 +49,7 @@ namespace Personal_Shop.Controllers
         [Authorize]
         [HttpPost]
         [Route("AddProduct")]
-        public async Task<ActionResult> AddProduct(Product product)
+        public async Task<ActionResult> AddProduct(ProductDTO product)
         {
             if (!ModelState.IsValid)
             {
@@ -98,7 +111,7 @@ namespace Personal_Shop.Controllers
         [Authorize]
         [HttpPost]
         [Route("UpdateProduct/{productId:long}", Name = "UpdateProduct")]
-        public async Task<ActionResult> UpdateProduct(long productId, Product product)
+        public async Task<ActionResult> UpdateProduct(long productId, ProductDTO product)
         {
             if (!ModelState.IsValid)
             {

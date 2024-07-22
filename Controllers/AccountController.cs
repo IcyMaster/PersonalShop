@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Personal_Shop.Domain.Users.DTO;
 using Personal_Shop.Interfaces;
-using Personal_Shop.Models.Data;
-using Personal_Shop.Services;
 
 namespace Personal_Shop.Controllers;
 
@@ -26,7 +25,7 @@ public class AccountController : Controller
 
     [HttpPost]
     [Route("Register")]
-    public async Task<ActionResult> Register(Register registerModel)
+    public async Task<ActionResult> Register(RegisterDTO registerModel)
     {
         if (!ModelState.IsValid)
         {
@@ -51,7 +50,7 @@ public class AccountController : Controller
 
     [HttpPost]
     [Route("Login")]
-    public async Task<ActionResult> Login(Login loginModel)
+    public async Task<ActionResult> Login(LoginDTO loginModel)
     {
         if (!ModelState.IsValid)
         {
