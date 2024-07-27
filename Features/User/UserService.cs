@@ -1,18 +1,24 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Personal_Shop.Domain.Users;
+using Personal_Shop.Domain.Users.DTO;
 using Personal_Shop.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace Personal_Shop.Features.User;
 
 public class UserService : IUserService
 {
     private readonly UserManager<CustomUser> _userManager;
+    private readonly IConfiguration _configuration;
 
-    public UserService(UserManager<CustomUser> userManager)
+    public UserService(UserManager<CustomUser> userManager, IConfiguration configuration)
     {
         _userManager = userManager;
+        _configuration = configuration;
     }
 
     public async Task<bool> CreateUserAsync(string userName,
@@ -45,6 +51,27 @@ public class UserService : IUserService
     {
         var user = await _userManager.FindByNameAsync(userIdentity.Identity!.Name!);
         return user!;
+    }
+
+    public string CreateTokenAsync(CustomUser user)
+    {
+        IEnumerable<Claim> _claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier,user.Id)
+        };
+
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWT:key").Value!));
+
+        SigningCredentials signingCredentials = new SigningCredentials(securityKey,SecurityAlgorithms.HmacSha512Signature);
+
+        var securityToken = new JwtSecurityToken(claims: _claims,
+        expires: DateTime.Now.AddMinutes(60),
+        signingCredentials: signingCredentials,
+        issuer: _configuration.GetSection("JWT:Issuer").Value,
+        audience: _configuration.GetSection("JWT:Audience").Value);
+
+        string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
+        return tokenString;
     }
 }
 

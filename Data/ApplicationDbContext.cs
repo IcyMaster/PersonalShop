@@ -17,10 +17,11 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<ProductDTO>()
-            .HasOne(p => p.User)
-            .WithMany(u => u.Products)
-            .HasForeignKey(p => p.UserId);
+        modelBuilder.Entity<CustomUser>()
+            .HasMany(e => e.Products)
+            .WithOne(e => e.User)
+            .HasForeignKey(e => e.UserId)
+            .HasPrincipalKey(e => e.Id);
     }
 }
 

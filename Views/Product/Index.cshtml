@@ -45,7 +45,7 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @item.Price.ToString("00")
+                    @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
                     <form asp-action="DeleteProduct" asp-route-productId="@item.Id" method="post" class="d-inline">

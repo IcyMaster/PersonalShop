@@ -9,6 +9,7 @@ namespace Personal_Shop.Domain.Products.DTO;
 
 public class ProductDTO
 {
+    [Key]
     public long Id { get; set; }
     public string UserId { get; set; } = string.Empty;
     public CustomUser? User { get; set; }
@@ -30,5 +31,6 @@ public class ProductDTO
         , ErrorMessageResourceName = nameof(ProductMessages.PriceRangeError))]
     [Required(ErrorMessageResourceType = typeof(ProductMessages)
         , ErrorMessageResourceName = nameof(ProductMessages.PriceRequired))]
+    [DisplayFormat(DataFormatString = "{0:G29}", ApplyFormatInEditMode = true)]
     public decimal Price { get; set; }
 }

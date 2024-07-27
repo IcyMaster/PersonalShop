@@ -1,8 +1,10 @@
-﻿namespace Personal_Shop.Interfaces
+﻿using Personal_Shop.Domain.Users;
+
+namespace Personal_Shop.Interfaces
 {
     public interface IAuthenticationService
     {
-        Task<bool> LoginAsync(string email, string password);
+        Task<CustomUser?> LoginAsync(string email, string password);
         Task LogoutAsync();
     }
 }

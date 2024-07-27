@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.EntityFrameworkCore;
 using Personal_Shop.Data;
 using Personal_Shop.Features.Authentication;
 using Personal_Shop.Features.Product;
 using Personal_Shop.Features.User;
 using Personal_Shop.Interfaces;
 using Personal_Shop.Middleware;
+using System.Globalization;
 
 namespace Personal_Shop.Configuration;
 

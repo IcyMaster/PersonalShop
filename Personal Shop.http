@@ -1,9 +1,34 @@
 ﻿@Personal Shop_HostAddress = https://localhost:7140
 
-GET https://localhost:7140/Products
+GET https://localhost:7140/Api/Products
+
+###
+
+POST https://localhost:7140/Api/Products/AddProduct
 Content-Type: application/json
 
 {
-  "Authorization:":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Ik0uVGFoZXJpIiwic3ViIjoiTS5UYWhlcmkiLCJqdGkiOiI2NjU0MWJiOSIsImF1ZCI6WyJodHRwOi8vbG9jYWxob3N0OjYyMDYiLCJodHRwczovL2xvY2FsaG9zdDo0NDM1MCIsImh0dHA6Ly9sb2NhbGhvc3Q6NTAwMyIsImh0dHBzOi8vbG9jYWxob3N0OjcxNDAiXSwibmJmIjoxNzE0ODExODQ0LCJleHAiOjE3MjI3NjA2NDQsImlhdCI6MTcxNDgxMTg0NSwiaXNzIjoiZG90bmV0LXVzZXItand0cyJ9.9WwRvxBJb0ZCFE32_LeTcuFeXxDNFaRFrtB7d5JGaMM",
+    "name":"test",
+    "description":"test2",
+    "price": 25000
+}
+###
+
+POST https://localhost:7140/Api/Account/Register
+Content-Type: application/json
+
+{
+    "name":"test",
+    "description":"test2",
+    "price": 25000
+}
+###
+
+POST https://localhost:7140/Api/Account/Login
+Content-Type: application/json
+
+{
+    "email":"icymaster2020@gmail.com",
+    "password":"2378mm23"
 }
 ###

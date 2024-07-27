@@ -15,25 +15,24 @@ public class AuthenticationService : IAuthenticationService
         _userManager = userManager;
     }
 
-    public async Task<bool> LoginAsync(string email, string password)
+    public async Task<CustomUser?> LoginAsync(string email, string password)
     {
         var user = await _userManager.FindByEmailAsync(email);
 
         if (user is null)
         {
-            return false;
+            return null;
         }
 
         var result = await _signInManager.PasswordSignInAsync(user, password, true, false);
 
         if (!result.Succeeded)
         {
-            return false;
+            return null;
         }
 
-        return true;
+        return user;
     }
-
     public async Task LogoutAsync()
     {
         await _signInManager.SignOutAsync();

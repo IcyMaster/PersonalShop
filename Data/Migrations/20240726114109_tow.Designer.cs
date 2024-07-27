@@ -11,8 +11,8 @@ using Personal_Shop.Data;
 namespace Personal_Shop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240418155638_First")]
-    partial class First
+    [Migration("20240726114109_tow")]
+    partial class tow
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -221,7 +221,7 @@ namespace Personal_Shop.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Personal_Shop.Models.Data.Product", b =>
+            modelBuilder.Entity("Personal_Shop.Domain.Products.DTO.ProductDTO", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -251,7 +251,7 @@ namespace Personal_Shop.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Personal_Shop.Models.Identity.CustomUser", b =>
+            modelBuilder.Entity("Personal_Shop.Domain.Users.CustomUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -317,9 +317,9 @@ namespace Personal_Shop.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Personal_Shop.Models.Data.Product", b =>
+            modelBuilder.Entity("Personal_Shop.Domain.Products.DTO.ProductDTO", b =>
                 {
-                    b.HasOne("Personal_Shop.Models.Identity.CustomUser", "User")
+                    b.HasOne("Personal_Shop.Domain.Users.CustomUser", "User")
                         .WithMany("Products")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -328,7 +328,7 @@ namespace Personal_Shop.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Personal_Shop.Models.Identity.CustomUser", b =>
+            modelBuilder.Entity("Personal_Shop.Domain.Users.CustomUser", b =>
                 {
                     b.Navigation("Products");
                 });

@@ -6,7 +6,7 @@ using Personal_Shop.Interfaces;
 
 namespace Personal_Shop.Controllers
 {
-    //[Route("Products")]
+    [Route("Products")]
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
@@ -38,19 +38,19 @@ namespace Personal_Shop.Controllers
         [Authorize]
         [HttpPost]
         [Route("AddProduct")]
-        public async Task<ActionResult> AddProduct(ProductDTO product)
+        public async Task<ActionResult> AddProduct(ProductDTO productModel)
         {
             if (!ModelState.IsValid)
             {
-                return View(product);
+                return View(productModel);
             }
 
             var user = await _userService.GetUserAsync(User);
 
-            product.User = user;
-            product.UserId = user.Id;
+            //product.User = user;
+            productModel.UserId = user.Id;
 
-            await _productService.AddProduct(product);
+            await _productService.AddProduct(productModel);
             return RedirectToAction(nameof(Index));
         }
 
@@ -100,14 +100,23 @@ namespace Personal_Shop.Controllers
         [Authorize]
         [HttpPost]
         [Route("UpdateProduct/{productId:long}", Name = "UpdateProduct")]
-        public async Task<ActionResult> UpdateProduct(long productId, ProductDTO product)
+        public async Task<ActionResult> UpdateProduct(long productId, ProductDTO productModel)
         {
             if (!ModelState.IsValid)
             {
-                return View(product);
+                return View(productModel);
             }
 
-            await _productService.UpdateProductById(productId, product);
+            var user = await _userService.GetUserAsync(User);
+
+            if (!productModel.UserId.Equals(user.Id))
+            {
+                return BadRequest("فقط سازنده محصول ، می تواند این محصول را ویرایش کند");
+            }
+
+            productModel.UserId = user.Id;
+
+            await _productService.UpdateProductById(productId, productModel);
             return RedirectToAction(nameof(Index));
         }
     }
