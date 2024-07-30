@@ -15,13 +15,12 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<ProductDTO>()
+            .HasOne(e => e.User)
+            .WithMany()
+            .HasForeignKey(e => e.UserId);
 
-        modelBuilder.Entity<CustomUser>()
-            .HasMany(e => e.Products)
-            .WithOne(e => e.User)
-            .HasForeignKey(e => e.UserId)
-            .HasPrincipalKey(e => e.Id);
+        base.OnModelCreating(modelBuilder);
     }
 }
 

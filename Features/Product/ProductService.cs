@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Personal_Shop.Data;
 using Personal_Shop.Domain.Products.DTO;
+using Personal_Shop.Domain.Users;
 using Personal_Shop.Interfaces;
 
 namespace Personal_Shop.Features.Product;
@@ -26,7 +27,7 @@ public class ProductService : IProductService
     }
     public async Task<List<ProductDTO>> GetProducts()
     {
-        return await _context.Products.ToListAsync();
+        return await _context.Products.Include(e => e.User).ToListAsync();
     }
     public async Task<bool> DeleteProductById(long id)
     {

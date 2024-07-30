@@ -12,7 +12,7 @@ public class ProductDTO
     [Key]
     public long Id { get; set; }
     public string UserId { get; set; } = string.Empty;
-    public CustomUser? User { get; set; }
+    public CustomUser User { get; set; } = null!;
 
     [MaxLength(20, ErrorMessageResourceType = typeof(ProductMessages)
         , ErrorMessageResourceName = nameof(ProductMessages.NameLengthError))]

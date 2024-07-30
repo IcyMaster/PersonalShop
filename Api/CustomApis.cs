@@ -115,6 +115,7 @@ public static class CustomApis
         });
     }
 
+    //shit code - just for handle api error
     private static ApiErrorDTO? ValidateObjects(object instance)
     {
         var validateRes = new List<ValidationResult>();

@@ -47,7 +47,6 @@ namespace Personal_Shop.Controllers
 
             var user = await _userService.GetUserAsync(User);
 
-            //product.User = user;
             productModel.UserId = user.Id;
 
             await _productService.AddProduct(productModel);

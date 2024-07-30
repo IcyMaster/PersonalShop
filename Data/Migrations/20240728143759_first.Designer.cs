@@ -11,8 +11,8 @@ using Personal_Shop.Data;
 namespace Personal_Shop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240726114109_tow")]
-    partial class tow
+    [Migration("20240728143759_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -227,6 +227,9 @@ namespace Personal_Shop.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CustomUserId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -245,6 +248,8 @@ namespace Personal_Shop.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomUserId");
 
                     b.HasIndex("UserId");
 
@@ -319,8 +324,12 @@ namespace Personal_Shop.Data.Migrations
 
             modelBuilder.Entity("Personal_Shop.Domain.Products.DTO.ProductDTO", b =>
                 {
-                    b.HasOne("Personal_Shop.Domain.Users.CustomUser", "User")
+                    b.HasOne("Personal_Shop.Domain.Users.CustomUser", null)
                         .WithMany("Products")
+                        .HasForeignKey("CustomUserId");
+
+                    b.HasOne("Personal_Shop.Domain.Users.CustomUser", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

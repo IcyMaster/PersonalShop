@@ -1,16 +1,12 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Personal_Shop.Api;
 using Personal_Shop.Configuration;
 using Personal_Shop.Data;
 using Personal_Shop.Domain.Users;
-using Personal_Shop.Interfaces;
-using Personal_Shop.Middleware;
-using System;
 using System.Text;
 
 namespace Personal_Shop;
