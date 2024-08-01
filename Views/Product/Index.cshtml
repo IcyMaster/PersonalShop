@@ -1,5 +1,5 @@
-﻿@using PersonalShop.Domain.Products.DTO;
-@model IEnumerable<ProductDTO>
+﻿@using PersonalShop.Domain.Products.Dtoss;
+@model IEnumerable<ListOfProductsDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,11 +7,14 @@
 
 <h1>Index</h1>
 
-<p>
-    <form asp-action="addProduct" method="get" class="d-inline">
-        <button type="submit" class="btn btn-primary">افزودن محصول</button>
-    </form>
-</p>
+@if (User.Identity!.IsAuthenticated)
+{
+    <p>
+        <form asp-action="addProduct" method="get" class="d-inline">
+            <button type="submit" class="btn btn-primary">افزودن محصول</button>
+        </form>
+    </p>
+}
 
 <table class="table">
     <thead>
@@ -48,12 +51,15 @@
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    <form asp-action="DeleteProduct" asp-route-productId="@item.Id" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('آیا از حذف این محصول مطمئن هستید؟')">حذف</button>
-                    </form>
-                    <form asp-action="UpdateProduct" asp-route-productId="@item.Id" method="get" class="d-inline">
-                        <button type="submit" class="btn btn-success">ویرایش</button>
-                    </form>
+                    @if (item.User.IsOwner)
+                    {
+                        <form asp-action="DeleteProduct" asp-route-productId="@item.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('آیا از حذف این محصول مطمئن هستید؟')">حذف</button>
+                        </form>
+                        <form asp-action="UpdateProduct" asp-route-productId="@item.Id" method="get" class="d-inline">
+                            <button type="submit" class="btn btn-success">ویرایش</button>
+                        </form>
+                    }
                 </td>
             </tr>
         }

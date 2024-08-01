@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Personal_Shop</RootNamespace>
+    <RootNamespace>PersonalShop</RootNamespace>
     <UserSecretsId>9ce672c4-f61e-441b-a729-246899d7818f</UserSecretsId>
   </PropertyGroup>
 

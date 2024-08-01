@@ -1,122 +1,169 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using PersonalShop.Domain.Products.DTO;
+using PersonalShop.Domain.Products;
+using PersonalShop.Domain.Products.Dtos;
+using PersonalShop.Domain.Products.Dtoss;
 using PersonalShop.Interfaces;
 
-namespace PersonalShop.Controllers
+namespace PersonalShop.Controllers;
+
+[Route("Products")]
+public class ProductController : Controller
 {
-    [Route("Products")]
-    public class ProductController : Controller
+    private readonly IProductService _productService;
+    private readonly IUserService _userService;
+
+    public ProductController(IProductService productService, IUserService userService)
     {
-        private readonly IProductService _productService;
-        private readonly IUserService _userService;
-        private readonly IHttpClientFactory _httpFactory;
+        _productService = productService;
+        _userService = userService;
+    }
 
-        public ProductController(IProductService productService, IUserService userService, IHttpClientFactory httpFactory)
-        {
-            _productService = productService;
-            _userService = userService;
-            _httpFactory = httpFactory;
-        }
+    [AllowAnonymous]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ListOfProductsDto>>> Index()
+    {
+        var products = await _productService.GetProducts();
 
-        [Authorize]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> Index()
+        var productsList = products.Select(ob => new ListOfProductsDto
         {
-            return View(await _productService.GetProducts());
-        }
+            Id = ob.Id,
+            Name = ob.Name,
+            Description = ob.Description,
+            Price = ob.Price,
 
-        [Authorize]
-        [HttpGet]
-        [Route("AddProduct")]
-        public ActionResult AddProduct()
-        {
-            return View();
-        }
-
-        [Authorize]
-        [HttpPost]
-        [Route("AddProduct")]
-        public async Task<ActionResult> AddProduct(ProductDTO productModel)
-        {
-            if (!ModelState.IsValid)
+            User = new ListOfProductsUserDto
             {
-                return View(productModel);
+                UserId = ob.UserId,
+                FirstName = ob.User.FirstName,
+                LastName = ob.User.LastName,
+                IsOwner = false,
             }
+        }).ToList();
 
+        if (!User.Identity!.IsAuthenticated)
+        {
+            return View(productsList);
+        }
+        else
+        {
             var user = await _userService.GetUserAsync(User);
 
-            productModel.UserId = user.Id;
+            foreach (var item in productsList)
+            {
+                if(item.User.UserId.Equals(user.Id))
+                {
+                    item.User.IsOwner = true;
+                }
+            }
 
-            await _productService.AddProduct(productModel);
-            return RedirectToAction(nameof(Index));
+            return View(productsList);
         }
+    }
 
-        [Authorize]
-        [HttpPost]
-        [Route("DeleteProduct/{productId:long}", Name = "DeleteProduct")]
-        public async Task<ActionResult> DeleteProduct(long productId)
+    [Authorize]
+    [HttpGet]
+    [Route("AddProduct")]
+    public ActionResult AddProduct()
+    {
+        return View();
+    }
+
+    [Authorize]
+    [HttpPost]
+    [Route("AddProduct")]
+    public async Task<ActionResult> AddProduct(CreateProductDTO createProductDTO)
+    {
+        if (!ModelState.IsValid)
         {
-            var product = await _productService.GetProductById(productId);
-            if (product is null)
-            {
-                return View(nameof(Index));
-            }
-
-            var user = await _userService.GetUserAsync(User);
-
-            if (!product.UserId.Equals(user.Id))
-            {
-                return BadRequest("فقط سازنده محصول ، می تواند این محصول را حذف کند");
-            }
-
-            await _productService.DeleteProductById(productId);
-            return RedirectToAction(nameof(Index));
+            return View(createProductDTO);
         }
 
-        [Authorize]
-        [HttpGet]
-        [Route("UpdateProduct/{productId:long}", Name = "UpdateProduct")]
-        public async Task<ActionResult> UpdateProduct(long productId)
+        var user = await _userService.GetUserAsync(User);
+
+        Product product = new Product()
         {
-            var product = await _productService.GetProductById(productId);
-            if (product is null)
-            {
-                return View(nameof(Index));
-            }
+            UserId = user.Id,
+            Name = createProductDTO.Name,
+            Description = createProductDTO.Description,
+            Price = createProductDTO.Price,
+        };
 
-            var user = await _userService.GetUserAsync(User);
+        await _productService.AddProduct(product);
+        return RedirectToAction(nameof(Index));
+    }
 
-            if (!product.UserId.Equals(user.Id))
-            {
-                return BadRequest("فقط سازنده محصول ، می تواند این محصول را ویرایش کند");
-            }
-
-            return View(product);
-        }
-
-        [Authorize]
-        [HttpPost]
-        [Route("UpdateProduct/{productId:long}", Name = "UpdateProduct")]
-        public async Task<ActionResult> UpdateProduct(long productId, ProductDTO productModel)
+    [Authorize]
+    [HttpPost]
+    [Route("DeleteProduct/{productId:long}", Name = "DeleteProduct")]
+    public async Task<ActionResult> DeleteProduct(long productId)
+    {
+        var product = await _productService.GetProductById(productId);
+        if (product is null)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(productModel);
-            }
-
-            var user = await _userService.GetUserAsync(User);
-
-            if (!productModel.UserId.Equals(user.Id))
-            {
-                return BadRequest("فقط سازنده محصول ، می تواند این محصول را ویرایش کند");
-            }
-
-            productModel.UserId = user.Id;
-
-            await _productService.UpdateProductById(productId, productModel);
-            return RedirectToAction(nameof(Index));
+            return View(nameof(Index));
         }
+
+        var user = await _userService.GetUserAsync(User);
+
+        if (!product.UserId.Equals(user.Id))
+        {
+            return BadRequest("فقط سازنده محصول ، می تواند این محصول را حذف کند");
+        }
+
+        await _productService.DeleteProductById(productId);
+        return RedirectToAction(nameof(Index));
+    }
+
+    [Authorize]
+    [HttpGet]
+    [Route("UpdateProduct/{productId:long}", Name = "UpdateProduct")]
+    public async Task<ActionResult> UpdateProduct(long productId)
+    {
+        var product = await _productService.GetProductById(productId);
+        if (product is null)
+        {
+            return BadRequest("محصول مورد نظر یافت نشد");
+        }
+
+        var user = await _userService.GetUserAsync(User);
+
+        if (!product.UserId.Equals(user.Id))
+        {
+            return BadRequest("فقط سازنده محصول ، می تواند این محصول را ویرایش کند");
+        }
+
+        return View(product);
+    }
+
+    [Authorize]
+    [HttpPost]
+    [Route("UpdateProduct/{productId:long}", Name = "UpdateProduct")]
+    public async Task<ActionResult> UpdateProduct(long productId,UpdateProductDto updateProductDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(updateProductDto);
+        }
+
+        var product = await _productService.GetProductById(productId);
+        if(product is null)
+        {
+            return BadRequest("محصول مورد نظر یافت نشد");
+        }
+
+        var user = await _userService.GetUserAsync(User);
+
+        if (!product.UserId.Equals(user.Id))
+        {
+            return BadRequest("فقط سازنده محصول ، می تواند این محصول را ویرایش کند");
+        }
+
+        product.Name = updateProductDto.Name;
+        product.Description = updateProductDto.Description;
+        product.Price = updateProductDto.Price;
+
+        await _productService.UpdateProductById(productId,product);
+        return RedirectToAction(nameof(Index));
     }
 }

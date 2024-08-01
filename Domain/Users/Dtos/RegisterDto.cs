@@ -1,9 +1,9 @@
 ﻿using PersonalShop.Resources;
 using System.ComponentModel.DataAnnotations;
 
-namespace PersonalShop.Domain.Users.DTO;
+namespace PersonalShop.Domain.Users.Dtos;
 
-public class RegisterDTO
+public class RegisterDto
 {
     [MaxLength(20, ErrorMessageResourceType = typeof(RegisterMessages), ErrorMessageResourceName = nameof(RegisterMessages.FirstNameMaxLengthError))
         , MinLength(3, ErrorMessageResourceType = typeof(RegisterMessages), ErrorMessageResourceName = nameof(RegisterMessages.FirstNameMinLengthError))]

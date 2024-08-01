@@ -11,14 +11,14 @@ using PersonalShop.Data;
 namespace PersonalShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240728143759_first")]
+    [Migration("20240801141158_first")]
     partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.7");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -137,7 +137,7 @@ namespace PersonalShop.Data.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+                    b.HasDiscriminator().HasValue("IdentityUser");
 
                     b.UseTphMappingStrategy();
                 });
@@ -221,23 +221,18 @@ namespace PersonalShop.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("PersonalShop.Domain.Products.DTO.ProductDTO", b =>
+            modelBuilder.Entity("PersonalShop.Domain.Products.Product", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CustomUserId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Price")
@@ -249,14 +244,12 @@ namespace PersonalShop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomUserId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("PersonalShop.Domain.Users.CustomUser", b =>
+            modelBuilder.Entity("PersonalShop.Domain.Users.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -268,7 +261,7 @@ namespace PersonalShop.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasDiscriminator().HasValue("CustomUser");
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -322,24 +315,15 @@ namespace PersonalShop.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PersonalShop.Domain.Products.DTO.ProductDTO", b =>
+            modelBuilder.Entity("PersonalShop.Domain.Products.Product", b =>
                 {
-                    b.HasOne("PersonalShop.Domain.Users.CustomUser", null)
-                        .WithMany("Products")
-                        .HasForeignKey("CustomUserId");
-
-                    b.HasOne("PersonalShop.Domain.Users.CustomUser", "User")
+                    b.HasOne("PersonalShop.Domain.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("PersonalShop.Domain.Users.CustomUser", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

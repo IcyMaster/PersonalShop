@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PersonalShop.Data;
-using PersonalShop.Domain.Products.DTO;
-using PersonalShop.Domain.Users;
 using PersonalShop.Interfaces;
 
 namespace PersonalShop.Features.Product;
@@ -15,17 +12,17 @@ public class ProductService : IProductService
         _context = context;
     }
 
-    public async Task<ProductDTO> AddProduct(ProductDTO productModel)
+    public async Task<Domain.Products.Product> AddProduct(Domain.Products.Product productModel)
     {
         await _context.Products.AddAsync(productModel);
         await _context.SaveChangesAsync();
         return productModel;
     }
-    public async Task<ProductDTO?> GetProductById(long id)
+    public async Task<Domain.Products.Product?> GetProductById(long id)
     {
         return await _context.Products.FindAsync(id);
     }
-    public async Task<List<ProductDTO>> GetProducts()
+    public async Task<List<Domain.Products.Product>> GetProducts()
     {
         return await _context.Products.Include(e => e.User).ToListAsync();
     }
@@ -46,7 +43,7 @@ public class ProductService : IProductService
 
         return true;
     }
-    public async Task<bool> UpdateProductById(long id, ProductDTO productModel)
+    public async Task<bool> UpdateProductById(long id,Domain.Products.Product productModel)
     {
         var product = await _context.Products.FindAsync(id);
         if (product is null)
@@ -54,9 +51,7 @@ public class ProductService : IProductService
             return false;
         }
 
-        product.Name = productModel.Name;
-        product.Description = productModel.Description;
-        product.Price = productModel.Price;
+        product = productModel;
 
         if (await _context.SaveChangesAsync() < 1)
         {

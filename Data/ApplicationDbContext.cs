@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PersonalShop.Domain.Products.DTO;
 using PersonalShop.Domain.Users;
+using PersonalShop.Domain.Products;
 
 namespace PersonalShop.Data;
 
@@ -10,12 +10,12 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-    public DbSet<ProductDTO> Products { get; set; }
-    public DbSet<CustomUser> CustomUsers { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ProductDTO>()
+        modelBuilder.Entity<Product>()
             .HasOne(e => e.User)
             .WithMany()
             .HasForeignKey(e => e.UserId);

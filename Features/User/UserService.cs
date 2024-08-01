@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PersonalShop.Domain.Users;
-using PersonalShop.Domain.Users.DTO;
+using PersonalShop.Domain.Users.Dtos;
 using PersonalShop.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,10 +12,10 @@ namespace PersonalShop.Features.User;
 
 public class UserService : IUserService
 {
-    private readonly UserManager<CustomUser> _userManager;
+    private readonly UserManager<Domain.Users.User> _userManager;
     private readonly IConfiguration _configuration;
 
-    public UserService(UserManager<CustomUser> userManager, IConfiguration configuration)
+    public UserService(UserManager<Domain.Users.User> userManager, IConfiguration configuration)
     {
         _userManager = userManager;
         _configuration = configuration;
@@ -25,7 +25,7 @@ public class UserService : IUserService
         string password, string email, string? firstName,
         string? lastName, string? phoneNumber)
     {
-        var user = new CustomUser { UserName = userName, Email = email };
+        var user = new Domain.Users.User { UserName = userName, Email = email };
 
         if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName))
         {
@@ -47,13 +47,13 @@ public class UserService : IUserService
         return true;
     }
 
-    public async Task<CustomUser> GetUserAsync(ClaimsPrincipal userIdentity)
+    public async Task<Domain.Users.User> GetUserAsync(ClaimsPrincipal userIdentity)
     {
         var user = await _userManager.FindByNameAsync(userIdentity.Identity!.Name!);
         return user!;
     }
 
-    public string CreateTokenAsync(CustomUser user)
+    public string CreateTokenAsync(Domain.Users.User user)
     {
         IEnumerable<Claim> _claims = new List<Claim>
         {

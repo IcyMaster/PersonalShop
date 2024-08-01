@@ -1,18 +1,11 @@
-﻿using Humanizer.Localisation;
-using Newtonsoft.Json.Linq;
-using PersonalShop.Domain.Users;
-using PersonalShop.Resources;
+﻿using PersonalShop.Resources;
 using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 
-namespace PersonalShop.Domain.Products.DTO;
+namespace PersonalShop.Domain.Products.Dtos;
 
-public class ProductDTO
+public class UpdateProductDto
 {
-    [Key]
     public long Id { get; set; }
-    public string UserId { get; set; } = string.Empty;
-    public CustomUser User { get; set; } = null!;
 
     [MaxLength(20, ErrorMessageResourceType = typeof(ProductMessages)
         , ErrorMessageResourceName = nameof(ProductMessages.NameLengthError))]

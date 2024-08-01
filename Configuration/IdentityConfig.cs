@@ -8,7 +8,7 @@ internal static class IdentityConfig
 {
     public static void SetupIdentity(this IServiceCollection services)
     {
-        services.AddIdentity<CustomUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+        services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
         services.Configure<IdentityOptions>(options =>
         {
@@ -46,7 +46,7 @@ internal static class IdentityConfig
             };
         });
 
-        services.AddScoped<SignInManager<CustomUser>>();
+        services.AddScoped<SignInManager<User>>();
 
         //important lines
         services.AddAuthentication();

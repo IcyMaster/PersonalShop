@@ -1,9 +1,9 @@
 ﻿using PersonalShop.Resources;
 using System.ComponentModel.DataAnnotations;
 
-namespace PersonalShop.Domain.Users.DTO;
+namespace PersonalShop.Domain.Users.Dtos;
 
-public class LoginDTO
+public class LoginDto
 {
     [EmailAddress(ErrorMessageResourceType = typeof(LoginMessages)
         , ErrorMessageResourceName = nameof(LoginMessages.EmailValidateError))]

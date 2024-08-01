@@ -23,7 +23,7 @@ public class Program
         // Use Configuration Services
         builder.Services.RegisterExternalServices();
 
-        builder.Services.AddIdentity<CustomUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+        builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
         builder.Services.Configure<IdentityOptions>(options =>
         {
@@ -88,7 +88,7 @@ public class Program
             };
         });
 
-        builder.Services.AddScoped<SignInManager<CustomUser>>();
+        builder.Services.AddScoped<SignInManager<User>>();
 
         //Config Cookie
         //builder.Services.SetupIdentity();
@@ -155,8 +155,8 @@ public class Program
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
-        app.RegisterProductApis();
-        app.RegisterAccountApis();
+        //app.RegisterProductApis();
+        //app.RegisterAccountApis();
 
         app.Run();
     }

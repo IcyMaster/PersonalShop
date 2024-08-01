@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PersonalShop.Domain.Users.DTO;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PersonalShop.Domain.Users.Dtos;
 using PersonalShop.Interfaces;
 
 namespace PersonalShop.Controllers;
@@ -17,6 +18,7 @@ public class AccountController : Controller
     }
 
     [HttpGet]
+    [AllowAnonymous]
     [Route("Register")]
     public ActionResult Register()
     {
@@ -24,24 +26,26 @@ public class AccountController : Controller
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [Route("Register")]
-    public async Task<ActionResult> Register(RegisterDTO registerModel)
+    public async Task<ActionResult> Register(RegisterDto registerDto)
     {
         if (!ModelState.IsValid)
         {
-            return View(registerModel);
+            return View(registerDto);
         }
 
-        await _userService.CreateUserAsync(registerModel.UserName,
-                                           registerModel.Password,
-                                           registerModel.Email,
-                                           registerModel.FirstName,
-                                           registerModel.LastName,
-                                           registerModel.PhoneNumber);
+        await _userService.CreateUserAsync(registerDto.UserName,
+                                           registerDto.Password,
+                                           registerDto.Email,
+                                           registerDto.FirstName,
+                                           registerDto.LastName,
+                                           registerDto.PhoneNumber);
         return RedirectToAction("Index", "Home");
     }
 
     [HttpGet]
+    [AllowAnonymous]
     [Route("Login")]
     public ActionResult Login()
     {
@@ -49,18 +53,20 @@ public class AccountController : Controller
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [Route("Login")]
-    public async Task<ActionResult> Login(LoginDTO loginModel)
+    public async Task<ActionResult> Login(LoginDto loginDto)
     {
         if (!ModelState.IsValid)
         {
-            return View(loginModel);
+            return View(loginDto);
         }
-        await _authenticationService.LoginAsync(loginModel.Email, loginModel.Password);
+        await _authenticationService.LoginAsync(loginDto.Email, loginDto.Password);
         return RedirectToAction("Index", "Home");
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [Route("Logout")]
     public async Task<ActionResult> LogOut()
     {
