@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Personal_Shop.Data;
-using Personal_Shop.Domain.Users;
+using PersonalShop.Data;
+using PersonalShop.Domain.Users;
 
-namespace Personal_Shop.Configuration;
+namespace PersonalShop.Configuration;
 
 internal static class IdentityConfig
 {

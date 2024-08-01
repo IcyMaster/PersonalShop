@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace Personal_Shop.Middleware;
+namespace PersonalShop.Middleware;
 
 internal sealed class ExceptionHelper : IExceptionHandler
 {

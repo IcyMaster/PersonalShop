@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Personal_Shop.Domain.Products.DTO;
-using Personal_Shop.Interfaces;
+using PersonalShop.Domain.Products.DTO;
+using PersonalShop.Interfaces;
 
-namespace Personal_Shop.Controllers
+namespace PersonalShop.Controllers
 {
     [Route("Products")]
     public class ProductController : Controller

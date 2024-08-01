@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Personal_Shop.Domain.Users;
-using Personal_Shop.Interfaces;
+using PersonalShop.Domain.Users;
+using PersonalShop.Interfaces;
 
-namespace Personal_Shop.Features.Authentication;
+namespace PersonalShop.Features.Authentication;
 
 public class AuthenticationService : IAuthenticationService
 {

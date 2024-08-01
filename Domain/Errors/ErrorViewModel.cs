@@ -1,4 +1,4 @@
-namespace Personal_Shop.Domain.Errors
+namespace PersonalShop.Domain.Errors
 {
     public class ErrorViewModel
     {

@@ -1,11 +1,11 @@
 ﻿using Humanizer.Localisation;
 using Newtonsoft.Json.Linq;
-using Personal_Shop.Domain.Users;
-using Personal_Shop.Resources;
+using PersonalShop.Domain.Users;
+using PersonalShop.Resources;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace Personal_Shop.Domain.Products.DTO;
+namespace PersonalShop.Domain.Products.DTO;
 
 public class ProductDTO
 {

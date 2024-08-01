@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Personal_Shop.Domain.Users.DTO;
-using Personal_Shop.Interfaces;
+using PersonalShop.Domain.Users.DTO;
+using PersonalShop.Interfaces;
 
-namespace Personal_Shop.Controllers;
+namespace PersonalShop.Controllers;
 
 [Route("Account")]
 public class AccountController : Controller

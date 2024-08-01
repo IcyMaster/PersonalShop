@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Personal_Shop.Domain.Users;
-using Personal_Shop.Domain.Users.DTO;
-using Personal_Shop.Interfaces;
+using PersonalShop.Domain.Users;
+using PersonalShop.Domain.Users.DTO;
+using PersonalShop.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Personal_Shop.Features.User;
+namespace PersonalShop.Features.User;
 
 public class UserService : IUserService
 {

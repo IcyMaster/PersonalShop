@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Personal_Shop.Domain.Products.DTO;
-using Personal_Shop.Domain.Users;
+using PersonalShop.Domain.Products.DTO;
+using PersonalShop.Domain.Users;
 
-namespace Personal_Shop.Data;
+namespace PersonalShop.Data;
 
 public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 {

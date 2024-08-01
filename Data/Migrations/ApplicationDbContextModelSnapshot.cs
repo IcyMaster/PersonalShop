@@ -3,11 +3,11 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Personal_Shop.Data;
+using PersonalShop.Data;
 
 #nullable disable
 
-namespace Personal_Shop.Data.Migrations
+namespace PersonalShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -218,7 +218,7 @@ namespace Personal_Shop.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Personal_Shop.Domain.Products.DTO.ProductDTO", b =>
+            modelBuilder.Entity("PersonalShop.Domain.Products.DTO.ProductDTO", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -253,7 +253,7 @@ namespace Personal_Shop.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Personal_Shop.Domain.Users.CustomUser", b =>
+            modelBuilder.Entity("PersonalShop.Domain.Users.CustomUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -319,13 +319,13 @@ namespace Personal_Shop.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Personal_Shop.Domain.Products.DTO.ProductDTO", b =>
+            modelBuilder.Entity("PersonalShop.Domain.Products.DTO.ProductDTO", b =>
                 {
-                    b.HasOne("Personal_Shop.Domain.Users.CustomUser", null)
+                    b.HasOne("PersonalShop.Domain.Users.CustomUser", null)
                         .WithMany("Products")
                         .HasForeignKey("CustomUserId");
 
-                    b.HasOne("Personal_Shop.Domain.Users.CustomUser", "User")
+                    b.HasOne("PersonalShop.Domain.Users.CustomUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -334,7 +334,7 @@ namespace Personal_Shop.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Personal_Shop.Domain.Users.CustomUser", b =>
+            modelBuilder.Entity("PersonalShop.Domain.Users.CustomUser", b =>
                 {
                     b.Navigation("Products");
                 });

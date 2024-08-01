@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Personal_Shop.Resources {
+namespace PersonalShop.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Personal_Shop.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Personal_Shop.Resources.RegisterMessages", typeof(RegisterMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.RegisterMessages", typeof(RegisterMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

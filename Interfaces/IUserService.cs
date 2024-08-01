@@ -1,8 +1,8 @@
-﻿using Personal_Shop.Domain.Users;
-using Personal_Shop.Domain.Users.DTO;
+﻿using PersonalShop.Domain.Users;
+using PersonalShop.Domain.Users.DTO;
 using System.Security.Claims;
 
-namespace Personal_Shop.Interfaces
+namespace PersonalShop.Interfaces
 {
     public interface IUserService
     {

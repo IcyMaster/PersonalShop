@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Personal_Shop.Domain.Products.DTO;
+using PersonalShop.Domain.Products.DTO;
 
-namespace Personal_Shop.Domain.Users;
+namespace PersonalShop.Domain.Users;
 
 public class CustomUser : IdentityUser
 {

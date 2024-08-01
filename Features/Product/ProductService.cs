@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
-using Personal_Shop.Data;
-using Personal_Shop.Domain.Products.DTO;
-using Personal_Shop.Domain.Users;
-using Personal_Shop.Interfaces;
+using PersonalShop.Data;
+using PersonalShop.Domain.Products.DTO;
+using PersonalShop.Domain.Users;
+using PersonalShop.Interfaces;
 
-namespace Personal_Shop.Features.Product;
+namespace PersonalShop.Features.Product;
 
 public class ProductService : IProductService
 {

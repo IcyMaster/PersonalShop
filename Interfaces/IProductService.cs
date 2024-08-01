@@ -1,6 +1,6 @@
-﻿using Personal_Shop.Domain.Products.DTO;
+﻿using PersonalShop.Domain.Products.DTO;
 
-namespace Personal_Shop.Interfaces;
+namespace PersonalShop.Interfaces;
 
 public interface IProductService
 {

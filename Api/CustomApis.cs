@@ -4,15 +4,15 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
-using Personal_Shop.Domain.Errors;
-using Personal_Shop.Domain.Products.DTO;
-using Personal_Shop.Domain.Users.DTO;
-using Personal_Shop.Interfaces;
+using PersonalShop.Domain.Errors;
+using PersonalShop.Domain.Products.DTO;
+using PersonalShop.Domain.Users.DTO;
+using PersonalShop.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.Dynamic;
 using System.Security.Claims;
 
-namespace Personal_Shop.Api;
+namespace PersonalShop.Api;
 
 public static class CustomApis
 {

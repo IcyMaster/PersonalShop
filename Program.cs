@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
-using Personal_Shop.Api;
-using Personal_Shop.Configuration;
-using Personal_Shop.Data;
-using Personal_Shop.Domain.Users;
+using PersonalShop.Api;
+using PersonalShop.Configuration;
+using PersonalShop.Data;
+using PersonalShop.Domain.Users;
 using System.Text;
 
-namespace Personal_Shop;
+namespace PersonalShop;
 
 public class Program
 {

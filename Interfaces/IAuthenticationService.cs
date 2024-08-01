@@ -1,6 +1,6 @@
-﻿using Personal_Shop.Domain.Users;
+﻿using PersonalShop.Domain.Users;
 
-namespace Personal_Shop.Interfaces
+namespace PersonalShop.Interfaces
 {
     public interface IAuthenticationService
     {

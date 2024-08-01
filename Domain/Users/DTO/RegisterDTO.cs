@@ -1,7 +1,7 @@
-﻿using Personal_Shop.Resources;
+﻿using PersonalShop.Resources;
 using System.ComponentModel.DataAnnotations;
 
-namespace Personal_Shop.Domain.Users.DTO;
+namespace PersonalShop.Domain.Users.DTO;
 
 public class RegisterDTO
 {
