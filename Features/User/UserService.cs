@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using PersonalShop.Domain.Users;
-using PersonalShop.Domain.Users.Dtos;
 using PersonalShop.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -45,12 +42,6 @@ public class UserService : IUserService
         }
 
         return true;
-    }
-
-    public async Task<Domain.Users.User> GetUserAsync(ClaimsPrincipal userIdentity)
-    {
-        var user = await _userManager.FindByNameAsync(userIdentity.Identity!.Name!);
-        return user!;
     }
 
     public string CreateTokenAsync(Domain.Users.User user)

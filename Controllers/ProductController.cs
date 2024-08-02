@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Domain.Products;
 using PersonalShop.Domain.Products.Dtos;
-using PersonalShop.Domain.Products.Dtoss;
+using PersonalShop.Domain.Users;
+using PersonalShop.Extension;
 using PersonalShop.Interfaces;
 
 namespace PersonalShop.Controllers;
@@ -23,42 +24,7 @@ public class ProductController : Controller
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ListOfProductsDto>>> Index()
     {
-        var products = await _productService.GetProducts();
-
-        var productsList = products.Select(ob => new ListOfProductsDto
-        {
-            Id = ob.Id,
-            Name = ob.Name,
-            Description = ob.Description,
-            Price = ob.Price,
-
-            User = new ListOfProductsUserDto
-            {
-                UserId = ob.UserId,
-                FirstName = ob.User.FirstName,
-                LastName = ob.User.LastName,
-                IsOwner = false,
-            }
-        }).ToList();
-
-        if (!User.Identity!.IsAuthenticated)
-        {
-            return View(productsList);
-        }
-        else
-        {
-            var user = await _userService.GetUserAsync(User);
-
-            foreach (var item in productsList)
-            {
-                if(item.User.UserId.Equals(user.Id))
-                {
-                    item.User.IsOwner = true;
-                }
-            }
-
-            return View(productsList);
-        }
+        return View(await _productService.GetProducts());
     }
 
     [Authorize]
@@ -79,17 +45,8 @@ public class ProductController : Controller
             return View(createProductDTO);
         }
 
-        var user = await _userService.GetUserAsync(User);
+        await _productService.AddProduct(createProductDTO,User.Identity!.GetUserId());
 
-        Product product = new Product()
-        {
-            UserId = user.Id,
-            Name = createProductDTO.Name,
-            Description = createProductDTO.Description,
-            Price = createProductDTO.Price,
-        };
-
-        await _productService.AddProduct(product);
         return RedirectToAction(nameof(Index));
     }
 
@@ -98,20 +55,11 @@ public class ProductController : Controller
     [Route("DeleteProduct/{productId:long}", Name = "DeleteProduct")]
     public async Task<ActionResult> DeleteProduct(long productId)
     {
-        var product = await _productService.GetProductById(productId);
-        if (product is null)
+        if (!await _productService.DeleteProductById(productId,User.Identity!.GetUserId()))
         {
-            return View(nameof(Index));
+            return BadRequest("مشکل در حذف محصول مورد نظر");
         }
 
-        var user = await _userService.GetUserAsync(User);
-
-        if (!product.UserId.Equals(user.Id))
-        {
-            return BadRequest("فقط سازنده محصول ، می تواند این محصول را حذف کند");
-        }
-
-        await _productService.DeleteProductById(productId);
         return RedirectToAction(nameof(Index));
     }
 
@@ -120,17 +68,10 @@ public class ProductController : Controller
     [Route("UpdateProduct/{productId:long}", Name = "UpdateProduct")]
     public async Task<ActionResult> UpdateProduct(long productId)
     {
-        var product = await _productService.GetProductById(productId);
+        var product = await _productService.GetProductById(productId,User.Identity!.GetUserId());
         if (product is null)
         {
-            return BadRequest("محصول مورد نظر یافت نشد");
-        }
-
-        var user = await _userService.GetUserAsync(User);
-
-        if (!product.UserId.Equals(user.Id))
-        {
-            return BadRequest("فقط سازنده محصول ، می تواند این محصول را ویرایش کند");
+            return BadRequest("مشکل در بارگذاری محصول");
         }
 
         return View(product);
@@ -146,24 +87,11 @@ public class ProductController : Controller
             return View(updateProductDto);
         }
 
-        var product = await _productService.GetProductById(productId);
-        if(product is null)
+        if (!await _productService.UpdateProductById(productId, updateProductDto, User.Identity!.GetUserId()))
         {
-            return BadRequest("محصول مورد نظر یافت نشد");
+            return BadRequest("مشکل در ویرایش محصول");
         }
 
-        var user = await _userService.GetUserAsync(User);
-
-        if (!product.UserId.Equals(user.Id))
-        {
-            return BadRequest("فقط سازنده محصول ، می تواند این محصول را ویرایش کند");
-        }
-
-        product.Name = updateProductDto.Name;
-        product.Description = updateProductDto.Description;
-        product.Price = updateProductDto.Price;
-
-        await _productService.UpdateProductById(productId,product);
         return RedirectToAction(nameof(Index));
     }
 }

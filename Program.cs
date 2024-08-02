@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
-using PersonalShop.Api;
 using PersonalShop.Configuration;
 using PersonalShop.Data;
 using PersonalShop.Domain.Users;
@@ -89,46 +88,6 @@ public class Program
         });
 
         builder.Services.AddScoped<SignInManager<User>>();
-
-        //Config Cookie
-        //builder.Services.SetupIdentity();
-
-        //Config JWT
-        //builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
-        //{
-
-        //    options.TokenValidationParameters = new TokenValidationParameters()
-        //    {
-        //        ValidateActor = true,
-        //        ValidateAudience = true,
-        //        ValidateIssuer = true,
-        //        ValidateIssuerSigningKey = true,
-        //        RequireExpirationTime = true,
-        //        ValidIssuer = builder.Configuration.GetSection("JWT:Issuer").Value,
-        //        ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value,
-        //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:key").Value!))
-        //    };
-        //});
-
-        ////config for multi aut
-        //builder.Services.AddAuthentication(options =>
-        //{
-        //    options.DefaultScheme = "JWT_OR_COOKIE";
-        //    options.DefaultChallengeScheme = "JWT_OR_COOKIE";
-        //})
-        //    .AddPolicyScheme("JWT_OR_COOKIE", "JWT_OR_COOKIE", options =>
-        //     {
-        //         // runs on each request
-        //         options.ForwardDefaultSelector = context =>
-        //         {
-        //             // filter by auth type
-        //             string authorization = context.Request.Headers[HeaderNames.Authorization];
-        //             if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
-        //                 return "Bearer";
-
-        //             // otherwise always check for cookie auth
-        //             return "Cookies";
-        //         };
 
         var app = builder.Build();
 

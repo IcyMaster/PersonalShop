@@ -8,6 +8,5 @@ namespace PersonalShop.Interfaces
     {
         string CreateTokenAsync(User user);
         Task<bool> CreateUserAsync(string userName, string password, string email, string? firstName, string? lastName, string? phoneNumber);
-        Task<User> GetUserAsync(ClaimsPrincipal userIdentity);
     }
 }

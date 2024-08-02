@@ -30,6 +30,9 @@
                             {
                                 if (User.Identity.IsAuthenticated)
                                 {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="UserProducts">ManageProducts</a>
+                                    </li>
                                     <li class="nav-item" style="position:absolute;right:50px;">
                                         <a id="_logout" class="nav-link text-dark" href="#">Hi @User.Identity.Name / Logout</a>
                                     </li>
