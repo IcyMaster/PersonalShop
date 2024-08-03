@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PersonalShop.Domain.Products;
 using PersonalShop.Domain.Products.Dtos;
-using PersonalShop.Domain.Users;
 using PersonalShop.Extension;
 using PersonalShop.Interfaces;
 
@@ -45,9 +43,12 @@ public class ProductController : Controller
             return View(createProductDTO);
         }
 
-        await _productService.AddProduct(createProductDTO,User.Identity!.GetUserId());
+        if(await _productService.AddProduct(createProductDTO,User.Identity!.GetUserId()))
+        {
+            return RedirectToAction(nameof(UserController.UserProducts),"User");
+        }
 
-        return RedirectToAction(nameof(Index));
+        return BadRequest("Problem to add product ...");
     }
 
     [Authorize]
@@ -60,7 +61,7 @@ public class ProductController : Controller
             return BadRequest("مشکل در حذف محصول مورد نظر");
         }
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(UserController.UserProducts), "User");
     }
 
     [Authorize]
@@ -92,6 +93,6 @@ public class ProductController : Controller
             return BadRequest("مشکل در ویرایش محصول");
         }
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(UserController.UserProducts), "User");
     }
 }

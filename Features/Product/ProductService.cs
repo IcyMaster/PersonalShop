@@ -31,7 +31,7 @@ public class ProductService : IProductService
     }
     public async Task<SingleProductDto?> GetProductById(long id)
     {
-        var product = await _context.Products.FindAsync(id);
+        var product = await _context.Products.Include(e => e.User).SingleOrDefaultAsync(e => e.Id.Equals(id));
         if(product is null)
         {
             return null;
@@ -54,7 +54,7 @@ public class ProductService : IProductService
     }
     public async Task<SingleProductDto?> GetProductById(long id,string userId)
     {
-        var product = await _context.Products.FindAsync(id);
+        var product = await _context.Products.Include(e => e.User).SingleOrDefaultAsync(e => e.Id.Equals(id));
         if (product is null)
         {
             return null;

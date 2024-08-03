@@ -10,7 +10,7 @@
 @if (User.Identity!.IsAuthenticated)
 {
     <p>
-        <form asp-action="addProduct" method="get" class="d-inline">
+        <form asp-controller="Product" asp-action="addProduct" method="get" class="d-inline">
             <button type="submit" class="btn btn-primary">افزودن محصول</button>
         </form>
     </p>
@@ -53,10 +53,10 @@
                 <td>
                     @if (item.User.IsOwner)
                     {
-                        <form asp-action="DeleteProduct" asp-route-productId="@item.Id" method="post" class="d-inline">
+                        <form asp-controller="Product" asp-action="DeleteProduct" asp-route-productId="@item.Id" method="post" class="d-inline">
                             <button type="submit" class="btn btn-danger" onclick="return confirm('آیا از حذف این محصول مطمئن هستید؟')">حذف</button>
                         </form>
-                        <form asp-action="UpdateProduct" asp-route-productId="@item.Id" method="get" class="d-inline">
+                        <form asp-controller="Product" asp-action="UpdateProduct" asp-route-productId="@item.Id" method="get" class="d-inline">
                             <button type="submit" class="btn btn-success">ویرایش</button>
                         </form>
                     }
