@@ -4,7 +4,7 @@ namespace PersonalShop.Interfaces;
 
 public interface IProductService
 {
-    Task<bool> AddProduct(CreateProductDTO productModel, string userId);
+    Task<bool> AddProduct(CreateProductDto productModel, string userId);
     Task<bool> DeleteProductById(long id, string userId);
     Task<SingleProductDto?> GetProductById(long id);
     Task<SingleProductDto?> GetProductById(long id, string userId);

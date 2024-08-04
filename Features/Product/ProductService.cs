@@ -13,7 +13,7 @@ public class ProductService : IProductService
         _context = context;
     }
 
-    public async Task<bool> AddProduct(CreateProductDTO productModel,string userId)
+    public async Task<bool> AddProduct(CreateProductDto productModel,string userId)
     {
         await _context.Products.AddAsync(new Domain.Products.Product {
             UserId = userId,

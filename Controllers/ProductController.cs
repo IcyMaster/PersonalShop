@@ -36,19 +36,19 @@ public class ProductController : Controller
     [Authorize]
     [HttpPost]
     [Route("AddProduct")]
-    public async Task<ActionResult> AddProduct(CreateProductDTO createProductDTO)
+    public async Task<ActionResult> AddProduct(CreateProductDto createProductDto)
     {
         if (!ModelState.IsValid)
         {
-            return View(createProductDTO);
+            return View(createProductDto);
         }
 
-        if(await _productService.AddProduct(createProductDTO,User.Identity!.GetUserId()))
+        if(await _productService.AddProduct(createProductDto, User.Identity!.GetUserId()))
         {
             return RedirectToAction(nameof(UserController.UserProducts),"User");
         }
 
-        return BadRequest("Problem to add product ...");
+        return BadRequest("Problem to add product in website ...");
     }
 
     [Authorize]
@@ -58,7 +58,7 @@ public class ProductController : Controller
     {
         if (!await _productService.DeleteProductById(productId,User.Identity!.GetUserId()))
         {
-            return BadRequest("مشکل در حذف محصول مورد نظر");
+            return BadRequest("Problem in Delete product");
         }
 
         return RedirectToAction(nameof(UserController.UserProducts), "User");
@@ -72,7 +72,7 @@ public class ProductController : Controller
         var product = await _productService.GetProductById(productId,User.Identity!.GetUserId());
         if (product is null)
         {
-            return BadRequest("مشکل در بارگذاری محصول");
+            return BadRequest("Problem in Load product for edit");
         }
 
         return View(product);
@@ -90,7 +90,7 @@ public class ProductController : Controller
 
         if (!await _productService.UpdateProductById(productId, updateProductDto, User.Identity!.GetUserId()))
         {
-            return BadRequest("مشکل در ویرایش محصول");
+            return BadRequest("Problem in edit product");
         }
 
         return RedirectToAction(nameof(UserController.UserProducts), "User");

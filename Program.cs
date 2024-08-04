@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
+using PersonalShop.Api;
 using PersonalShop.Configuration;
 using PersonalShop.Data;
 using PersonalShop.Domain.Users;
+using PersonalShop.Middleware;
 using System.Text;
 
 namespace PersonalShop;
@@ -19,6 +21,9 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
 
+        // Add Caching services
+        builder.Services.RegisterCachingServices();
+
         // Use Configuration Services
         builder.Services.RegisterExternalServices();
 
@@ -26,7 +31,6 @@ public class Program
 
         builder.Services.Configure<IdentityOptions>(options =>
         {
-
             options.Password.RequireDigit = false;
             options.Password.RequireUppercase = false;
             options.Password.RequireNonAlphanumeric = false;
@@ -87,6 +91,8 @@ public class Program
             };
         });
 
+        builder.Services.AddAuthorization();
+
         builder.Services.AddScoped<SignInManager<User>>();
 
         var app = builder.Build();
@@ -104,6 +110,12 @@ public class Program
 
         app.UseRouting();
 
+        app.UseMiddleware<HandleJwtBlackList>();
+        app.RegisterAccountApis();
+        app.RegisterProductApis();
+        app.RegisterUserApis();
+
+
         //important lines to active auth system
         app.UseAuthentication();
         app.UseAuthorization();
@@ -113,9 +125,6 @@ public class Program
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
-
-        //app.RegisterProductApis();
-        //app.RegisterAccountApis();
 
         app.Run();
     }

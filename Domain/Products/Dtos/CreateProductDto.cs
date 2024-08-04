@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Domain.Products.Dtos;
 
-public class CreateProductDTO
+public class CreateProductDto
 {
     [MaxLength(20, ErrorMessageResourceType = typeof(ProductMessages)
         , ErrorMessageResourceName = nameof(ProductMessages.NameLengthError))]

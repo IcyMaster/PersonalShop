@@ -35,13 +35,17 @@ public class AccountController : Controller
             return View(registerDto);
         }
 
-        await _userService.CreateUserAsync(registerDto.UserName,
+        if (await _userService.CreateUserAsync(registerDto.UserName,
                                            registerDto.Password,
                                            registerDto.Email,
                                            registerDto.FirstName,
                                            registerDto.LastName,
-                                           registerDto.PhoneNumber);
-        return RedirectToAction("Index", "Home");
+                                           registerDto.PhoneNumber))
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        return BadRequest("Problem in register user");
     }
 
     [HttpGet]
@@ -61,8 +65,13 @@ public class AccountController : Controller
         {
             return View(loginDto);
         }
-        await _authenticationService.LoginAsync(loginDto.Email, loginDto.Password);
-        return RedirectToAction("Index", "Home");
+        var user = await _authenticationService.LoginAsync(loginDto.Email, loginDto.Password);
+        if (user is not null)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        return BadRequest("Problem in login user to website");
     }
 
     [HttpPost]
