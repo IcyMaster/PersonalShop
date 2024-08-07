@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using PersonalShop.Domain.Products.Dtos;
 using PersonalShop.Domain.Users.Dtos;
 using PersonalShop.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Api;
 
@@ -11,6 +13,12 @@ public static class AccountApis
     {
         app.MapPost("Api/Account/Register", async ([FromBody] RegisterDto registerDto, IUserService userService) =>
         {
+            var validateRes = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(registerDto, new ValidationContext(registerDto), validateRes, true))
+            {
+                return Results.BadRequest(validateRes.Select(e => e.ErrorMessage));
+            }
+
             if (await userService.CreateUserAsync(registerDto.UserName,
                                               registerDto.Password,
                                               registerDto.Email,
@@ -26,6 +34,12 @@ public static class AccountApis
 
         app.MapPost("Api/Account/Login", async ([FromBody] LoginDto loginModel, IAuthenticationService authenticationService, IUserService userService) =>
         {
+            var validateRes = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(loginModel, new ValidationContext(loginModel), validateRes, true))
+            {
+                return Results.BadRequest(validateRes.Select(e => e.ErrorMessage));
+            }
+
             var user = await authenticationService.LoginAsync(loginModel.Email, loginModel.Password);
             if (user is not null)
             {
