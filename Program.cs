@@ -40,22 +40,22 @@ public class Program
 
         builder.Services.AddAuthentication(options =>
         {
-            //use Bearer as a default auth service
+            options.DefaultAuthenticateScheme = "JWT_OR_COOKIE";
             options.DefaultScheme = "JWT_OR_COOKIE";
             options.DefaultChallengeScheme = "JWT_OR_COOKIE";
         })
         .AddCookie(options =>
         {
-            options.ExpireTimeSpan = TimeSpan.FromHours(10);
-            options.SlidingExpiration = true;
             options.LoginPath = "/Account/Login";
-            options.Cookie = new()
-            {
-                Name = "PersonalShop",
-                HttpOnly = true,
-                SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Lax,
-                SecurePolicy = CookieSecurePolicy.Always
-            };
+            options.ExpireTimeSpan = TimeSpan.FromHours(10);
+            //options.SlidingExpiration = true;
+            //options.Cookie = new()
+            //{
+            //    Name = "PersonalShop",
+            //    HttpOnly = false,
+            //    SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Lax,
+            //    SecurePolicy = CookieSecurePolicy.Always
+            //};
         })
         .AddJwtBearer(options =>
         {
@@ -66,7 +66,7 @@ public class Program
                 ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
                 RequireExpirationTime = true,
-
+                
                 ValidIssuer = builder.Configuration.GetSection("JWT:Issuer").Value,
                 ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:key").Value!))
@@ -78,7 +78,7 @@ public class Program
             options.ForwardDefaultSelector = context =>
             {
                 // filter by auth type
-                string authorization = context.Request.Headers[HeaderNames.Authorization]!;
+                string? authorization = context.Request.Headers[HeaderNames.Authorization];
                 if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
                 {
                     // otherwise always check for cookie auth
@@ -86,7 +86,7 @@ public class Program
                 }
                 else
                 {
-                    return CookieAuthenticationDefaults.AuthenticationScheme;
+                    return IdentityConstants.ApplicationScheme;
                 }
             };
         });

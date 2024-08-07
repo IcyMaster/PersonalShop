@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using PersonalShop.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -53,10 +55,10 @@ public class UserService : IUserService
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWT:key").Value!));
 
-        SigningCredentials signingCredentials = new SigningCredentials(securityKey,SecurityAlgorithms.HmacSha512Signature);
+        SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
 
         var securityToken = new JwtSecurityToken(claims: _claims,
-        expires: DateTime.Now.AddMinutes(60),
+        expires: DateTime.UtcNow.AddMinutes(60),
         signingCredentials: signingCredentials,
         issuer: _configuration.GetSection("JWT:Issuer").Value,
         audience: _configuration.GetSection("JWT:Audience").Value);
