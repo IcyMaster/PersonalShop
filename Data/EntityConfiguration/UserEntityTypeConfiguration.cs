@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PersonalShop.Domain.Users;
 
-namespace PersonalShop.Data;
+namespace PersonalShop.Data.EntityConfiguration;
 
 public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 {

@@ -13,13 +13,13 @@ public class ProductService : IProductService
         _context = context;
     }
 
-    public async Task<bool> AddProduct(CreateProductDto productModel,string userId)
+    public async Task<bool> AddProduct(CreateProductDto createProductDto,string userId)
     {
         await _context.Products.AddAsync(new Domain.Products.Product {
             UserId = userId,
-            Name = productModel.Name,
-            Description = productModel.Description,
-            Price = productModel.Price,
+            Name = createProductDto.Name,
+            Description = createProductDto.Description,
+            Price = createProductDto.Price,
         });
 
         if(await _context.SaveChangesAsync() > 0)
