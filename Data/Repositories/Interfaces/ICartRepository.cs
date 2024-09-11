@@ -4,5 +4,5 @@ namespace PersonalShop.Data.Repositories.Interfaces;
 
 public interface ICartRepository
 {
-    Task<Cart?> GetCartByUserId(string userId);
+    Task<Cart?> GetCartByUserIdAsync(string userId);
 }

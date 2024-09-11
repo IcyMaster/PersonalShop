@@ -1,4 +1,4 @@
-﻿using PersonalShop.Interfaces;
+﻿using PersonalShop.Features.Product;
 using System.Security.Claims;
 
 namespace PersonalShop.Api;

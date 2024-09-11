@@ -8,7 +8,7 @@ public class CartRepository : Repository<Cart>, ICartRepository
 {
     public CartRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-    public async Task<Cart?> GetCartByUserId(string userId)
+    public async Task<Cart?> GetCartByUserIdAsync(string userId)
     {
         return await _dbSet.Where(e => e.UserId == userId).FirstOrDefaultAsync();
     }

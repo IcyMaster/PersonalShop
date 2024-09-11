@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using NuGet.Common;
 using PersonalShop.Domain.Users;
-using PersonalShop.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace PersonalShop.Features.Authentication;

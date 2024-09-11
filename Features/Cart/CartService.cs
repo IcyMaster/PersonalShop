@@ -1,9 +1,9 @@
 ﻿using PersonalShop.Data.Repositories.Interfaces;
 using PersonalShop.Domain.Card.Dtos;
 
-namespace PersonalShop.Features.Card;
+namespace PersonalShop.Features.Cart;
 
-public class CartService
+public class CartService : ICartService
 {
     public readonly ICartRepository _cartRepository;
 
@@ -12,26 +12,40 @@ public class CartService
         _cartRepository = cartRepository;
     }
 
-    public async Task<SingleCartDto?> GetCartByUserId(string userId)
+    public async Task<SingleCartDto?> GetCartByUserIdAsync(string userId)
     {
-        return await _cartRepository.GetCartByUserId(userId);
-    }
-    public async Task<bool> AddCartItem(CreateCartItemDto createCartItemDto, string userId)
-    {
-        var cart = await _cartRepository.GetCartByUserId(userId);
+        var cart = await _cartRepository.GetCartByUserIdAsync(userId);
+
         if (cart is null)
         {
-            if (!await _cartRepository.AddCartByUserId(userId))
-            {
-                return false;
-            }
+            return null;
         }
 
-        if (await _cartRepository.AddCartItem(createCartItemDto, cart.Id))
+        return new SingleCartDto
         {
-            return true;
-        }
-
-        return false;
+            Id = cart.Id,
+            UserId = cart.UserId,
+            CartItems = cart.CartItems,
+        };
     }
+    //public async Task<Enumerable()>
+
+    //public async Task<bool> AddCartItem(CreateCartItemDto createCartItemDto, string userId)
+    //{
+    //    var cart = await _cartRepository.GetCartByUserId(userId);
+    //    if (cart is null)
+    //    {
+    //        if (!await _cartRepository.AddCartByUserId(userId))
+    //        {
+    //            return false;
+    //        }
+    //    }
+
+    //    if (await _cartRepository.AddCartItem(createCartItemDto, cart.Id))
+    //    {
+    //        return true;
+    //    }
+
+    //    return false;
+    //}
 }

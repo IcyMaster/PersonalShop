@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Domain.Products.Dtos;
-using PersonalShop.Interfaces;
+using PersonalShop.Features.Product;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 

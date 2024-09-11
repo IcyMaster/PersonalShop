@@ -5,7 +5,6 @@ using PersonalShop.Data;
 using PersonalShop.Features.Authentication;
 using PersonalShop.Features.Product;
 using PersonalShop.Features.User;
-using PersonalShop.Interfaces;
 using PersonalShop.Middleware;
 using System.Globalization;
 

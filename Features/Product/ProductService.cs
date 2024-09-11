@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonalShop.Data;
 using PersonalShop.Domain.Products.Dtos;
-using PersonalShop.Interfaces;
 
 namespace PersonalShop.Features.Product;
 

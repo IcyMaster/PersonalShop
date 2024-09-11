@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Domain.Users.Dtos;
-using PersonalShop.Interfaces;
+using PersonalShop.Features.Authentication;
+using PersonalShop.Features.User;
 
 namespace PersonalShop.Controllers;
 

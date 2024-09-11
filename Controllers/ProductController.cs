@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Domain.Products.Dtos;
 using PersonalShop.Extension;
-using PersonalShop.Interfaces;
+using PersonalShop.Features.Product;
+using PersonalShop.Features.User;
 
 namespace PersonalShop.Controllers;
 

@@ -1,6 +1,6 @@
 ﻿using PersonalShop.Domain.Products.Dtos;
 
-namespace PersonalShop.Interfaces;
+namespace PersonalShop.Features.Product;
 
 public interface IProductService
 {
