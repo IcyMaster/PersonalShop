@@ -13,10 +13,10 @@ public class UnitOfWork : IUnitOfWork
     private IDbContextTransaction _transaction;
     private bool _disposed = false;
 
-    public UnitOfWork(ApplicationDbContext dbContext, Dictionary<Type, object> repositories)
+    public UnitOfWork(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
-        _repositories = repositories;
+        _repositories = new Dictionary<Type, object>();
     }
 
     public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class

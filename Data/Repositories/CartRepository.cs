@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonalShop.Domain.Card;
 using PersonalShop.Interfaces.Repositories;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PersonalShop.Data.Repositories;
 
@@ -9,9 +8,12 @@ public class CartRepository : Repository<Cart>, ICartRepository
 {
     public CartRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-    public async Task<Cart?> GetCartByUserIdAsync(string userId, bool track = true)
+    public async Task<Cart?> GetCartByUserIdWithProductAsync(string userId, bool track)
     {
-        var data = await _dbSet.Where(e => e.UserId == userId).FirstOrDefaultAsync();
+        var data = await _dbSet.Where(e => e.UserId == userId)
+            .Include(e => e.CartItems)
+            .ThenInclude(e => e.Product)
+            .FirstOrDefaultAsync();
 
         if (!track && data is not null)
         {
@@ -20,56 +22,30 @@ public class CartRepository : Repository<Cart>, ICartRepository
 
         return data;
     }
+    public async Task<Cart?> GetCartByUserIdWithOutProductAsync(string userId, bool track)
+    {
+        var data = await _dbSet.Where(e => e.UserId == userId)
+            .Include(e => e.CartItems)
+            .FirstOrDefaultAsync();
 
-    //public async Task<bool> AddCartByUserId(string userId)
-    //{
-    //    await _context.Carts.AddAsync(new Cart { UserId = userId });
+        if (!track && data is not null)
+        {
+            _dbContext.Entry(data).State = EntityState.Detached;
+        }
 
-    //    if (await _context.SaveChangesAsync() > 0)
-    //    {
-    //        return true;
-    //    }
+        return data;
+    }
+    public async Task<Cart?> GetCartByCartIdWithOutProductAsync(Guid cartId, bool track)
+    {
+        var data = await _dbSet.Where(e => e.Id == cartId)
+            .Include(e => e.CartItems)
+            .FirstOrDefaultAsync();
 
-    //    return false;
-    //}
-    //public async Task<bool> AddCartItem(CreateCartItemDto createCartItemDto, Guid cartId)
-    //{
-    //    var cart = await _context.Carts.SingleOrDefaultAsync(e => e.Id == cartId);
+        if (!track && data is not null)
+        {
+            _dbContext.Entry(data).State = EntityState.Detached;
+        }
 
-    //    if (cart is null)
-    //    {
-    //        return false;
-    //    }
-
-    //    cart.CartItems.Add(new CartItem
-    //    {
-    //        Product = createCartItemDto.Product,
-    //        ProductId = createCartItemDto.ProductId,
-    //        Quanity = createCartItemDto.Quanity,
-    //    });
-
-    //    if (await _context.SaveChangesAsync() > 0)
-    //    {
-    //        return true;
-    //    }
-
-    //    return false;
-    //}
-    //public async Task<bool> DeleteCartItemById(long productId, Guid cartId)
-    //{
-    //    var cart = await _context.Carts.SingleOrDefaultAsync(e => e.Id == cartId);
-    //    if (cart is null)
-    //    {
-    //        return false;
-    //    }
-
-    //    cart.CartItems.RemoveAll(e => e.ProductId == productId);
-
-    //    if (await _context.SaveChangesAsync() < 1)
-    //    {
-    //        return false;
-    //    }
-
-    //    return true;
-    //}
+        return data;
+    }
 }

@@ -14,5 +14,12 @@ public class Cart
     [Key]
     public Guid Id { get; private set; }
     public string UserId { get; private set; } = string.Empty;
+    public decimal TotalPrice { get; private set; }
+
     public List<CartItem> CartItems { get; set; } = new List<CartItem>();
+
+    public void IncreaseTotalPrice(decimal price)
+    {
+        TotalPrice = TotalPrice + price;
+    }
 }

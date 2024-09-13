@@ -8,8 +8,8 @@ namespace PersonalShop.Features.Cart;
 
 public class CartService : ICartService
 {
-    public readonly ICartRepository _cartRepository;
-    public readonly IProductService _productService;
+    private readonly ICartRepository _cartRepository;
+    private readonly IProductService _productService;
     private readonly IUnitOfWork _unitOfWork;
 
     public CartService(ICartRepository cartRepository, IProductService productService, IUnitOfWork unitOfWork)
@@ -21,7 +21,7 @@ public class CartService : ICartService
 
     public async Task<SingleCartDto?> GetCartByUserIdAsync(string userId)
     {
-        var cart = await _cartRepository.GetCartByUserIdAsync(userId, track: false);
+        var cart = await _cartRepository.GetCartByUserIdWithProductAsync(userId, track: false);
 
         if (cart is null)
         {
@@ -32,6 +32,24 @@ public class CartService : ICartService
         {
             Id = cart.Id,
             UserId = cart.UserId,
+            TotalPrice = cart.TotalPrice,
+            CartItems = cart.CartItems,
+        };
+    }
+    public async Task<SingleCartDto?> GetCartByCartIdAsync(Guid cartId)
+    {
+        var cart = await _cartRepository.GetCartByCartIdWithOutProductAsync(cartId, track: false);
+
+        if (cart is null)
+        {
+            return null;
+        }
+
+        return new SingleCartDto
+        {
+            Id = cart.Id,
+            UserId = cart.UserId,
+            TotalPrice = cart.TotalPrice,
             CartItems = cart.CartItems,
         };
     }
@@ -45,7 +63,7 @@ public class CartService : ICartService
 
         var item = new CartItem(productId, quanity);
 
-        var cart = await _cartRepository.GetCartByUserIdAsync(userId, track: true);
+        var cart = await _cartRepository.GetCartByUserIdWithOutProductAsync(userId, track: true);
         if (cart is not null)
         {
             var cartItem = cart.CartItems.FirstOrDefault(e => e.ProductId.Equals(productId));
@@ -57,15 +75,22 @@ public class CartService : ICartService
             {
                 cart.CartItems.Add(item);
             }
+
+            cart.IncreaseTotalPrice(product.Price * quanity);
         }
         else
         {
             cart = new(userId);
             cart.CartItems.Add(item);
+            cart.IncreaseTotalPrice(product.Price * quanity);
+            await _cartRepository.AddAsync(cart);
         }
 
-        await _unitOfWork.SaveChangesAsync(true);
+        if(await _unitOfWork.SaveChangesAsync(true) > 0)
+        {
+            return true;
+        }
 
-        return true;
+        return false;
     }
 }

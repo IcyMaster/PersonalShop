@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Domain.Card.Dtos;
-using PersonalShop.Domain.Products.Dtos;
 using PersonalShop.Extension;
 using PersonalShop.Interfaces.Features;
 using System.ComponentModel.DataAnnotations;
@@ -36,6 +34,24 @@ public static class CartApis
             }
 
             return Results.BadRequest("Problem to add item to cart ...");
+
+        }).RequireAuthorization();
+
+        //just complete checkout without process payment
+        app.MapGet("Api/Cart/Checkout/{cartId:Guid}", async (ICartService cartService, IOrderService orderService, Guid cartId) =>
+        {
+            if (await cartService.GetCartByCartIdAsync(cartId) is null)
+            {
+                return Results.BadRequest("Cart not found");
+            }
+
+            if (await orderService.CreateOrderByCartIdAsync(cartId))
+            {
+                return Results.Ok("Payment has been made successfully");
+            }
+
+            return Results.BadRequest("Problem processing payment ...");
+
         }).RequireAuthorization();
     }
 }
