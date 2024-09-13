@@ -114,7 +114,7 @@ public class Program
         app.RegisterAccountApis();
         app.RegisterProductApis();
         app.RegisterUserApis();
-
+        app.RegisterCardApis();
 
         //important lines to active auth system
         app.UseAuthentication();

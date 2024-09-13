@@ -1,20 +1,27 @@
-﻿using PersonalShop.Data.Repositories.Interfaces;
+﻿using PersonalShop.Data.Contracts;
+using PersonalShop.Domain.Card;
 using PersonalShop.Domain.Card.Dtos;
+using PersonalShop.Interfaces.Features;
+using PersonalShop.Interfaces.Repositories;
 
 namespace PersonalShop.Features.Cart;
 
 public class CartService : ICartService
 {
     public readonly ICartRepository _cartRepository;
+    public readonly IProductService _productService;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CartService(ICartRepository cartRepository)
+    public CartService(ICartRepository cartRepository, IProductService productService, IUnitOfWork unitOfWork)
     {
         _cartRepository = cartRepository;
+        _productService = productService;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<SingleCartDto?> GetCartByUserIdAsync(string userId)
     {
-        var cart = await _cartRepository.GetCartByUserIdAsync(userId);
+        var cart = await _cartRepository.GetCartByUserIdAsync(userId, track: false);
 
         if (cart is null)
         {
@@ -28,24 +35,37 @@ public class CartService : ICartService
             CartItems = cart.CartItems,
         };
     }
-    //public async Task<Enumerable()>
+    public async Task<bool> AddCartItemByUserIdAsync(string userId, long productId, int quanity)
+    {
+        var product = await _productService.GetProductById(productId);
+        if (product is null)
+        {
+            return false;
+        }
 
-    //public async Task<bool> AddCartItem(CreateCartItemDto createCartItemDto, string userId)
-    //{
-    //    var cart = await _cartRepository.GetCartByUserId(userId);
-    //    if (cart is null)
-    //    {
-    //        if (!await _cartRepository.AddCartByUserId(userId))
-    //        {
-    //            return false;
-    //        }
-    //    }
+        var item = new CartItem(productId, quanity);
 
-    //    if (await _cartRepository.AddCartItem(createCartItemDto, cart.Id))
-    //    {
-    //        return true;
-    //    }
+        var cart = await _cartRepository.GetCartByUserIdAsync(userId, track: true);
+        if (cart is not null)
+        {
+            var cartItem = cart.CartItems.FirstOrDefault(e => e.ProductId.Equals(productId));
+            if (cartItem is not null)
+            {
+                cartItem.IncreaseQuantity(quanity);
+            }
+            else
+            {
+                cart.CartItems.Add(item);
+            }
+        }
+        else
+        {
+            cart = new(userId);
+            cart.CartItems.Add(item);
+        }
 
-    //    return false;
-    //}
+        await _unitOfWork.SaveChangesAsync(true);
+
+        return true;
+    }
 }

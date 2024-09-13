@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PersonalShop.Data.Repositories.Interfaces;
 using PersonalShop.Domain.Card;
+using PersonalShop.Interfaces.Repositories;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PersonalShop.Data.Repositories;
 
@@ -8,9 +9,16 @@ public class CartRepository : Repository<Cart>, ICartRepository
 {
     public CartRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-    public async Task<Cart?> GetCartByUserIdAsync(string userId)
+    public async Task<Cart?> GetCartByUserIdAsync(string userId, bool track = true)
     {
-        return await _dbSet.Where(e => e.UserId == userId).FirstOrDefaultAsync();
+        var data = await _dbSet.Where(e => e.UserId == userId).FirstOrDefaultAsync();
+
+        if (!track && data is not null)
+        {
+            _dbContext.Entry(data).State = EntityState.Detached;
+        }
+
+        return data;
     }
 
     //public async Task<bool> AddCartByUserId(string userId)

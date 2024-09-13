@@ -1,10 +1,10 @@
 ﻿using PersonalShop.Domain.Users;
 
-namespace PersonalShop.Features.Authentication
+namespace PersonalShop.Interfaces.Features
 {
     public interface IAuthenticationService
     {
-        Task<Domain.Users.User?> LoginAsync(string email, string password);
+        Task<User?> LoginAsync(string email, string password);
         Task<bool> LogoutAsync();
         Task<bool> LogoutAsync(string jwtToken);
     }

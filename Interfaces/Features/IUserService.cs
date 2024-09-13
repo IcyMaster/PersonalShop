@@ -1,10 +1,10 @@
 ﻿using PersonalShop.Domain.Users;
 
-namespace PersonalShop.Features.User
+namespace PersonalShop.Interfaces.Features
 {
     public interface IUserService
     {
-        string CreateTokenAsync(Domain.Users.User user);
+        string CreateTokenAsync(User user);
         Task<bool> CreateUserAsync(string userName,
         string password, string email, string? firstName,
         string? lastName, string? phoneNumber);

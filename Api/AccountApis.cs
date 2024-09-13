@@ -2,8 +2,7 @@
 using Microsoft.Net.Http.Headers;
 using PersonalShop.Domain.Products.Dtos;
 using PersonalShop.Domain.Users.Dtos;
-using PersonalShop.Features.Authentication;
-using PersonalShop.Features.User;
+using PersonalShop.Interfaces.Features;
 using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Api;
