@@ -16,22 +16,13 @@ public static class CartApis
         {
             var userId = context.GetUserId();
 
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Results.BadRequest("Please Login Again ...");
-            }
-
-            return Results.Ok(await cartService.GetCartByUserIdAsync(userId));
+            return Results.Ok(await cartService.GetCartByUserIdAsync(userId!));
 
         }).RequireAuthorization();
+
         app.MapPost("Api/Cart", async ([FromBody] CreateCartItemDto createCartItemDto, ICartService cartService, HttpContext context) =>
         {
             var userId = context.GetUserId();
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Results.BadRequest("Please Login Again ...");
-            }
 
             var validateRes = new List<ValidationResult>();
             if (!Validator.TryValidateObject(createCartItemDto, new ValidationContext(createCartItemDto), validateRes, true))
@@ -39,7 +30,7 @@ public static class CartApis
                 return Results.BadRequest(validateRes.Select(e => e.ErrorMessage));
             }
 
-            if (await cartService.AddCartItemByUserIdAsync(userId, createCartItemDto.ProductId, createCartItemDto.Quanity))
+            if (await cartService.AddCartItemByUserIdAsync(userId!, createCartItemDto.ProductId, createCartItemDto.Quanity))
             {
                 return Results.Ok("Item added to cart Succesfully");
             }

@@ -11,8 +11,6 @@ public class CartItem
         Quanity = quanity;
     }
 
-    [Key]
-    public int Id { get; set; }
     public Guid CartId { get; set; }
     public Cart Cart { get; set; } = null!;
     public Product Product { get; set; } = null!;

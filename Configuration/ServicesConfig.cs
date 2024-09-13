@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using PersonalShop.Data;
+using PersonalShop.Data.Contracts;
 using PersonalShop.Data.Repositories;
 using PersonalShop.Features.Authentication;
 using PersonalShop.Features.Cart;
@@ -18,15 +19,22 @@ internal static class ServicesConfig
 {
     public static void RegisterExternalServices(this IServiceCollection services)
     {
+        //db context
+        services.AddDbContext<ApplicationDbContext>(ops => ops.UseSqlite(@"Data Source=Data/DataBase/DataBase.db"));
+
+        //repository
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ICartRepository, CartRepository>();
+
+        //services
+        services.AddScoped<ICartService, CartService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IUserService, UserService>();
-        services.AddDbContext<ApplicationDbContext>(ops => ops.UseSqlite(@"Data Source=Data/DataBase/DataBase.db"));
+
+        //other services
         services.AddExceptionHandler<ExceptionHelper>();
-
-        services.AddScoped<ICartRepository, CartRepository>();
-        services.AddScoped<ICartService, CartService>();
-
         services.AddProblemDetails();
         services.AddHttpClient();
     }
