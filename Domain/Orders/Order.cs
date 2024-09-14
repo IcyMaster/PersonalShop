@@ -9,6 +9,7 @@ public class Order
     {
         UserId = userId;
         TotalPrice = totalPrice;
+        OrderItems = new();
     }
 
     [Key]
@@ -17,5 +18,5 @@ public class Order
     public User User { get; set; } = null!;
     public decimal TotalPrice { get; set; }
     public DateTime OrderDate { get; set; } = DateTime.Now;
-    public List<OrderItem> OrderItems { get; set; } = null!;
+    public List<OrderItem> OrderItems { get; set; }
 }

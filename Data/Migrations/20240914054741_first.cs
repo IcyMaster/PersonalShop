@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace PersonalShop.Data.Migrations
+namespace PersonalShop.Data.migrations
 {
     /// <inheritdoc />
     public partial class first : Migration
@@ -172,6 +172,27 @@ namespace PersonalShop.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "TEXT", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -194,26 +215,49 @@ namespace PersonalShop.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CartItem",
+                name: "CartItems",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
                     CartId = table.Column<Guid>(type: "TEXT", nullable: false),
                     ProductId = table.Column<long>(type: "INTEGER", nullable: false),
                     Quanity = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CartItem", x => x.Id);
+                    table.PrimaryKey("PK_CartItems", x => x.CartId);
                     table.ForeignKey(
-                        name: "FK_CartItem_Carts_CartId",
+                        name: "FK_CartItems_Carts_CartId",
                         column: x => x.CartId,
                         principalTable: "Carts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CartItem_Products_ProductId",
+                        name: "FK_CartItems_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderItems",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProductId = table.Column<long>(type: "INTEGER", nullable: false),
+                    Quanity = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItems", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -258,14 +302,21 @@ namespace PersonalShop.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartItem_CartId",
-                table: "CartItem",
-                column: "CartId");
+                name: "IX_CartItems_ProductId",
+                table: "CartItems",
+                column: "ProductId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartItem_ProductId",
-                table: "CartItem",
+                name: "IX_OrderItems_ProductId",
+                table: "OrderItems",
                 column: "ProductId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_UserId",
+                table: "Orders",
+                column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -293,13 +344,19 @@ namespace PersonalShop.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CartItem");
+                name: "CartItems");
+
+            migrationBuilder.DropTable(
+                name: "OrderItems");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Carts");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Products");

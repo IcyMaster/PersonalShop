@@ -13,7 +13,6 @@ public class CartItem
     }
 
     [Key]
-    public int Id { get; set; }
     public Guid CartId { get; set; }
     public Product Product { get; set; } = null!;
     public long ProductId { get; private set; }
@@ -22,5 +21,9 @@ public class CartItem
     public void IncreaseQuantity(int count)
     {
         Quanity = Quanity + count;
+    }
+    public void SetQuantity(int count)
+    {
+        Quanity = count;
     }
 }

@@ -1,8 +1,9 @@
-﻿using PersonalShop.Domain.Card;
+﻿using PersonalShop.Data.Contracts;
+using PersonalShop.Domain.Card;
 
 namespace PersonalShop.Interfaces.Repositories
 {
-    public interface ICartRepository
+    public interface ICartRepository : IRepository<Cart>
     {
         Task<Cart?> GetCartByCartIdWithOutProductAsync(Guid cartId, bool track);
         Task<Cart?> GetCartByUserIdWithOutProductAsync(string userId, bool track);

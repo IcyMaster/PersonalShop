@@ -6,6 +6,7 @@ using PersonalShop.Data.Contracts;
 using PersonalShop.Data.Repositories;
 using PersonalShop.Features.Authentication;
 using PersonalShop.Features.Cart;
+using PersonalShop.Features.Order;
 using PersonalShop.Features.Product;
 using PersonalShop.Features.User;
 using PersonalShop.Interfaces.Features;
@@ -26,12 +27,14 @@ internal static class ServicesConfig
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ICartRepository, CartRepository>();
+        services.AddScoped<IOrderRepository,OrderRepository>();
 
         //services
         services.AddScoped<ICartService, CartService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IOrderService, OrderService>();
 
         //other services
         services.AddExceptionHandler<ExceptionHelper>();

@@ -93,4 +93,67 @@ public class CartService : ICartService
 
         return false;
     }
+    public async Task<bool> DeleteCartItemByUserIdAsync(string userId,long productId)
+    {
+        var cart = await _cartRepository.GetCartByUserIdWithProductAsync(userId, track: true);
+
+        if (cart is null)
+        {
+            return false;
+        }
+
+        var cartItem = cart.CartItems.FirstOrDefault(e => e.ProductId == productId);
+
+        if(cartItem is null)
+        {
+            return false;
+        }
+
+        cart.CartItems.Remove(cartItem);
+
+        cart.SetTotalPrice(0);
+
+        cart.CartItems.ForEach(e => cart.IncreaseTotalPrice(e.Product.Price * e.Quanity));
+
+        if (await _unitOfWork.SaveChangesAsync(true) > 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    public async Task<bool> UpdateCartItemQuanityByUserIdAsync(string userId, long productId,int quanity)
+    {
+        if(quanity < 1)
+        {
+            return false;
+        }
+
+        var cart = await _cartRepository.GetCartByUserIdWithProductAsync(userId, track: true);
+
+        if (cart is null)
+        {
+            return false;
+        }
+
+        var cartItem = cart.CartItems.FirstOrDefault(e => e.ProductId == productId);
+
+        if (cartItem is null)
+        {
+            return false;
+        }
+
+        cartItem.SetQuantity(quanity);
+
+        cart.SetTotalPrice(0);
+
+        cart.CartItems.ForEach(e => cart.IncreaseTotalPrice(e.Product.Price * e.Quanity));
+
+        if(await _unitOfWork.SaveChangesAsync(true) > 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }

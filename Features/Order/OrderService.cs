@@ -36,6 +36,7 @@ public class OrderService : IOrderService
         });
 
         await _orderRepository.AddAsync(order);
+
         _cartRepository.Delete(cart);
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
@@ -47,7 +48,7 @@ public class OrderService : IOrderService
     }
     public async Task<List<SingleOrderDto>?> GetAllOrderByUserId(string userId)
     {
-        var data = await _orderRepository.GetOrderslistByUserIdAsync(userId, track: false);
+        var data = await _orderRepository.GetOrderslistByUserIdAsync(userId);
         if (data is null)
         {
             return null;

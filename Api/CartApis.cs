@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Domain.Card.Dtos;
+using PersonalShop.Domain.Carts.Dtos;
 using PersonalShop.Extension;
 using PersonalShop.Interfaces.Features;
 using System.ComponentModel.DataAnnotations;
@@ -18,7 +19,7 @@ public static class CartApis
 
         }).RequireAuthorization();
 
-        app.MapPost("Api/Cart", async ([FromBody] CreateCartItemDto createCartItemDto, ICartService cartService, HttpContext context) =>
+        app.MapPost("Api/Cart/AddItem", async ([FromBody] CreateCartItemDto createCartItemDto, ICartService cartService, HttpContext context) =>
         {
             var userId = context.GetUserId();
 
@@ -34,6 +35,32 @@ public static class CartApis
             }
 
             return Results.BadRequest("Problem to add item to cart ...");
+
+        }).RequireAuthorization();
+
+        app.MapDelete("Api/Cart/DeleteItem/{productId:long}", async (ICartService cartService, HttpContext context, long productId) =>
+        {
+            var userId = context.GetUserId();
+
+            if (await cartService.DeleteCartItemByUserIdAsync(userId!, productId))
+            {
+                return Results.Ok("Item deleted from cart Succesfully");
+            }
+
+            return Results.BadRequest("Problem delete item from cart ...");
+
+        }).RequireAuthorization();
+
+        app.MapPut("Api/Cart/UpdateItem/{productId:long}", async ([FromBody] UpdateCartItemDto updateCartItemDto, ICartService cartService, HttpContext context, long productId) =>
+        {
+            var userId = context.GetUserId();
+
+            if (await cartService.UpdateCartItemQuanityByUserIdAsync(userId!, productId, updateCartItemDto.Quanity))
+            {
+                return Results.Ok("The item info in the shopping cart has been updated successfully");
+            }
+
+            return Results.BadRequest("Problem to update cart item ...");
 
         }).RequireAuthorization();
 

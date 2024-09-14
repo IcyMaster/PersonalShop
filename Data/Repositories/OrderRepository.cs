@@ -23,18 +23,15 @@ public class OrderRepository : Repository<Order>, IOrderRepository
 
         return data;
     }
-    public async Task<IEnumerable<Order>?> GetOrderslistByUserIdAsync(string userId, bool track = true)
+    public async Task<IEnumerable<Order>?> GetOrderslistByUserIdAsync(string userId)
     {
-        var data = await _dbSet.Where(e => e.UserId == userId)
+        var orders = await _dbSet.Where(e => e.UserId == userId)
+            .Include(e => e.User)
             .Include(e => e.OrderItems)
             .ThenInclude(e => e.Product)
+            .AsNoTracking()
             .ToListAsync();
 
-        if (!track && data is not null)
-        {
-            _dbContext.Entry(data).State = EntityState.Detached;
-        }
-
-        return data;
+        return orders;
     }
 }

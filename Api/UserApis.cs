@@ -1,4 +1,5 @@
-﻿using PersonalShop.Interfaces.Features;
+﻿using PersonalShop.Extension;
+using PersonalShop.Interfaces.Features;
 using System.Security.Claims;
 
 namespace PersonalShop.Api;
@@ -9,8 +10,15 @@ public static class UserApis
     {
         app.MapGet("Api/User/Products",async (IProductService productService, HttpContext context) =>
         {
-            var userId = context.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value!;
-            return Results.Ok(await productService.GetProducts(userId));
+            var userId = context.GetUserId();
+            return Results.Ok(await productService.GetProducts(userId!));
+
+        }).RequireAuthorization();
+
+        app.MapGet("Api/User/Orders", async (IOrderService orderService, HttpContext context) =>
+        {
+            var userId = context.GetUserId();
+            return Results.Ok(await orderService.GetAllOrderByUserId(userId!));
         }).RequireAuthorization();
     }
 }

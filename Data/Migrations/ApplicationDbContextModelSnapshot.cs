@@ -7,7 +7,7 @@ using PersonalShop.Data;
 
 #nullable disable
 
-namespace PersonalShop.Data.Migrations
+namespace PersonalShop.Data.migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -165,10 +165,6 @@ namespace PersonalShop.Data.Migrations
 
             modelBuilder.Entity("PersonalShop.Domain.Card.CartItem", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
                     b.Property<Guid>("CartId")
                         .HasColumnType("TEXT");
 
@@ -178,14 +174,55 @@ namespace PersonalShop.Data.Migrations
                     b.Property<int>("Quanity")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("CartId");
+                    b.HasKey("CartId");
 
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("CartItem");
+                    b.ToTable("CartItems");
+                });
+
+            modelBuilder.Entity("PersonalShop.Domain.Orders.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("PersonalShop.Domain.Orders.OrderItem", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quanity")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("PersonalShop.Domain.Products.Product", b =>
@@ -356,6 +393,34 @@ namespace PersonalShop.Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("PersonalShop.Domain.Orders.Order", b =>
+                {
+                    b.HasOne("PersonalShop.Domain.Users.User", "User")
+                        .WithOne()
+                        .HasForeignKey("PersonalShop.Domain.Orders.Order", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PersonalShop.Domain.Orders.OrderItem", b =>
+                {
+                    b.HasOne("PersonalShop.Domain.Orders.Order", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PersonalShop.Domain.Products.Product", "Product")
+                        .WithOne()
+                        .HasForeignKey("PersonalShop.Domain.Orders.OrderItem", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("PersonalShop.Domain.Products.Product", b =>
                 {
                     b.HasOne("PersonalShop.Domain.Users.User", "User")
@@ -370,6 +435,11 @@ namespace PersonalShop.Data.Migrations
             modelBuilder.Entity("PersonalShop.Domain.Card.Cart", b =>
                 {
                     b.Navigation("CartItems");
+                });
+
+            modelBuilder.Entity("PersonalShop.Domain.Orders.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("PersonalShop.Domain.Users.User", b =>
