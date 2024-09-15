@@ -15,7 +15,7 @@ public static class CartApis
         {
             var userId = context.GetUserId();
 
-            return Results.Ok(await cartService.GetCartByUserIdAsync(userId!));
+            return Results.Ok(await cartService.GetCartByUserIdWithProductAsync(userId!));
 
         }).RequireAuthorization();
 
@@ -67,7 +67,7 @@ public static class CartApis
         //just complete checkout without process payment
         app.MapGet("Api/Cart/Checkout/{cartId:Guid}", async (ICartService cartService, IOrderService orderService, Guid cartId) =>
         {
-            if (await cartService.GetCartByCartIdAsync(cartId) is null)
+            if (await cartService.GetCartByCartIdWithOutProductAsync(cartId) is null)
             {
                 return Results.BadRequest("Cart not found");
             }

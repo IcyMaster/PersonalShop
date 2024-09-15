@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PersonalShop.Domain.Carts.Dtos;
+using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Domain.Card.Dtos;
 
@@ -10,5 +11,5 @@ public class SingleCartDto
     [DisplayFormat(DataFormatString = "{0:G29}", ApplyFormatInEditMode = true)]
     public decimal TotalPrice { get; set; }
 
-    public List<CartItem> CartItems { get; set; } = null!;
+    public List<CartItemDto> CartItems { get; set; } = null!;
 }

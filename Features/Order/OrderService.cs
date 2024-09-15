@@ -1,6 +1,8 @@
-﻿using PersonalShop.Data.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Orders;
 using PersonalShop.Domain.Orders.Dtos;
+using PersonalShop.Domain.Products.Dtos;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Repositories;
 
@@ -54,21 +56,34 @@ public class OrderService : IOrderService
             return null;
         }
 
-        List<SingleOrderDto> orders = new List<SingleOrderDto>();
-
-        foreach (var item in data)
+        return data.Select(ob => new SingleOrderDto
         {
-            orders.Add(new SingleOrderDto
+            Id = ob.Id,
+            UserId = ob.UserId,
+            User = new OrderUserDto
             {
-                Id = item.Id,
-                OrderDate = item.OrderDate,
-                OrderItems = item.OrderItems,
-                TotalPrice = item.TotalPrice,
-                User = item.User,
-                UserId = item.UserId
-            });
-        }
+                FirstName = ob.User.FirstName,
+                LastName = ob.User.LastName,
+                Email = ob.User.Email!,
+            },
 
-        return orders;
+            TotalPrice = ob.TotalPrice,
+            OrderDate = ob.OrderDate,
+            OrderItems = ob.OrderItems.Select(oi => new SingleOrderItemDto
+            {
+                OrderId = oi.OrderId,
+                ProductId = oi.ProductId,
+                Quanity = oi.Quanity,
+
+                Product = new OrderProductDto
+                {
+                    Name = oi.Product.Name,
+                    Description = oi.Product.Description,
+                    Price = oi.Product.Price,
+                }
+
+            }).ToList()
+
+        }).ToList();
     }
 }

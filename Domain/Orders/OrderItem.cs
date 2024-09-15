@@ -12,6 +12,7 @@ public class OrderItem
     }
 
     [Key]
+    public int Id { get; set; }
     public int OrderId { get; set; }
     public long ProductId { get; set; }
     public int Quanity { get; set; }

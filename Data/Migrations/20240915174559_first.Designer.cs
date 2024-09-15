@@ -8,10 +8,10 @@ using PersonalShop.Data;
 
 #nullable disable
 
-namespace PersonalShop.Data.migrations
+namespace PersonalShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240914054741_first")]
+    [Migration("20240915174559_first")]
     partial class first
     {
         /// <inheritdoc />
@@ -168,6 +168,10 @@ namespace PersonalShop.Data.migrations
 
             modelBuilder.Entity("PersonalShop.Domain.Card.CartItem", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
                     b.Property<Guid>("CartId")
                         .HasColumnType("TEXT");
 
@@ -177,7 +181,9 @@ namespace PersonalShop.Data.migrations
                     b.Property<int>("Quanity")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("CartId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
 
                     b.HasIndex("ProductId")
                         .IsUnique();
@@ -211,6 +217,10 @@ namespace PersonalShop.Data.migrations
 
             modelBuilder.Entity("PersonalShop.Domain.Orders.OrderItem", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("INTEGER");
 
@@ -220,7 +230,9 @@ namespace PersonalShop.Data.migrations
                     b.Property<int>("Quanity")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("OrderId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId")
                         .IsUnique();

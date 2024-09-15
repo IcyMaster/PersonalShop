@@ -19,7 +19,7 @@ public class CartService : ICartService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<SingleCartDto?> GetCartByUserIdAsync(string userId)
+    public async Task<SingleCartDto?> GetCartByUserIdWithProductAsync(string userId)
     {
         var cart = await _cartRepository.GetCartByUserIdWithProductAsync(userId, track: false);
 
@@ -33,10 +33,20 @@ public class CartService : ICartService
             Id = cart.Id,
             UserId = cart.UserId,
             TotalPrice = cart.TotalPrice,
-            CartItems = cart.CartItems,
+            CartItems = cart.CartItems.Select(ci => new Domain.Carts.Dtos.CartItemDto
+            {
+                ProductId = ci.ProductId,
+                Quanity = ci.Quanity,
+                Product = new Domain.Carts.Dtos.CartItemProductDto
+                {
+                    Name = ci.Product.Name,
+                    Description = ci.Product.Description,
+                    Price = ci.Product.Price,
+                }
+            }).ToList(),
         };
     }
-    public async Task<SingleCartDto?> GetCartByCartIdAsync(Guid cartId)
+    public async Task<SingleCartDto?> GetCartByCartIdWithOutProductAsync(Guid cartId)
     {
         var cart = await _cartRepository.GetCartByCartIdWithOutProductAsync(cartId, track: false);
 
@@ -50,7 +60,12 @@ public class CartService : ICartService
             Id = cart.Id,
             UserId = cart.UserId,
             TotalPrice = cart.TotalPrice,
-            CartItems = cart.CartItems,
+            CartItems = cart.CartItems.Select(ci => new Domain.Carts.Dtos.CartItemDto
+            {
+                ProductId = ci.ProductId,
+                Quanity = ci.Quanity,
+                Product = null!,
+            }).ToList(),
         };
     }
     public async Task<bool> AddCartItemByUserIdAsync(string userId, long productId, int quanity)
@@ -86,14 +101,14 @@ public class CartService : ICartService
             await _cartRepository.AddAsync(cart);
         }
 
-        if(await _unitOfWork.SaveChangesAsync(true) > 0)
+        if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
             return true;
         }
 
         return false;
     }
-    public async Task<bool> DeleteCartItemByUserIdAsync(string userId,long productId)
+    public async Task<bool> DeleteCartItemByUserIdAsync(string userId, long productId)
     {
         var cart = await _cartRepository.GetCartByUserIdWithProductAsync(userId, track: true);
 
@@ -104,16 +119,23 @@ public class CartService : ICartService
 
         var cartItem = cart.CartItems.FirstOrDefault(e => e.ProductId == productId);
 
-        if(cartItem is null)
+        if (cartItem is null)
         {
             return false;
         }
 
         cart.CartItems.Remove(cartItem);
 
-        cart.SetTotalPrice(0);
+        if(cart.CartItems.Count().Equals(0))
+        {
+            _cartRepository.Delete(cart);
+        }
+        else
+        {
+            cart.SetTotalPrice(0);
 
-        cart.CartItems.ForEach(e => cart.IncreaseTotalPrice(e.Product.Price * e.Quanity));
+            cart.CartItems.ForEach(e => cart.IncreaseTotalPrice(e.Product.Price * e.Quanity));
+        }
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
@@ -122,9 +144,9 @@ public class CartService : ICartService
 
         return false;
     }
-    public async Task<bool> UpdateCartItemQuanityByUserIdAsync(string userId, long productId,int quanity)
+    public async Task<bool> UpdateCartItemQuanityByUserIdAsync(string userId, long productId, int quanity)
     {
-        if(quanity < 1)
+        if (quanity < 1)
         {
             return false;
         }
@@ -143,13 +165,18 @@ public class CartService : ICartService
             return false;
         }
 
+        if (cartItem.Quanity.Equals(quanity))
+        {
+            return true;
+        }
+
         cartItem.SetQuantity(quanity);
 
         cart.SetTotalPrice(0);
 
         cart.CartItems.ForEach(e => cart.IncreaseTotalPrice(e.Product.Price * e.Quanity));
 
-        if(await _unitOfWork.SaveChangesAsync(true) > 0)
+        if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
             return true;
         }
