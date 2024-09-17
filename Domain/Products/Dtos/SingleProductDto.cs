@@ -11,6 +11,6 @@ namespace PersonalShop.Domain.Products.Dtos
         [DisplayFormat(DataFormatString = "{0:G29}", ApplyFormatInEditMode = true)]
         public decimal Price { get; set; }
 
-        public SingleProductUserDto User { get; set; } = null!;
+        public ProductUserDto User { get; set; } = new ProductUserDto();
     }
 }

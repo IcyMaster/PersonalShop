@@ -5,6 +5,6 @@ namespace PersonalShop.Interfaces.Features
     public interface IOrderService
     {
         Task<bool> CreateOrderByCartIdAsync(Guid cartId);
-        Task<List<SingleOrderDto>?> GetAllOrderByUserId(string userId);
+        Task<List<SingleOrderDto>> GetAllOrderByUserIdAsync(string userId);
     }
 }

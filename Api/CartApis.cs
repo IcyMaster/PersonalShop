@@ -38,7 +38,7 @@ public static class CartApis
 
         }).RequireAuthorization();
 
-        app.MapDelete("Api/Cart/DeleteItem/{productId:long}", async (ICartService cartService, HttpContext context, long productId) =>
+        app.MapDelete("Api/Cart/DeleteItem/{productId:int}", async (ICartService cartService, HttpContext context, int productId) =>
         {
             var userId = context.GetUserId();
 
@@ -51,7 +51,7 @@ public static class CartApis
 
         }).RequireAuthorization();
 
-        app.MapPut("Api/Cart/UpdateItem/{productId:long}", async ([FromBody] UpdateCartItemDto updateCartItemDto, ICartService cartService, HttpContext context, long productId) =>
+        app.MapPut("Api/Cart/UpdateItem/{productId:int}", async ([FromBody] UpdateCartItemDto updateCartItemDto, ICartService cartService, HttpContext context, int productId) =>
         {
             var userId = context.GetUserId();
 

@@ -21,9 +21,6 @@ public class ApplicationDbContext : IdentityDbContext<User>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //user
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserEntityTypeConfiguration).Assembly);
-
         //cart
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CartEntityTypeConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CartItemEntityTypeConfiguration).Assembly);

@@ -4,22 +4,22 @@ using PersonalShop.Domain.Products.Dtos;
 using PersonalShop.Extension;
 using PersonalShop.Interfaces.Features;
 
-namespace PersonalShop.Controllers
-{
-    public class UserController : Controller
-    {
-        private readonly IProductService _productService;
-        public UserController(IProductService productService)
-        {
-            _productService = productService;
-        }
+namespace PersonalShop.Controllers;
 
-        [Authorize]
-        [HttpGet]
-        [Route("User/Products")]
-        public async Task<ActionResult<IEnumerable<ListOfProductsDto>>> UserProducts()
-        {
-            return View(await _productService.GetProducts(User.Identity!.GetUserId()));
-        }
+[Route("User")]
+public class UserController : Controller
+{
+    private readonly IProductService _productService;
+    public UserController(IProductService productService)
+    {
+        _productService = productService;
+    }
+
+    [Authorize]
+    [HttpGet]
+    [Route("Products", Name = "UserProducts")]
+    public async Task<ActionResult<IEnumerable<SingleProductDto>>> UserProducts()
+    {
+        return View(await _productService.GetAllProductsWithUserAndValidateOwnerAsync(User.Identity!.GetUserId()));
     }
 }

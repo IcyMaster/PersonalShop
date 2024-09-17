@@ -8,7 +8,7 @@ public class CreateCartItemDto
 {
     [Required(ErrorMessageResourceType = typeof(CartMessages)
         , ErrorMessageResourceName = nameof(CartMessages.ProductIdRequired))]
-    public long ProductId { get; set; }
+    public int ProductId { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(CartMessages)
         , ErrorMessageResourceName = nameof(CartMessages.QuanityRequired))]

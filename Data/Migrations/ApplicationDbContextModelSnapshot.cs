@@ -172,7 +172,7 @@ namespace PersonalShop.Data.Migrations
                     b.Property<Guid>("CartId")
                         .HasColumnType("TEXT");
 
-                    b.Property<long>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Quanity")
@@ -221,7 +221,7 @@ namespace PersonalShop.Data.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Quanity")
@@ -239,7 +239,7 @@ namespace PersonalShop.Data.Migrations
 
             modelBuilder.Entity("PersonalShop.Domain.Products.Product", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -436,7 +436,7 @@ namespace PersonalShop.Data.Migrations
             modelBuilder.Entity("PersonalShop.Domain.Products.Product", b =>
                 {
                     b.HasOne("PersonalShop.Domain.Users.User", "User")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -452,11 +452,6 @@ namespace PersonalShop.Data.Migrations
             modelBuilder.Entity("PersonalShop.Domain.Orders.Order", b =>
                 {
                     b.Navigation("OrderItems");
-                });
-
-            modelBuilder.Entity("PersonalShop.Domain.Users.User", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

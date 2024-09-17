@@ -9,14 +9,14 @@ namespace PersonalShop.Features.Cart;
 public class CartService : ICartService
 {
     private readonly ICartRepository _cartRepository;
-    private readonly IProductService _productService;
+    private readonly IProductRepository _productRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CartService(ICartRepository cartRepository, IProductService productService, IUnitOfWork unitOfWork)
+    public CartService(ICartRepository cartRepository, IUnitOfWork unitOfWork, IProductRepository productRepository)
     {
         _cartRepository = cartRepository;
-        _productService = productService;
         _unitOfWork = unitOfWork;
+        _productRepository = productRepository;
     }
 
     public async Task<SingleCartDto?> GetCartByUserIdWithProductAsync(string userId)
@@ -68,9 +68,9 @@ public class CartService : ICartService
             }).ToList(),
         };
     }
-    public async Task<bool> AddCartItemByUserIdAsync(string userId, long productId, int quanity)
+    public async Task<bool> AddCartItemByUserIdAsync(string userId, int productId, int quanity)
     {
-        var product = await _productService.GetProductById(productId);
+        var product = await _productRepository.GetProductByIdWithUserAsync(productId);
         if (product is null)
         {
             return false;
@@ -108,7 +108,7 @@ public class CartService : ICartService
 
         return false;
     }
-    public async Task<bool> DeleteCartItemByUserIdAsync(string userId, long productId)
+    public async Task<bool> DeleteCartItemByUserIdAsync(string userId, int productId)
     {
         var cart = await _cartRepository.GetCartByUserIdWithProductAsync(userId, track: true);
 
@@ -144,7 +144,7 @@ public class CartService : ICartService
 
         return false;
     }
-    public async Task<bool> UpdateCartItemQuanityByUserIdAsync(string userId, long productId, int quanity)
+    public async Task<bool> UpdateCartItemQuanityByUserIdAsync(string userId, int productId, int quanity)
     {
         if (quanity < 1)
         {

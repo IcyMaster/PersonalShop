@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PersonalShop.Domain.Card;
 using PersonalShop.Domain.Orders;
+using PersonalShop.Domain.Orders.Dtos;
 using PersonalShop.Interfaces.Repositories;
 
 namespace PersonalShop.Data.Repositories;
@@ -23,15 +23,41 @@ public class OrderRepository : Repository<Order>, IOrderRepository
 
         return data;
     }
-    public async Task<IEnumerable<Order>?> GetOrderslistByUserIdAsync(string userId)
+    public Task<List<SingleOrderDto>> GetAllOrdersByUserIdAsync(string userId)
     {
-        var orders = await _dbSet.Where(e => e.UserId == userId)
-            .Include(e => e.User)
-            .Include(e => e.OrderItems)
-            .ThenInclude(e => e.Product)
+        var data = _dbSet.Where(e => e.UserId == userId)
+            .AsSingleQuery()
             .AsNoTracking()
-            .ToListAsync();
+            .Select(ob => new SingleOrderDto
+            {
+                Id = ob.Id,
+                UserId = ob.UserId,
+                User = new OrderUserDto
+                {
+                    FirstName = ob.User.FirstName,
+                    LastName = ob.User.LastName,
+                    Email = ob.User.Email!,
+                },
 
-        return orders;
+                TotalPrice = ob.TotalPrice,
+                OrderDate = ob.OrderDate,
+                OrderItems = ob.OrderItems.Select(oi => new SingleOrderItemDto
+                {
+                    OrderId = oi.OrderId,
+                    ProductId = oi.ProductId,
+                    Quanity = oi.Quanity,
+
+                    Product = new OrderProductDto
+                    {
+                        Name = oi.Product.Name,
+                        Description = oi.Product.Description,
+                        Price = oi.Product.Price,
+                    }
+
+                }).ToList()
+
+            }).ToList();
+
+        return Task.FromResult(data);
     }
 }

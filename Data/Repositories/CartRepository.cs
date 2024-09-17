@@ -8,7 +8,7 @@ public class CartRepository : Repository<Cart>, ICartRepository
 {
     public CartRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-    public async Task<Cart?> GetCartByUserIdWithProductAsync(string userId, bool track)
+    public async Task<Cart?> GetCartByUserIdWithProductAsync(string userId, bool track = true)
     {
         var data = await _dbSet.Where(e => e.UserId == userId)
             .Include(e => e.CartItems)
@@ -22,7 +22,7 @@ public class CartRepository : Repository<Cart>, ICartRepository
 
         return data;
     }
-    public async Task<Cart?> GetCartByUserIdWithOutProductAsync(string userId, bool track)
+    public async Task<Cart?> GetCartByUserIdWithOutProductAsync(string userId, bool track = true)
     {
         var data = await _dbSet.Where(e => e.UserId == userId)
             .Include(e => e.CartItems)
@@ -35,7 +35,7 @@ public class CartRepository : Repository<Cart>, ICartRepository
 
         return data;
     }
-    public async Task<Cart?> GetCartByCartIdWithOutProductAsync(Guid cartId, bool track)
+    public async Task<Cart?> GetCartByCartIdWithOutProductAsync(Guid cartId, bool track = true)
     {
         var data = await _dbSet.Where(e => e.Id == cartId)
             .Include(e => e.CartItems)

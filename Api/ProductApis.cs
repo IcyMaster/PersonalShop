@@ -1,76 +1,78 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Domain.Products.Dtos;
+using PersonalShop.Extension;
 using PersonalShop.Interfaces.Features;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 
-namespace PersonalShop.Api
+namespace PersonalShop.Api;
+
+public static class ProductApis
 {
-    public static class ProductApis
+    public static void RegisterProductApis(this WebApplication app)
     {
+        app.MapGet("Api/Products", async (IProductService productService) => await productService.GetAllProductsWithUserAsync()).AllowAnonymous();
 
-        public static void RegisterProductApis(this WebApplication app)
+        app.MapPost("Api/Products/AddProduct", async ([FromBody] CreateProductDto createProductDto, IProductService productService, HttpContext context) =>
         {
-            app.MapGet("Api/Products", async (IProductService productService) => await productService.GetProducts()).AllowAnonymous();
-
-            app.MapPost("Api/Products/AddProduct", async ([FromBody] CreateProductDto createProductDto, IProductService productService, HttpContext context) =>
+            var validateRes = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(createProductDto, new ValidationContext(createProductDto), validateRes, true))
             {
-                var validateRes = new List<ValidationResult>();
-                if (!Validator.TryValidateObject(createProductDto, new ValidationContext(createProductDto),validateRes, true))
-                {
-                    return Results.BadRequest(validateRes.Select(e => e.ErrorMessage));
-                }
+                return Results.BadRequest(validateRes.Select(e => e.ErrorMessage));
+            }
 
-                var userId = context.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value!;
+            var userId = context.GetUserId();
 
-                if (await productService.AddProduct(createProductDto, userId))
-                {
-                    return Results.Ok("Product added Succesfully");
-                }
-
-                return Results.BadRequest("Problem to add product in website ...");
-            }).RequireAuthorization();
-
-            app.MapGet("Api/Products/{productId:long}", async (IProductService productService, long productId) =>
+            if (await productService.AddProductByUserIdAsync(createProductDto, userId!))
             {
-                var product = await productService.GetProductById(productId);
-                if (product is null)
-                {
-                    return Results.BadRequest("Problem in Load product");
-                }
+                return Results.Ok("Product added Succesfully");
+            }
 
-                return Results.Ok(product);
-            }).AllowAnonymous();
+            return Results.BadRequest("Problem to add product in website ...");
 
-            app.MapPut("Api/Products/UpdateProduct/{productId:long}", async ([FromBody] UpdateProductDto updateProductDto, IProductService productService, HttpContext context, long productId) =>
+        }).RequireAuthorization();
+
+        app.MapGet("Api/Products/{productId:int}", async (IProductService productService, int productId) =>
+        {
+            var product = await productService.GetProductByIdWithUserAsync(productId);
+            if (product is null)
             {
-                var validateRes = new List<ValidationResult>();
-                if (!Validator.TryValidateObject(updateProductDto, new ValidationContext(updateProductDto), validateRes, true))
-                {
-                    return Results.BadRequest(validateRes.Select(e => e.ErrorMessage));
-                }
+                return Results.BadRequest("Problem in Load product");
+            }
 
-                var userId = context.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value!;
+            return Results.Ok(product);
 
-                if (await productService.UpdateProductById(productId, updateProductDto, userId))
-                {
-                    return Results.Ok("Product Edited Succesfully");
-                }
+        }).AllowAnonymous();
 
-                return Results.BadRequest("Problem in edit product");
-            }).RequireAuthorization();
-
-            app.MapDelete("Api/Products/DeleteProduct/{productId:long}", async (IProductService productService, HttpContext context, long productId) =>
+        app.MapPut("Api/Products/UpdateProduct/{productId:int}", async ([FromBody] UpdateProductDto updateProductDto, IProductService productService, HttpContext context, int productId) =>
+        {
+            var validateRes = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(updateProductDto, new ValidationContext(updateProductDto), validateRes, true))
             {
-                var userId = context.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value!;
+                return Results.BadRequest(validateRes.Select(e => e.ErrorMessage));
+            }
 
-                if (await productService.DeleteProductById(productId, userId))
-                {
-                    return Results.Ok("Product Deleted Succesfully");
-                }
+            var userId = context.GetUserId();
 
-                return Results.Ok("Problem in Delete product");
-            }).RequireAuthorization();
-        }
+            if (await productService.UpdateProductByIdAndValidateOwnerAsync(productId, updateProductDto, userId!))
+            {
+                return Results.Ok("Product Edited Succesfully");
+            }
+
+            return Results.BadRequest("Problem in edit product");
+
+        }).RequireAuthorization();
+
+        app.MapDelete("Api/Products/DeleteProduct/{productId:int}", async (IProductService productService, HttpContext context, int productId) =>
+        {
+            var userId = context.GetUserId();
+
+            if (await productService.DeleteProductByIdAndValidateOwnerAsync(productId, userId!))
+            {
+                return Results.Ok("Product Deleted Succesfully");
+            }
+
+            return Results.Ok("Problem in Delete product");
+
+        }).RequireAuthorization();
     }
 }

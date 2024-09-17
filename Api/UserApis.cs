@@ -8,17 +8,17 @@ public static class UserApis
 {
     public static void RegisterUserApis(this WebApplication app)
     {
-        app.MapGet("Api/User/Products",async (IProductService productService, HttpContext context) =>
+        app.MapGet("Api/User/Products", async (IProductService productService, HttpContext context) =>
         {
             var userId = context.GetUserId();
-            return Results.Ok(await productService.GetProducts(userId!));
+            return Results.Ok(await productService.GetAllProductsWithUserAndValidateOwnerAsync(userId!));
 
         }).RequireAuthorization();
 
         app.MapGet("Api/User/Orders", async (IOrderService orderService, HttpContext context) =>
         {
             var userId = context.GetUserId();
-            return Results.Ok(await orderService.GetAllOrderByUserId(userId!));
+            return Results.Ok(await orderService.GetAllOrderByUserIdAsync(userId!));
         }).RequireAuthorization();
     }
 }

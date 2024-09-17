@@ -5,7 +5,7 @@ namespace PersonalShop.Domain.Orders;
 
 public class OrderItem
 {
-    public OrderItem(long productId,int quanity)
+    public OrderItem(int productId,int quanity)
     {
         ProductId = productId;
         Quanity = quanity;
@@ -14,7 +14,7 @@ public class OrderItem
     [Key]
     public int Id { get; set; }
     public int OrderId { get; set; }
-    public long ProductId { get; set; }
+    public int ProductId { get; set; }
     public int Quanity { get; set; }
     public Product Product { get; set; } = null!;
 }

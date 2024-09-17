@@ -196,7 +196,7 @@ namespace PersonalShop.Data.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
@@ -221,7 +221,7 @@ namespace PersonalShop.Data.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     CartId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ProductId = table.Column<long>(type: "INTEGER", nullable: false),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
                     Quanity = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -248,7 +248,7 @@ namespace PersonalShop.Data.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     OrderId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ProductId = table.Column<long>(type: "INTEGER", nullable: false),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
                     Quanity = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>

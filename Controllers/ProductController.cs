@@ -20,9 +20,9 @@ public class ProductController : Controller
 
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ListOfProductsDto>>> Index()
+    public async Task<ActionResult<IEnumerable<SingleProductDto>>> Index()
     {
-        return View(await _productService.GetProducts());
+        return View(await _productService.GetAllProductsWithUserAsync());
     }
 
     [Authorize]
@@ -43,7 +43,7 @@ public class ProductController : Controller
             return View(createProductDto);
         }
 
-        if(await _productService.AddProduct(createProductDto, User.Identity!.GetUserId()))
+        if(await _productService.AddProductByUserIdAsync(createProductDto, User.Identity!.GetUserId()))
         {
             return RedirectToAction(nameof(UserController.UserProducts),"User");
         }
@@ -53,10 +53,10 @@ public class ProductController : Controller
 
     [Authorize]
     [HttpPost]
-    [Route("DeleteProduct/{productId:long}", Name = "DeleteProduct")]
-    public async Task<ActionResult> DeleteProduct(long productId)
+    [Route("DeleteProduct/{productId:int}", Name = "DeleteProduct")]
+    public async Task<ActionResult> DeleteProduct(int productId)
     {
-        if (!await _productService.DeleteProductById(productId,User.Identity!.GetUserId()))
+        if (!await _productService.DeleteProductByIdAndValidateOwnerAsync(productId,User.Identity!.GetUserId()))
         {
             return BadRequest("Problem in Delete product");
         }
@@ -66,10 +66,10 @@ public class ProductController : Controller
 
     [Authorize]
     [HttpGet]
-    [Route("UpdateProduct/{productId:long}", Name = "UpdateProduct")]
-    public async Task<ActionResult> UpdateProduct(long productId)
+    [Route("UpdateProduct/{productId:int}", Name = "UpdateProduct")]
+    public async Task<ActionResult> UpdateProduct(int productId)
     {
-        var product = await _productService.GetProductById(productId,User.Identity!.GetUserId());
+        var product = await _productService.GetProductByIdWithUserAndValidateOwnerAsync(productId,User.Identity!.GetUserId());
         if (product is null)
         {
             return BadRequest("Problem in Load product for edit");
@@ -80,15 +80,15 @@ public class ProductController : Controller
 
     [Authorize]
     [HttpPost]
-    [Route("UpdateProduct/{productId:long}", Name = "UpdateProduct")]
-    public async Task<ActionResult> UpdateProduct(long productId,UpdateProductDto updateProductDto)
+    [Route("UpdateProduct/{productId:int}", Name = "UpdateProduct")]
+    public async Task<ActionResult> UpdateProduct(int productId,UpdateProductDto updateProductDto)
     {
         if (!ModelState.IsValid)
         {
             return View(updateProductDto);
         }
 
-        if (!await _productService.UpdateProductById(productId, updateProductDto, User.Identity!.GetUserId()))
+        if (!await _productService.UpdateProductByIdAndValidateOwnerAsync(productId, updateProductDto, User.Identity!.GetUserId()))
         {
             return BadRequest("Problem in edit product");
         }

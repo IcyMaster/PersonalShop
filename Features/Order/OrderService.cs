@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PersonalShop.Data.Contracts;
+﻿using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Orders;
 using PersonalShop.Domain.Orders.Dtos;
-using PersonalShop.Domain.Products.Dtos;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Repositories;
 
@@ -48,42 +46,8 @@ public class OrderService : IOrderService
 
         return false;
     }
-    public async Task<List<SingleOrderDto>?> GetAllOrderByUserId(string userId)
+    public async Task<List<SingleOrderDto>> GetAllOrderByUserIdAsync(string userId)
     {
-        var data = await _orderRepository.GetOrderslistByUserIdAsync(userId);
-        if (data is null)
-        {
-            return null;
-        }
-
-        return data.Select(ob => new SingleOrderDto
-        {
-            Id = ob.Id,
-            UserId = ob.UserId,
-            User = new OrderUserDto
-            {
-                FirstName = ob.User.FirstName,
-                LastName = ob.User.LastName,
-                Email = ob.User.Email!,
-            },
-
-            TotalPrice = ob.TotalPrice,
-            OrderDate = ob.OrderDate,
-            OrderItems = ob.OrderItems.Select(oi => new SingleOrderItemDto
-            {
-                OrderId = oi.OrderId,
-                ProductId = oi.ProductId,
-                Quanity = oi.Quanity,
-
-                Product = new OrderProductDto
-                {
-                    Name = oi.Product.Name,
-                    Description = oi.Product.Description,
-                    Price = oi.Product.Price,
-                }
-
-            }).ToList()
-
-        }).ToList();
+        return await _orderRepository.GetAllOrdersByUserIdAsync(userId);
     }
 }
