@@ -7,6 +7,7 @@
             services.AddEasyCaching(options =>
             {
                 options.UseInMemory("JwtBlackList");
+                options.UseInMemory("Carts");
             });
         }
     }

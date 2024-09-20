@@ -9,6 +9,9 @@ namespace PersonalShop.Data.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<OrderItem> builder)
         {
+            builder.HasIndex(o => o.ProductId)
+                .IsUnique(false);
+
             builder.HasOne(e => e.Product)
                 .WithOne()
                 .HasForeignKey<OrderItem>(e => e.ProductId).IsRequired();

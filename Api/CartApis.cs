@@ -67,11 +67,6 @@ public static class CartApis
         //just complete checkout without process payment
         app.MapGet("Api/Cart/Checkout/{cartId:Guid}", async (ICartService cartService, IOrderService orderService, Guid cartId) =>
         {
-            if (await cartService.GetCartByCartIdWithOutProductAsync(cartId) is null)
-            {
-                return Results.BadRequest("Cart not found");
-            }
-
             if (await orderService.CreateOrderByCartIdAsync(cartId))
             {
                 return Results.Ok("Payment has been made successfully");

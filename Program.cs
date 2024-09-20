@@ -48,14 +48,6 @@ public class Program
         {
             options.LoginPath = "/Account/Login";
             options.ExpireTimeSpan = TimeSpan.FromHours(10);
-            //options.SlidingExpiration = true;
-            //options.Cookie = new()
-            //{
-            //    Name = "PersonalShop",
-            //    HttpOnly = false,
-            //    SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Lax,
-            //    SecurePolicy = CookieSecurePolicy.Always
-            //};
         })
         .AddJwtBearer(options =>
         {

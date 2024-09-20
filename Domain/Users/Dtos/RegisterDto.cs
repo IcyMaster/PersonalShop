@@ -22,7 +22,7 @@ public class RegisterDto
     [Required(ErrorMessageResourceType = typeof(RegisterMessages), ErrorMessageResourceName = nameof(RegisterMessages.EmailRequiredError))]
     public string Email { get; set; } = string.Empty;
 
-    [RegularExpression("/((0?9)|(\\+?989))\\d{9}/g", ErrorMessageResourceType = typeof(RegisterMessages)
+    [RegularExpression("^[0][9][0-9]{9,9}$", ErrorMessageResourceType = typeof(RegisterMessages)
         , ErrorMessageResourceName = nameof(RegisterMessages.PhoneNumberValidateError))]
     public string? PhoneNumber { get; set; } = string.Empty;
 

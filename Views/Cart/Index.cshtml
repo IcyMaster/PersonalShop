@@ -1,0 +1,127 @@
+﻿@using PersonalShop.Domain.Card.Dtos
+@model SingleCartDto
+
+@{
+    ViewData["Title"] = "سبد خرید";
+}
+
+@if (Model is null)
+{
+    <br />
+    <h3 style="text-align:center">سبد خرید شما خالی است</h3>
+    <br />
+    <h5 style="text-align:center">
+        <a asp-controller="Product" asp-action="Index" style="text-align:center">بازگشت به فروشگاه</a>
+    </h5>
+}
+else
+{
+    <section>
+        <div class="container py-5">
+            <div class="row d-flex justify-content-center my-4">
+                <div class="col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-header py-3">
+                            <h5 class="mb-0">سبد خرید</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Single item -->
+                            @foreach (var item in Model.CartItems)
+                            {
+                                <div class="row d-flex justify-content-between align-items-center py-1">
+                                    <div class="col-md-3 col-lg-4 col-xl-4">
+                                        <p class="lead fw-normal mb-0" style="font-size:large;">
+                                            @item.Product.Name
+                                        </p>
+                                    </div>
+
+                                    <div class="col-md-3 col-lg-3 col-xl-3 d-flex">
+                                        <div class="d-flex mb-2" style="max-width: 300px">
+
+                                            @if (item.Quanity > 1)
+                                            {
+                                                <form asp-controller="Cart" asp-action="UpdateItem" asp-route-productId="@item.ProductId" method="post" class="d-inline">
+                                                    <input type="hidden" name="Quanity" value="@(item.Quanity - 1)" />
+                                                    <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary px-2 me-2 no-outline">
+                                                        <i class="bi bi-dash"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" class="btn btn-secondary px-2 me-2" disabled>
+                                                    <i class="bi bi-dash"></i>
+                                                </button>
+                                            }
+
+                                            <div data-mdb-input-init class="form-outline">
+                                                <input id="form1" min="1" name="quantity" value="@item.Quanity" type="number" class="form-control" />
+                                            </div>
+
+                                            <form asp-controller="Cart" asp-action="UpdateItem" asp-route-productId="@item.ProductId" method="post" class="d-inline">
+                                                <input type="hidden" name="Quanity" value="@(item.Quanity + 1)" />
+                                                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary px-2 ms-2 no-outline">
+                                                    <i class="bi bi-plus"></i>
+                                                </button>
+                                            </form>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                        <h6 class="mb-0">
+                                            تومان
+                                            @Html.DisplayFor(model => item.Product.Price)
+                                        </h6>
+                                    </div>
+
+                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                        <form asp-controller="Cart" asp-action="DeleteItem" asp-route-productId="@item.ProductId" method="post" class="d-inline">
+                                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger no-outline">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <hr class="my-1" />
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header py-3">
+                            <h5 class="mb-0">خلاصه سفارش</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                    جمع کل
+                                    <span>@Html.DisplayFor(model => Model.TotalPrice)</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    تعداد اقلام
+                                    <span>@Model.CartItems.Count()</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                                    <div>
+                                        <strong>جمع کل پرداختی</strong>
+                                        <strong>
+                                            <p class="mb-0">( با احتساب مالیات )</p>
+                                        </strong>
+                                    </div>
+                                    <span><strong>@Html.DisplayFor(model => Model.TotalPrice)</strong></span>
+                                </li>
+                            </ul>
+                            <form asp-controller="Cart" asp-action="CheckOut" asp-route-cartId="@Model.Id" method="get" class="d-inline">
+                                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block no-outline">
+                                    پرداخت
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}

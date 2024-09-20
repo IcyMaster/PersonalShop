@@ -26,3 +26,8 @@ body {
   font-family:iranyekan;
   margin-bottom: 60px;
 }
+
+.no-outline:focus {
+    outline: none;
+    box-shadow: none;
+}

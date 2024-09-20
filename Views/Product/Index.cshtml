@@ -9,19 +9,11 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th></th>
+            <th>شماره محصول</th>
+            <th>نام محصول</th>
+            <th>توضیحات محصول</th>
+            <th>قیمت محصول</th>
+            <th>عملیات</th>
         </tr>
     </thead>
     <tbody>
@@ -39,6 +31,14 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <form asp-controller="Cart" asp-action="AddItem" method="post" class="d-inline">
+                        <input type="hidden" name="ProductId" value="@item.Id" />
+                        <input type="hidden" name="Quanity" value="1" />
+
+                        <button type="submit" class="btn btn-primary no-outline">افزودن به سبد خرید</button>
+                    </form>
                 </td>
             </tr>
         }

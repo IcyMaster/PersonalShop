@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Personal Shop</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PersonalShop.styles.css" asp-append-version="true" />
 </head>
@@ -23,20 +25,44 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Product</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
                         </li>
                         @{
                             if (User.Identity is not null)
                             {
                                 if (User.Identity.IsAuthenticated)
                                 {
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="UserProducts">ManageProducts</a>
+                                    <li class="nav-item" style="position:absolute;right:220px;">
+                                        <form asp-controller="Cart" asp-action="Index" method="get" class="m-0">
+                                            <button type="submit" class="btn btn-success no-outline">
+                                                <i class="bi bi-cart3"></i>
+                                            </button>
+                                        </form>
                                     </li>
-                                    <li class="nav-item" style="position:absolute;right:50px;">
-                                        <a id="_logout" class="nav-link text-dark" href="#">Hi @User.Identity.Name / Logout</a>
+
+                                    <li class="nav-item" style="position:absolute;right:75px;">
+                                        <button type="button" class="btn btn-success dropdown-toggle no-outline" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Hi @User.Identity.Name
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <form asp-controller="User" asp-action="UserProducts" method="get" class="m-0">
+                                                    <button type="submit" class="dropdown-item">Manage Products</button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <form asp-controller="User" asp-action="UserOrders" method="get" class="m-0">
+                                                    <button type="submit" class="dropdown-item">Order History</button>
+                                                </form>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <form asp-controller="Account" asp-action="logout" method="post" class="m-0">
+                                                    <button type="submit" class="dropdown-item">Logout</button>
+                                                </form>
+                                            </li>
+                                        </ul>
                                     </li>
-                                    <form id="_logout_form" asp-controller="Account" asp-action="logout" method="post"></form>
                                 }
                                 else
                                 {
@@ -66,8 +92,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        document.getElementById("_logout").addEventListener("click", function (event)
-        {
+        document.getElementById("_logout").addEventListener("click", function (event) {
             event.preventDefault();
             var form = document.getElementById("_logout_form");
             form.submit();

@@ -11,7 +11,7 @@ using PersonalShop.Data;
 namespace PersonalShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240917104220_first")]
+    [Migration("20240920182429_first")]
     partial class first
     {
         /// <inheritdoc />
@@ -209,8 +209,7 @@ namespace PersonalShop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -234,8 +233,7 @@ namespace PersonalShop.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderItems");
                 });

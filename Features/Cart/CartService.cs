@@ -1,8 +1,12 @@
-﻿using PersonalShop.Data.Contracts;
+﻿using EasyCaching.Core;
+using Microsoft.DotNet.Scaffolding.Shared;
+using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Card;
 using PersonalShop.Domain.Card.Dtos;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Repositories;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Xml.Linq;
 
 namespace PersonalShop.Features.Cart;
 
@@ -11,40 +15,56 @@ public class CartService : ICartService
     private readonly ICartRepository _cartRepository;
     private readonly IProductRepository _productRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IEasyCachingProviderFactory _cachingfactory;
 
-    public CartService(ICartRepository cartRepository, IUnitOfWork unitOfWork, IProductRepository productRepository)
+    public CartService(ICartRepository cartRepository, IUnitOfWork unitOfWork, IProductRepository productRepository, IEasyCachingProviderFactory cachingfactory)
     {
         _cartRepository = cartRepository;
         _unitOfWork = unitOfWork;
         _productRepository = productRepository;
+        _cachingfactory = cachingfactory;
     }
 
     public async Task<SingleCartDto?> GetCartByUserIdWithProductAsync(string userId)
     {
-        var cart = await _cartRepository.GetCartByUserIdWithProductAsync(userId, track: false);
+        var cartCashing = _cachingfactory.GetCachingProvider("Carts");
 
-        if (cart is null)
+        if(cartCashing.Exists(userId))
         {
-            return null;
+            var result = await cartCashing.GetAsync<SingleCartDto>(userId);
+            return result.Value;
         }
-
-        return new SingleCartDto
+        else
         {
-            Id = cart.Id,
-            UserId = cart.UserId,
-            TotalPrice = cart.TotalPrice,
-            CartItems = cart.CartItems.Select(ci => new Domain.Carts.Dtos.CartItemDto
+            var cart = await _cartRepository.GetCartByUserIdWithProductAsync(userId, track: false);
+
+            if (cart is null)
             {
-                ProductId = ci.ProductId,
-                Quanity = ci.Quanity,
-                Product = new Domain.Carts.Dtos.CartItemProductDto
+                return null;
+            }
+
+            var cartDto = new SingleCartDto
+            {
+                Id = cart.Id,
+                UserId = cart.UserId,
+                TotalPrice = cart.TotalPrice,
+                CartItems = cart.CartItems.Select(ci => new Domain.Carts.Dtos.CartItemDto
                 {
-                    Name = ci.Product.Name,
-                    Description = ci.Product.Description,
-                    Price = ci.Product.Price,
-                }
-            }).ToList(),
-        };
+                    ProductId = ci.ProductId,
+                    Quanity = ci.Quanity,
+                    Product = new Domain.Carts.Dtos.CartItemProductDto
+                    {
+                        Name = ci.Product.Name,
+                        Description = ci.Product.Description,
+                        Price = ci.Product.Price,
+                    }
+                }).ToList(),
+            };
+
+            await cartCashing.TrySetAsync(userId,cartDto, TimeSpan.FromHours(1));
+
+            return cartDto;
+        }
     }
     public async Task<SingleCartDto?> GetCartByCartIdWithOutProductAsync(Guid cartId)
     {
@@ -103,6 +123,9 @@ public class CartService : ICartService
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
+            var cartCashing = _cachingfactory.GetCachingProvider("Carts");
+            cartCashing.Remove(userId);
+
             return true;
         }
 
@@ -139,6 +162,9 @@ public class CartService : ICartService
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
+            var cartCashing = _cachingfactory.GetCachingProvider("Carts");
+            cartCashing.Remove(userId);
+
             return true;
         }
 
@@ -178,6 +204,9 @@ public class CartService : ICartService
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
+            var cartCashing = _cachingfactory.GetCachingProvider("Carts");
+            cartCashing.Remove(userId);
+
             return true;
         }
 

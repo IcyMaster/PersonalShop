@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PersonalShop.Domain.Orders;
+using System.Reflection.Emit;
 
 namespace PersonalShop.Data.EntityConfiguration;
 
@@ -14,9 +15,14 @@ public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
-        builder.HasOne(e => e.User)
+        builder.HasIndex(o => o.UserId)
+            .IsUnique(false);
+
+        builder
+            .HasOne(e => e.User)
             .WithOne()
             .HasForeignKey<Order>(e => e.UserId)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
     }
 }
