@@ -1,6 +1,8 @@
-﻿using PersonalShop.Data.Contracts;
+﻿using EasyCaching.Core;
+using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Orders;
 using PersonalShop.Domain.Orders.Dtos;
+using PersonalShop.Domain.Users;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Repositories;
 
@@ -11,12 +13,14 @@ public class OrderService : IOrderService
     private readonly IOrderRepository _orderRepository;
     private readonly ICartRepository _cartRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IEasyCachingProviderFactory _cachingfactory;
 
-    public OrderService(IOrderRepository orderRepository, ICartRepository cartRepository, IUnitOfWork unitOfWork)
+    public OrderService(IOrderRepository orderRepository, ICartRepository cartRepository, IUnitOfWork unitOfWork, IEasyCachingProviderFactory cachingfactory)
     {
         _orderRepository = orderRepository;
         _unitOfWork = unitOfWork;
         _cartRepository = cartRepository;
+        _cachingfactory = cachingfactory;
     }
 
     public async Task<bool> CreateOrderByCartIdAsync(Guid cartId)
@@ -41,6 +45,9 @@ public class OrderService : IOrderService
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
+            var cartCashing = _cachingfactory.GetCachingProvider("Carts");
+            cartCashing.Remove(cart.UserId);
+
             return true;
         }
 
