@@ -15,13 +15,9 @@ public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
-        builder.HasIndex(o => o.UserId)
-            .IsUnique(false);
-
-        builder
-            .HasOne(e => e.User)
-            .WithOne()
-            .HasForeignKey<Order>(e => e.UserId)
+        builder.HasOne(e => e.User)
+            .WithMany()
+            .HasForeignKey(e => e.UserId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
     }
