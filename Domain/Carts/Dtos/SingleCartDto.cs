@@ -10,6 +10,19 @@ public class SingleCartDto
 
     [DisplayFormat(DataFormatString = "{0:G29}", ApplyFormatInEditMode = true)]
     public decimal TotalPrice { get; set; }
+    public int TotalItemCount
+    {
+        get
+        {
+            int total = 0;
 
+            foreach (var item in CartItems)
+            {
+                total = total + item.Quanity;
+            }
+
+            return total;
+        }
+    }
     public List<CartItemDto> CartItems { get; set; } = null!;
 }

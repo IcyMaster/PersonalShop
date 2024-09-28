@@ -11,7 +11,7 @@ using PersonalShop.Data;
 namespace PersonalShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240920182429_first")]
+    [Migration("20240928102840_first")]
     partial class first
     {
         /// <inheritdoc />
@@ -226,14 +226,19 @@ namespace PersonalShop.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("ProductPrice")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Quanity")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderItems");
                 });
@@ -409,8 +414,8 @@ namespace PersonalShop.Data.Migrations
             modelBuilder.Entity("PersonalShop.Domain.Orders.Order", b =>
                 {
                     b.HasOne("PersonalShop.Domain.Users.User", "User")
-                        .WithOne()
-                        .HasForeignKey("PersonalShop.Domain.Orders.Order", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -424,14 +429,6 @@ namespace PersonalShop.Data.Migrations
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("PersonalShop.Domain.Products.Product", "Product")
-                        .WithOne()
-                        .HasForeignKey("PersonalShop.Domain.Orders.OrderItem", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("PersonalShop.Domain.Products.Product", b =>

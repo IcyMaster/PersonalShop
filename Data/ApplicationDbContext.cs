@@ -27,7 +27,6 @@ public class ApplicationDbContext : IdentityDbContext<User>
 
         //order
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderEntityTypeConfiguration).Assembly);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderItemEntityTypeConfiguration).Assembly);
 
         base.OnModelCreating(modelBuilder);
     }

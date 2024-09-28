@@ -36,16 +36,16 @@
                                     <tr>
                                         <th>نام محصول</th>
                                         <th>تعداد</th>
-                                        <th>قیمت تکی </th>
+                                        <th>قیمت تک سفارش </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var orderItem in item.OrderItems)
                                     {
                                         <tr>
-                                            <td>@orderItem.Product.Name</td>
+                                            <td>@orderItem.ProductName</td>
                                             <td>@orderItem.Quanity</td>
-                                            <td>@Html.DisplayFor(modelItem => orderItem.Product.Price)</td>
+                                            <td>@Html.DisplayFor(modelItem => orderItem.ProductPrice)</td>
                                         </tr>
                                     }
                                 </tbody>

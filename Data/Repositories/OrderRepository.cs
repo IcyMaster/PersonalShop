@@ -13,7 +13,6 @@ public class OrderRepository : Repository<Order>, IOrderRepository
     {
         var data = await _dbSet.Where(e => e.UserId == userId)
             .Include(e => e.OrderItems)
-            .ThenInclude(e => e.Product)
             .FirstOrDefaultAsync();
 
         if (!track && data is not null)
@@ -45,14 +44,9 @@ public class OrderRepository : Repository<Order>, IOrderRepository
                 {
                     OrderId = oi.OrderId,
                     ProductId = oi.ProductId,
+                    ProductName = oi.ProductName,
+                    ProductPrice = oi.ProductPrice,
                     Quanity = oi.Quanity,
-
-                    Product = new OrderProductDto
-                    {
-                        Name = oi.Product.Name,
-                        Description = oi.Product.Description,
-                        Price = oi.Product.Price,
-                    }
 
                 }).ToList()
 

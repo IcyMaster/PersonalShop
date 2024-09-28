@@ -8,6 +8,7 @@ public interface IProductService
     Task<bool> DeleteProductByIdAndValidateOwnerAsync(int id, string userId);
     Task<List<SingleProductDto>> GetAllProductsWithUserAndValidateOwnerAsync(string userId);
     Task<List<SingleProductDto>> GetAllProductsWithUserAsync();
+    Task<SingleProductDto?> GetProductByIdWithOutUserAsync(int id);
     Task<SingleProductDto?> GetProductByIdWithUserAndValidateOwnerAsync(int id, string userId);
     Task<SingleProductDto?> GetProductByIdWithUserAsync(int id);
     Task<bool> UpdateProductByIdAndValidateOwnerAsync(int id, UpdateProductDto updateProductDto, string userId);

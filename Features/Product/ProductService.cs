@@ -58,6 +58,31 @@ public class ProductService : IProductService
 
         return singleProductDto;
     }
+    public async Task<SingleProductDto?> GetProductByIdWithOutUserAsync(int id)
+    {
+        var product = await _productRepository.GetProductByIdWithOutUserAsync(id, track: false);
+        if (product is null)
+        {
+            return null;
+        }
+
+        var singleProductDto = new SingleProductDto
+        {
+            Id = id,
+            Name = product.Name,
+            Description = product.Description,
+            Price = product.Price,
+            User = new ProductUserDto
+            {
+                UserId = product.UserId,
+                FirstName = product.User.FirstName,
+                LastName = product.User.LastName,
+                IsOwner = false
+            }
+        };
+
+        return singleProductDto;
+    }
     public async Task<SingleProductDto?> GetProductByIdWithUserAndValidateOwnerAsync(int id, string userId)
     {
         var product = await _productRepository.GetProductByIdWithUserAsync(id,track: false);

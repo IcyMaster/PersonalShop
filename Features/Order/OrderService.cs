@@ -12,12 +12,14 @@ public class OrderService : IOrderService
 {
     private readonly IOrderRepository _orderRepository;
     private readonly ICartRepository _cartRepository;
+    private readonly IProductRepository _productRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEasyCachingProviderFactory _cachingfactory;
 
-    public OrderService(IOrderRepository orderRepository, ICartRepository cartRepository, IUnitOfWork unitOfWork, IEasyCachingProviderFactory cachingfactory)
+    public OrderService(IOrderRepository orderRepository, IProductRepository productRepository, ICartRepository cartRepository, IUnitOfWork unitOfWork, IEasyCachingProviderFactory cachingfactory)
     {
         _orderRepository = orderRepository;
+        _productRepository = productRepository;
         _unitOfWork = unitOfWork;
         _cartRepository = cartRepository;
         _cachingfactory = cachingfactory;
@@ -34,9 +36,13 @@ public class OrderService : IOrderService
 
         var order = new Domain.Orders.Order(cart.UserId, cart.TotalPrice);
 
-        cart.CartItems.ForEach(e =>
+        cart.CartItems.ForEach(async e =>
         {
-            order.OrderItems.Add(new OrderItem(e.ProductId, e.Quanity));
+            var product = await _productRepository.GetProductByIdWithOutUserAsync(e.ProductId,track: false);
+            if(product is not null)
+            {
+                order.OrderItems.Add(new OrderItem(e.ProductId,product.Name,product.Price, e.Quanity));
+            }
         });
 
         await _orderRepository.AddAsync(order);
