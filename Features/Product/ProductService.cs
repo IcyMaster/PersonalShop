@@ -1,4 +1,6 @@
-﻿using PersonalShop.Data.Contracts;
+﻿using MassTransit;
+using PersonalShop.Data.Contracts;
+using PersonalShop.Domain.Carts.Commands;
 using PersonalShop.Domain.Products.Dtos;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Repositories;
@@ -9,11 +11,13 @@ public class ProductService : IProductService
 {
     private readonly IProductRepository _productRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPublishEndpoint _publishEndpoint;
 
-    public ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork)
+    public ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork, IPublishEndpoint publishEndpoint)
     {
         _productRepository = productRepository;
         _unitOfWork = unitOfWork;
+        _publishEndpoint = publishEndpoint;
     }
 
     public async Task<bool> AddProductByUserIdAsync(CreateProductDto createProductDto, string userId)
@@ -35,7 +39,7 @@ public class ProductService : IProductService
     }
     public async Task<SingleProductDto?> GetProductByIdWithUserAsync(int id)
     {
-        var product = await _productRepository.GetProductByIdWithUserAsync(id,track: false);
+        var product = await _productRepository.GetProductByIdWithUserAsync(id, track: false);
         if (product is null)
         {
             return null;
@@ -85,7 +89,7 @@ public class ProductService : IProductService
     }
     public async Task<SingleProductDto?> GetProductByIdWithUserAndValidateOwnerAsync(int id, string userId)
     {
-        var product = await _productRepository.GetProductByIdWithUserAsync(id,track: false);
+        var product = await _productRepository.GetProductByIdWithUserAsync(id, track: false);
         if (product is null)
         {
             return null;
@@ -181,10 +185,15 @@ public class ProductService : IProductService
 
         if (await _unitOfWork.SaveChangesAsync(true) < 1)
         {
-            return false;
+            await _publishEndpoint.Publish(new DeleteProductFromCartCommand
+            {
+                ProductId = id
+            });
+
+            return true;
         }
 
-        return true;
+        return false;
     }
     public async Task<bool> UpdateProductByIdAndValidateOwnerAsync(int id, UpdateProductDto updateProductDto, string userId)
     {

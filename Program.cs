@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using PersonalShop.Api;
@@ -8,6 +9,7 @@ using PersonalShop.Configuration;
 using PersonalShop.Data;
 using PersonalShop.Domain.Users;
 using PersonalShop.Middleware;
+using System.Globalization;
 using System.Text;
 
 namespace PersonalShop;
@@ -18,8 +20,11 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
-        builder.Services.AddControllersWithViews();
+        // Add controllers with views, and enable localization in views and data annotations
+        builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+        builder.Services.AddControllersWithViews()
+            .AddViewLocalization()
+            .AddDataAnnotationsLocalization();
 
         // Add Caching services
         builder.Services.RegisterCachingServices();
@@ -27,67 +32,17 @@ public class Program
         // Use Configuration Services
         builder.Services.RegisterExternalServices();
 
-        builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-
-        builder.Services.Configure<IdentityOptions>(options =>
-        {
-            options.Password.RequireDigit = false;
-            options.Password.RequireUppercase = false;
-            options.Password.RequireNonAlphanumeric = false;
-            options.User.RequireUniqueEmail = false;
-            options.Password.RequiredLength = 5;
-        });
-
-        builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = "JWT_OR_COOKIE";
-            options.DefaultScheme = "JWT_OR_COOKIE";
-            options.DefaultChallengeScheme = "JWT_OR_COOKIE";
-        })
-        .AddCookie(options =>
-        {
-            options.LoginPath = "/Account/Login";
-            options.ExpireTimeSpan = TimeSpan.FromHours(10);
-        })
-        .AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters()
-            {
-                ValidateActor = true,
-                ValidateAudience = true,
-                ValidateIssuer = true,
-                ValidateIssuerSigningKey = true,
-                RequireExpirationTime = true,
-                
-                ValidIssuer = builder.Configuration.GetSection("JWT:Issuer").Value,
-                ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:key").Value!))
-            };
-        })
-        .AddPolicyScheme("JWT_OR_COOKIE", "JWT_OR_COOKIE", options =>
-        {
-            // runs on each auth request
-            options.ForwardDefaultSelector = context =>
-            {
-                // filter by auth type
-                string? authorization = context.Request.Headers[HeaderNames.Authorization];
-                if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
-                {
-                    // otherwise always check for cookie auth
-                    return JwtBearerDefaults.AuthenticationScheme;
-                }
-                else
-                {
-                    return IdentityConstants.ApplicationScheme;
-                }
-            };
-        });
+        // Add Authentication Services
+        builder.RegisterIdentity();
+        builder.RegisterJwtAndMultiAuthPolicy();
 
         builder.Services.AddAuthorization();
-
         builder.Services.AddScoped<SignInManager<User>>();
 
         var app = builder.Build();
+
+        // Register Localization service
+        app.RegisterLocalization();
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
@@ -99,10 +54,12 @@ public class Program
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
-
         app.UseRouting();
 
+        // Add Middlewares
         app.UseMiddleware<HandleJwtBlackList>();
+
+        // Register Minimal Apis
         app.RegisterAccountApis();
         app.RegisterProductApis();
         app.RegisterUserApis();
@@ -117,6 +74,7 @@ public class Program
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
         app.Run();
     }

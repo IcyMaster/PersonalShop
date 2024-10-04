@@ -1,12 +1,9 @@
 ﻿using EasyCaching.Core;
-using Microsoft.DotNet.Scaffolding.Shared;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Card;
 using PersonalShop.Domain.Card.Dtos;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Repositories;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Xml.Linq;
 
 namespace PersonalShop.Features.Cart;
 
@@ -29,7 +26,7 @@ public class CartService : ICartService
     {
         var cartCashing = _cachingfactory.GetCachingProvider("Carts");
 
-        if(cartCashing.Exists(userId))
+        if (cartCashing.Exists(userId))
         {
             var result = await cartCashing.GetAsync<SingleCartDto>(userId);
             return result.Value;
@@ -61,7 +58,7 @@ public class CartService : ICartService
                 }).ToList(),
             };
 
-            await cartCashing.TrySetAsync(userId,cartDto, TimeSpan.FromHours(1));
+            await cartCashing.TrySetAsync(userId, cartDto, TimeSpan.FromHours(1));
 
             return cartDto;
         }
@@ -149,7 +146,7 @@ public class CartService : ICartService
 
         cart.CartItems.Remove(cartItem);
 
-        if(cart.CartItems.Count().Equals(0))
+        if (cart.CartItems.Count().Equals(0))
         {
             _cartRepository.Delete(cart);
         }
@@ -211,5 +208,16 @@ public class CartService : ICartService
         }
 
         return false;
+    }
+    public async Task<bool> DeleteProductByProductIdFromAllCartsAsync(int productId)
+    {
+        var carts = await _cartRepository.GetAllAsync();
+        foreach (var cart in carts)
+        {
+            cart.CartItems.RemoveAll(e => e.ProductId == productId);
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+        return true;
     }
 }
