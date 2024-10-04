@@ -10,22 +10,22 @@ public class ProductRepository : Repository<Product>, IProductRepository
 
     public async Task<Product?> GetProductByIdWithUserAsync(int id,bool track = true)
     {
-        var data = await _dbContext.Products.Include(e => e.User).SingleOrDefaultAsync(e => e.Id.Equals(id));
+        var data = await _dbSet.Include(e => e.User).SingleOrDefaultAsync(e => e.Id.Equals(id));
 
         if (!track && data is not null)
         {
-            _dbContext.Entry(data).State = EntityState.Detached;
+            _dbSet.Entry(data).State = EntityState.Detached;
         }
 
         return data;
     }
     public async Task<Product?> GetProductByIdWithOutUserAsync(int id,bool track = true)
     {
-        var data = await _dbContext.Products.SingleOrDefaultAsync(e => e.Id.Equals(id));
+        var data = await _dbSet.SingleOrDefaultAsync(e => e.Id.Equals(id));
 
         if (!track && data is not null)
         {
-            _dbContext.Entry(data).State = EntityState.Detached;
+            _dbSet.Entry(data).State = EntityState.Detached;
         }
 
         return data;
