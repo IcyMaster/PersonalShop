@@ -20,6 +20,9 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // Register MassTransit and RabitMQ services
+        builder.Services.RegisterMassTransit();
+
         // Add controllers with views, and enable localization in views and data annotations
         builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
         builder.Services.AddControllersWithViews()

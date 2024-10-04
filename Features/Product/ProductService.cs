@@ -11,13 +11,13 @@ public class ProductService : IProductService
 {
     private readonly IProductRepository _productRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IBus _bus;
 
-    public ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork, IPublishEndpoint publishEndpoint)
+    public ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork, IBus bus)
     {
         _productRepository = productRepository;
         _unitOfWork = unitOfWork;
-        _publishEndpoint = publishEndpoint;
+        _bus = bus;
     }
 
     public async Task<bool> AddProductByUserIdAsync(CreateProductDto createProductDto, string userId)
@@ -183,9 +183,9 @@ public class ProductService : IProductService
 
         _productRepository.Delete(product);
 
-        if (await _unitOfWork.SaveChangesAsync(true) < 1)
+        if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
-            await _publishEndpoint.Publish(new DeleteProductFromCartCommand
+            await _bus.Publish(new DeleteProductFromCartCommand
             {
                 ProductId = id
             });

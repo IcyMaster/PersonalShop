@@ -2,6 +2,7 @@
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Card;
 using PersonalShop.Domain.Card.Dtos;
+using PersonalShop.Domain.Users;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Repositories;
 
@@ -211,13 +212,24 @@ public class CartService : ICartService
     }
     public async Task<bool> DeleteProductByProductIdFromAllCartsAsync(int productId)
     {
-        var carts = await _cartRepository.GetAllAsync();
+        var data = await _cartRepository.GetAllAsync();
+
+        var carts = data.ToList();
+
         foreach (var cart in carts)
         {
             cart.CartItems.RemoveAll(e => e.ProductId == productId);
+            if(cart.CartItems.Count() == 0)
+            {
+                carts.Remove(cart);
+            }
         }
 
-        await _unitOfWork.SaveChangesAsync();
-        return true;
+        if (await _unitOfWork.SaveChangesAsync(true) > 0)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

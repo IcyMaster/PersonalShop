@@ -14,6 +14,11 @@ public static class MassTransitConfig
 
             option.UsingRabbitMq((context, cfg) =>
             {
+                cfg.Host("localhost", "/", h => {
+                    h.Username("guest");
+                    h.Password("guest");
+                });
+
                 cfg.ConfigureEndpoints(context);
             });
         });
