@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PersonalShop.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class First : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -245,7 +245,8 @@ namespace PersonalShop.Data.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     CartId = table.Column<Guid>(type: "TEXT", nullable: false),
                     ProductId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Quanity = table.Column<int>(type: "INTEGER", nullable: false)
+                    Quanity = table.Column<int>(type: "INTEGER", nullable: false),
+                    ItemPrice = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

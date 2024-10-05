@@ -11,8 +11,8 @@ using PersonalShop.Data;
 namespace PersonalShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240928102840_first")]
-    partial class first
+    [Migration("20241005054600_First")]
+    partial class First
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -173,6 +173,9 @@ namespace PersonalShop.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<Guid>("CartId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("ItemPrice")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("ProductId")

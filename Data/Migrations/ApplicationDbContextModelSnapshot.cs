@@ -172,6 +172,9 @@ namespace PersonalShop.Data.Migrations
                     b.Property<Guid>("CartId")
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("ItemPrice")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 

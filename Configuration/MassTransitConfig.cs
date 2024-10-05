@@ -11,6 +11,7 @@ public static class MassTransitConfig
         services.AddMassTransit(option =>
         {
             option.AddConsumer<DeleteProductFromCarts>();
+            option.AddConsumer<UpdateProductInCarts>();
 
             option.UsingRabbitMq((context, cfg) =>
             {

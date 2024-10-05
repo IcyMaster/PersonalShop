@@ -17,13 +17,8 @@ public class Cart
     public decimal TotalPrice { get; private set; }
     public List<CartItem> CartItems { get; set; } = new List<CartItem>();
 
-    public void IncreaseTotalPrice(decimal price)
+    public void ProcessTotalPrice()
     {
-        TotalPrice = TotalPrice + price;
-    }
-
-    public void SetTotalPrice(decimal price)
-    {
-        TotalPrice = price;
+        TotalPrice = CartItems.Select(x => x.ItemPrice * x.Quanity).Sum();
     }
 }

@@ -212,11 +212,17 @@ public class ProductService : IProductService
         product.Description = updateProductDto.Description;
         product.Price = updateProductDto.Price;
 
-        if (await _unitOfWork.SaveChangesAsync(true) < 1)
+        if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
-            return false;
+            await _bus.Publish(new UpdateProductInCartsCommand
+            {
+                ProductId = id,
+                Price = updateProductDto.Price
+            });
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 }

@@ -1,7 +1,9 @@
 ﻿using EasyCaching.Core;
+using MassTransit;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Card;
 using PersonalShop.Domain.Card.Dtos;
+using PersonalShop.Domain.Carts.Commands;
 using PersonalShop.Domain.Users;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Repositories;
@@ -61,6 +63,8 @@ public class CartService : ICartService
 
             await cartCashing.TrySetAsync(userId, cartDto, TimeSpan.FromHours(1));
 
+            cartDto.ProcessTotalItemCount();
+
             return cartDto;
         }
     }
@@ -73,7 +77,7 @@ public class CartService : ICartService
             return null;
         }
 
-        return new SingleCartDto
+        var cartDto = new SingleCartDto
         {
             Id = cart.Id,
             UserId = cart.UserId,
@@ -85,6 +89,10 @@ public class CartService : ICartService
                 Product = null!,
             }).ToList(),
         };
+
+        cartDto.ProcessTotalItemCount();
+
+        return cartDto;
     }
     public async Task<bool> AddCartItemByUserIdAsync(string userId, int productId, int quanity)
     {
@@ -94,7 +102,7 @@ public class CartService : ICartService
             return false;
         }
 
-        var item = new CartItem(productId, quanity);
+        var item = new CartItem(productId, quanity, product.Price);
 
         var cart = await _cartRepository.GetCartByUserIdWithOutProductAsync(userId, track: true);
         if (cart is not null)
@@ -109,13 +117,13 @@ public class CartService : ICartService
                 cart.CartItems.Add(item);
             }
 
-            cart.IncreaseTotalPrice(product.Price * quanity);
+            cart.ProcessTotalPrice();
         }
         else
         {
             cart = new(userId);
             cart.CartItems.Add(item);
-            cart.IncreaseTotalPrice(product.Price * quanity);
+            cart.ProcessTotalPrice();
             await _cartRepository.AddAsync(cart);
         }
 
@@ -153,9 +161,7 @@ public class CartService : ICartService
         }
         else
         {
-            cart.SetTotalPrice(0);
-
-            cart.CartItems.ForEach(e => cart.IncreaseTotalPrice(e.Product.Price * e.Quanity));
+            cart.ProcessTotalPrice();
         }
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
@@ -196,9 +202,7 @@ public class CartService : ICartService
 
         cartItem.SetQuantity(quanity);
 
-        cart.SetTotalPrice(0);
-
-        cart.CartItems.ForEach(e => cart.IncreaseTotalPrice(e.Product.Price * e.Quanity));
+        cart.ProcessTotalPrice();
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
@@ -210,18 +214,57 @@ public class CartService : ICartService
 
         return false;
     }
-    public async Task<bool> DeleteProductByProductIdFromAllCartsAsync(int productId)
+    public async Task<bool> DeleteProductByProductIdFromAllCartsAsync(DeleteProductFromCartCommand command)
     {
-        var data = await _cartRepository.GetAllAsync();
+        var cartCashing = _cachingfactory.GetCachingProvider("Carts");
 
-        var carts = data.ToList();
+        var carts = await _cartRepository.GetAllCartsWithOutProductAsync();
 
         foreach (var cart in carts)
         {
-            cart.CartItems.RemoveAll(e => e.ProductId == productId);
-            if(cart.CartItems.Count() == 0)
+            var cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == command.ProductId);
+
+            if (cartItem is not null)
             {
-                carts.Remove(cart);
+                cart.CartItems.Remove(cartItem);
+
+                if (cart.CartItems.Count() == 0)
+                {
+                    _cartRepository.Delete(cart);
+                }
+                else
+                {
+                    cart.ProcessTotalPrice();
+                }
+
+                cartCashing.Remove(cart.UserId);
+            }
+        }
+
+        if (await _unitOfWork.SaveChangesAsync(true) > 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    public async Task<bool> UpdateProductInCartsAsync(UpdateProductInCartsCommand command)
+    {
+        var cartCashing = _cachingfactory.GetCachingProvider("Carts");
+
+        var carts = await _cartRepository.GetAllCartsWithOutProductAsync();
+
+        foreach (var cart in carts)
+        {
+            var cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == command.ProductId);
+
+            if (cartItem is not null)
+            {
+                cartItem.SetItemPrice(command.Price);
+
+                cart.ProcessTotalPrice();
+
+                cartCashing.Remove(cart.UserId);
             }
         }
 

@@ -11,14 +11,8 @@ public class SingleCartDto
     public int TotalItemCount { get; private set; }
     public List<CartItemDto> CartItems { get; set; } = null!;
 
-    public void SetTotalItemCount()
+    public void ProcessTotalItemCount()
     {
-        int total = 0;
-        foreach (var item in CartItems)
-        {
-            total = total + item.Quanity;
-        }
-
-        TotalItemCount = total;
+        TotalItemCount = CartItems.Select(x => x.Quanity).Sum();
     }
 }

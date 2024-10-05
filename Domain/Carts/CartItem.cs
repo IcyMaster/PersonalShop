@@ -6,10 +6,11 @@ namespace PersonalShop.Domain.Card;
 
 public class CartItem
 {
-    public CartItem(int productId,int quanity)
+    public CartItem(int productId, int quanity, decimal itemPrice)
     {
         ProductId = productId;
         Quanity = quanity;
+        ItemPrice = itemPrice;
     }
 
     [Key]
@@ -18,6 +19,7 @@ public class CartItem
     public Product Product { get; set; } = null!;
     public int ProductId { get; private set; }
     public int Quanity { get; private set; }
+    public decimal ItemPrice { get; private set; }
 
     public void IncreaseQuantity(int count)
     {
@@ -26,5 +28,9 @@ public class CartItem
     public void SetQuantity(int count)
     {
         Quanity = count;
+    }
+    public void SetItemPrice(decimal price)
+    {
+        ItemPrice = price;
     }
 }
