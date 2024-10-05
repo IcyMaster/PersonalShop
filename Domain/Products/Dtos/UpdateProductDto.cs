@@ -24,6 +24,5 @@ public class UpdateProductDto
         , ErrorMessageResourceName = nameof(ProductMessages.PriceRangeError))]
     [Required(ErrorMessageResourceType = typeof(ProductMessages)
         , ErrorMessageResourceName = nameof(ProductMessages.PriceRequired))]
-    [DisplayFormat(DataFormatString = "{0:G29}", ApplyFormatInEditMode = true)]
     public decimal Price { get; set; }
 }

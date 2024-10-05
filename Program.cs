@@ -20,14 +20,11 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // Register Controller With Views
+        builder.Services.AddControllersWithViews();
+
         // Register MassTransit and RabitMQ services
         builder.Services.RegisterMassTransit();
-
-        // Add controllers with views, and enable localization in views and data annotations
-        builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
-        builder.Services.AddControllersWithViews()
-            .AddViewLocalization()
-            .AddDataAnnotationsLocalization();
 
         // Add Caching services
         builder.Services.RegisterCachingServices();
@@ -43,9 +40,6 @@ public class Program
         builder.Services.AddScoped<SignInManager<User>>();
 
         var app = builder.Build();
-
-        // Register Localization service
-        app.RegisterLocalization();
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())

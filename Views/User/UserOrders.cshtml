@@ -20,7 +20,7 @@
                 <tr>
                     <td>@item.Id</td>
                     <td>@item.OrderDate.ToShortDateString()</td>
-                    <td>@Html.DisplayFor(modelItem => item.TotalPrice)</td>
+                    <td>@item.TotalPrice.ToString("00")</td>
                     <td>
                         <button class="btn btn-primary no-outline" type="button" data-bs-toggle="collapse" data-bs-target="#detail-@item.Id" aria-expanded="false" aria-controls="details1">
                             اطلاعات بیشتر
@@ -45,7 +45,7 @@
                                         <tr>
                                             <td>@orderItem.ProductName</td>
                                             <td>@orderItem.Quanity</td>
-                                            <td>@Html.DisplayFor(modelItem => orderItem.ProductPrice)</td>
+                                            <td>@orderItem.ProductPrice.ToString("00")</td>
                                         </tr>
                                     }
                                 </tbody>
