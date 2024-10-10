@@ -1,11 +1,9 @@
 ﻿using EasyCaching.Core;
 using Microsoft.AspNetCore.Identity;
-using NuGet.Common;
-using PersonalShop.Domain.Users;
 using PersonalShop.Interfaces.Features;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace PersonalShop.Features.Authentication;
+namespace PersonalShop.Features.Identity.Authentication;
 
 public class AuthenticationService : IAuthenticationService
 {
@@ -47,7 +45,7 @@ public class AuthenticationService : IAuthenticationService
     {
         var jwtBlackList = _cachingfactory.GetCachingProvider("JwtBlackList");
 
-        if(await jwtBlackList.GetCountAsync($"JwtBlackList:{jwtToken}") > 0)
+        if (await jwtBlackList.GetCountAsync($"JwtBlackList:{jwtToken}") > 0)
         {
             return true;
         }
@@ -68,7 +66,7 @@ public class AuthenticationService : IAuthenticationService
                 }
                 else
                 {
-                    await jwtBlackList.SetAsync($"JwtBlackList:{jwtToken}",string.Empty, TimeSpan.FromTicks(unixExp));
+                    await jwtBlackList.SetAsync($"JwtBlackList:{jwtToken}", string.Empty, TimeSpan.FromTicks(unixExp));
                     return true;
                 }
             }

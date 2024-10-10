@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using PersonalShop.Domain.Roles;
 using PersonalShop.Interfaces.Features;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static MassTransit.ValidationResultExtensions;
 
-namespace PersonalShop.Features.User;
+namespace PersonalShop.Features.Identity.User;
 
 public class UserService : IUserService
 {
@@ -44,11 +46,11 @@ public class UserService : IUserService
         return true;
     }
 
-    public string CreateTokenAsync(Domain.Users.User user)
+    public string CreateToken(Domain.Users.User user)
     {
         IEnumerable<Claim> _claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier,user.Id)
+            new Claim(ClaimTypes.NameIdentifier,user.Id.ToString())
         };
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWT:key").Value!));
@@ -63,6 +65,51 @@ public class UserService : IUserService
 
         string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
         return tokenString;
+    }
+
+    public async Task<bool> CheckUserExistAsync(string userEmail)
+    {
+        var user = await _userManager.FindByEmailAsync(userEmail);
+
+        if (user is not null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public async Task<bool> AssignUserRoleAsync(string userEmail,string roleName)
+    {
+        var user = await _userManager.FindByEmailAsync(userEmail);
+        if (user is null)
+        {
+            return false;
+        }
+
+        var result = await _userManager.AddToRoleAsync(user,roleName);
+        if (result.Succeeded)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    public async Task<bool> RemoveUserRoleAsync(string userEmail, string roleName)
+    {
+        var user = await _userManager.FindByEmailAsync(userEmail);
+        if (user is null)
+        {
+            return false;
+        }
+
+        var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+        if (result.Succeeded)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
 

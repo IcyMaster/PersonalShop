@@ -129,7 +129,7 @@ public class ProductService : IProductService
 
             User = new ProductUserDto
             {
-                UserId = ob.User.Id,
+                UserId = ob.User.Id.ToString(),
                 FirstName = ob.User.FirstName,
                 LastName = ob.User.LastName,
                 IsOwner = false,
@@ -149,7 +149,7 @@ public class ProductService : IProductService
 
             User = new ProductUserDto
             {
-                UserId = ob.User.Id,
+                UserId = ob.User.Id.ToString(),
                 FirstName = ob.User.FirstName,
                 LastName = ob.User.LastName,
                 IsOwner = false,

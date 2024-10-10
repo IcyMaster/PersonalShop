@@ -43,7 +43,7 @@ public static class AccountApis
             var user = await authenticationService.LoginAsync(loginModel.Email, loginModel.Password);
             if (user is not null)
             {
-                var tokenString = userService.CreateTokenAsync(user);
+                var tokenString = userService.CreateToken(user);
                 return Results.Ok(tokenString);
             }
 

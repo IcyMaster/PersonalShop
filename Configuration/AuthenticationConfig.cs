@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using PersonalShop.Data;
+using PersonalShop.Domain.Roles;
 using PersonalShop.Domain.Users;
 using System.Text;
 
@@ -13,7 +14,7 @@ public static class AuthenticationConfig
 {
     public static void RegisterIdentity(this WebApplicationBuilder builder)
     {
-        builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+        builder.Services.AddIdentity<User,UserRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
         builder.Services.Configure<IdentityOptions>(options =>
         {
@@ -71,5 +72,8 @@ public static class AuthenticationConfig
                 }
             };
         });
+
+        builder.Services.AddAuthorization();
+        builder.Services.AddScoped<SignInManager<User>>();
     }
 }

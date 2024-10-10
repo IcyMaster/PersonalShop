@@ -4,15 +4,16 @@ using Microsoft.EntityFrameworkCore;
 using PersonalShop.Data;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Data.Repositories;
-using PersonalShop.Features.Authentication;
+using PersonalShop.Domain.Roles;
 using PersonalShop.Features.Cart;
+using PersonalShop.Features.Identity.Authentication;
+using PersonalShop.Features.Identity.Role;
+using PersonalShop.Features.Identity.User;
 using PersonalShop.Features.Order;
 using PersonalShop.Features.Product;
-using PersonalShop.Features.User;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Repositories;
 using PersonalShop.Middleware;
-using System.Globalization;
 
 namespace PersonalShop.Configuration;
 
@@ -34,6 +35,7 @@ internal static class ServicesConfig
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICartService, CartService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IOrderService, OrderService>();
 

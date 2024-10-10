@@ -6,10 +6,11 @@ using PersonalShop.Domain.Products;
 using PersonalShop.Domain.Card;
 using PersonalShop.Data.EntityConfiguration;
 using PersonalShop.Domain.Orders;
+using PersonalShop.Domain.Roles;
 
 namespace PersonalShop.Data;
 
-public class ApplicationDbContext : IdentityDbContext<User>
+public class ApplicationDbContext : IdentityDbContext<User,UserRole,Guid>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 

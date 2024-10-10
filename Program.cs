@@ -1,16 +1,8 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Net.Http.Headers;
 using PersonalShop.Api;
 using PersonalShop.Configuration;
-using PersonalShop.Data;
 using PersonalShop.Domain.Users;
 using PersonalShop.Middleware;
-using System.Globalization;
-using System.Text;
 
 namespace PersonalShop;
 
@@ -35,9 +27,6 @@ public class Program
         // Add Authentication Services
         builder.RegisterIdentity();
         builder.RegisterJwtAndMultiAuthPolicy();
-
-        builder.Services.AddAuthorization();
-        builder.Services.AddScoped<SignInManager<User>>();
 
         var app = builder.Build();
 
@@ -72,6 +61,8 @@ public class Program
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
+        //seed all roles and create defualt owner user for first time
+        app.SeedRolesAndOwnerUserAsync();
 
         app.Run();
     }
