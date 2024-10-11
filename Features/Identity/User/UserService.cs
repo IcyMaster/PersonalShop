@@ -95,6 +95,7 @@ public class UserService : IUserService
 
         return false;
     }
+
     public async Task<bool> RemoveUserRoleAsync(string userEmail, string roleName)
     {
         var user = await _userManager.FindByEmailAsync(userEmail);

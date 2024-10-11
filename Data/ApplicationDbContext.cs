@@ -10,7 +10,7 @@ using PersonalShop.Domain.Roles;
 
 namespace PersonalShop.Data;
 
-public class ApplicationDbContext : IdentityDbContext<User,UserRole,Guid>
+public class ApplicationDbContext : IdentityDbContext<User,UserRole,string>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 

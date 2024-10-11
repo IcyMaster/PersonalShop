@@ -32,9 +32,9 @@ public class RoleService : IRoleService
 
         if (userRole is not null)
         {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 }

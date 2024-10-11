@@ -2,10 +2,14 @@
 
 namespace PersonalShop.Domain.Roles;
 
-public class UserRole : IdentityRole<Guid>
+public class UserRole : IdentityRole
 {
-    public UserRole(string roleName)
+    public UserRole() : base()
     {
-        base.Name = roleName;
+    }
+
+    public UserRole(string roleName) : base(roleName)
+    {
+
     }
 }

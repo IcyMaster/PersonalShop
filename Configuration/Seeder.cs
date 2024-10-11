@@ -28,7 +28,7 @@ public static class Seeder
 
         foreach(var roles in RolesContract.Roles)
         {
-            if(! await roleService.CheckRoleExistAsync(roles))
+            if(!await roleService.CheckRoleExistAsync(roles))
             {
                 await roleService.CreateRoleAsync(roles);
             }
