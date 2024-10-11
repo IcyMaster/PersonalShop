@@ -102,7 +102,7 @@ public static class AccountApis
             return Results.BadRequest("Problem in assign Role to user");
         });
 
-        app.MapPost("Api/Account/Roles/RemoveRole", [Authorize(Roles = RolesContract.Owner)] async ([FromBody] RemoveRoleDto removeRoleDto, IUserService userService) =>
+        app.MapDelete("Api/Account/Roles/RemoveRole", [Authorize(Roles = RolesContract.Owner)] async ([FromBody] RemoveRoleDto removeRoleDto, IUserService userService) =>
         {
             var validateRes = new List<ValidationResult>();
             if (!Validator.TryValidateObject(removeRoleDto, new ValidationContext(removeRoleDto), validateRes, true))
