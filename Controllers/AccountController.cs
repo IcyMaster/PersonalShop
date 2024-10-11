@@ -75,7 +75,7 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    [AllowAnonymous]
+    [Authorize]
     [Route("Logout")]
     public async Task<ActionResult> LogOut()
     {

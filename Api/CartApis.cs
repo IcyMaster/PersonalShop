@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Card.Dtos;
 using PersonalShop.Domain.Carts.Dtos;
 using PersonalShop.Extension;
@@ -11,15 +13,15 @@ public static class CartApis
 {
     public static void RegisterCardApis(this WebApplication app)
     {
-        app.MapGet("Api/Cart", async (ICartService cartService, HttpContext context) =>
+        app.MapGet("Api/Cart", [Authorize(Roles = RolesContract.Customer)] async (ICartService cartService, HttpContext context) =>
         {
             var userId = context.GetUserId();
 
             return Results.Ok(await cartService.GetCartByUserIdWithProductAsync(userId!));
 
-        }).RequireAuthorization();
+        });
 
-        app.MapPost("Api/Cart/AddItem", async ([FromBody] CreateCartItemDto createCartItemDto, ICartService cartService, HttpContext context) =>
+        app.MapPost("Api/Cart/AddItem", [Authorize(Roles = RolesContract.Customer)] async ([FromBody] CreateCartItemDto createCartItemDto, ICartService cartService, HttpContext context) =>
         {
             var userId = context.GetUserId();
 
@@ -36,9 +38,9 @@ public static class CartApis
 
             return Results.BadRequest("Problem to add item to cart ...");
 
-        }).RequireAuthorization();
+        });
 
-        app.MapDelete("Api/Cart/DeleteItem/{productId:int}", async (ICartService cartService, HttpContext context, int productId) =>
+        app.MapDelete("Api/Cart/DeleteItem/{productId:int}", [Authorize(Roles = RolesContract.Customer)] async (ICartService cartService, HttpContext context, int productId) =>
         {
             var userId = context.GetUserId();
 
@@ -49,9 +51,9 @@ public static class CartApis
 
             return Results.BadRequest("Problem delete item from cart ...");
 
-        }).RequireAuthorization();
+        });
 
-        app.MapPut("Api/Cart/UpdateItem/{productId:int}", async ([FromBody] UpdateCartItemDto updateCartItemDto, ICartService cartService, HttpContext context, int productId) =>
+        app.MapPut("Api/Cart/UpdateItem/{productId:int}", [Authorize(Roles = RolesContract.Customer)] async ([FromBody] UpdateCartItemDto updateCartItemDto, ICartService cartService, HttpContext context, int productId) =>
         {
             var userId = context.GetUserId();
 
@@ -62,10 +64,10 @@ public static class CartApis
 
             return Results.BadRequest("Problem to update cart item ...");
 
-        }).RequireAuthorization();
+        });
 
         //just complete checkout without process payment
-        app.MapGet("Api/Cart/Checkout/{cartId:Guid}", async (ICartService cartService, IOrderService orderService, Guid cartId) =>
+        app.MapGet("Api/Cart/Checkout/{cartId:Guid}", [Authorize(Roles = RolesContract.Customer)] async (ICartService cartService, IOrderService orderService, Guid cartId) =>
         {
             if (await orderService.CreateOrderByCartIdAsync(cartId))
             {
@@ -74,6 +76,6 @@ public static class CartApis
 
             return Results.BadRequest("Problem processing payment ...");
 
-        }).RequireAuthorization();
+        });
     }
 }

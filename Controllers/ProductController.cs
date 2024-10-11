@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Products.Dtos;
 using PersonalShop.Extension;
 using PersonalShop.Interfaces.Features;
@@ -25,16 +26,16 @@ public class ProductController : Controller
         return View(await _productService.GetAllProductsWithUserAsync());
     }
 
-    [Authorize]
     [HttpGet]
+    [Authorize(Roles = RolesContract.Admin)]
     [Route("AddProduct")]
     public ActionResult AddProduct()
     {
         return View();
     }
 
-    [Authorize]
     [HttpPost]
+    [Authorize(Roles = RolesContract.Admin)]
     [Route("AddProduct")]
     public async Task<ActionResult> AddProduct(CreateProductDto createProductDto)
     {
@@ -51,8 +52,8 @@ public class ProductController : Controller
         return BadRequest("Problem to add product in website ...");
     }
 
-    [Authorize]
     [HttpPost]
+    [Authorize(Roles = RolesContract.Admin)]
     [Route("DeleteProduct/{productId:int}", Name = "DeleteProduct")]
     public async Task<ActionResult> DeleteProduct(int productId)
     {
@@ -64,8 +65,8 @@ public class ProductController : Controller
         return RedirectToAction(nameof(UserController.UserProducts), "User");
     }
 
-    [Authorize]
     [HttpGet]
+    [Authorize(Roles = RolesContract.Admin)]
     [Route("UpdateProduct/{productId:int}", Name = "UpdateProduct")]
     public async Task<ActionResult> UpdateProduct(int productId)
     {
@@ -78,8 +79,8 @@ public class ProductController : Controller
         return View(product);
     }
 
-    [Authorize]
     [HttpPost]
+    [Authorize(Roles = RolesContract.Admin)]
     [Route("UpdateProduct/{productId:int}", Name = "UpdateProduct")]
     public async Task<ActionResult> UpdateProduct(int productId,UpdateProductDto updateProductDto)
     {

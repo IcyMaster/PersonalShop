@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Card.Dtos;
 using PersonalShop.Domain.Carts.Dtos;
 using PersonalShop.Domain.Products.Dtos;
@@ -21,14 +22,14 @@ public class CartController : Controller
         _orderService = orderService;
     }
 
-    [Authorize]
+    [Authorize(Roles = RolesContract.Customer)]
     [HttpGet]
     public async Task<ActionResult> Index()
     {
         return View(await _cartService.GetCartByUserIdWithProductAsync(User.Identity!.GetUserId()));
     }
 
-    [Authorize]
+    [Authorize(Roles = RolesContract.Customer)]
     [HttpPost]
     [Route("AddItem")]
     public async Task<ActionResult> AddItem(CreateCartItemDto createCartItemDto)
@@ -46,7 +47,7 @@ public class CartController : Controller
         return BadRequest("Problem in add item to cart ...");
     }
 
-    [Authorize]
+    [Authorize(Roles = RolesContract.Customer)]
     [HttpPost]
     [Route("DeleteItem/{productId:int}", Name = "DeleteItem")]
     public async Task<ActionResult> DeleteItem(int productId)
@@ -59,7 +60,7 @@ public class CartController : Controller
         return RedirectToAction(nameof(CartController.Index), "Cart");
     }
 
-    [Authorize]
+    [Authorize(Roles = RolesContract.Customer)]
     [HttpPost]
     [Route("UpdateItem/{productId:int}", Name = "UpdateItem")]
     public async Task<ActionResult> UpdateItem(int productId,UpdateCartItemDto updateCartItemDto)
@@ -72,7 +73,7 @@ public class CartController : Controller
         return RedirectToAction(nameof(CartController.Index), "Cart");
     }
 
-    [Authorize]
+    [Authorize(Roles = RolesContract.Customer)]
     [HttpGet]
     [Route("CheckOut/{cartId:Guid}", Name = "CheckOut")]
     public async Task<ActionResult> CheckOut(Guid cartId)

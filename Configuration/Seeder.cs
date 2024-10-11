@@ -37,6 +37,6 @@ public static class Seeder
         await userService.CreateUserAsync(userName, userPassword, userEmail,firstName
             ,lastName,phoneNumber);
 
-        await userService.AssignUserRoleAsync(userEmail, RolesContract.Owner);
+        await userService.AssignUserRoleByEmailAsync(userEmail, RolesContract.Owner);
     }
 }

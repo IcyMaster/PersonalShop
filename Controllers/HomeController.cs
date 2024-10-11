@@ -1,10 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.VisualStudio.Web.CodeGeneration.CommandLine;
 using PersonalShop.Domain.Errors;
 using System.Diagnostics;
-using System.Net;
 
 namespace PersonalShop.Controllers
 {

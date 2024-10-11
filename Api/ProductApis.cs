@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Products.Dtos;
 using PersonalShop.Extension;
 using PersonalShop.Interfaces.Features;
@@ -10,9 +12,9 @@ public static class ProductApis
 {
     public static void RegisterProductApis(this WebApplication app)
     {
-        app.MapGet("Api/Products", async (IProductService productService) => await productService.GetAllProductsWithUserAsync()).AllowAnonymous();
+        app.MapGet("Api/Products", [AllowAnonymous] async (IProductService productService) => await productService.GetAllProductsWithUserAsync());
 
-        app.MapPost("Api/Products/AddProduct", async ([FromBody] CreateProductDto createProductDto, IProductService productService, HttpContext context) =>
+        app.MapPost("Api/Products/AddProduct", [Authorize(Roles = RolesContract.Admin)] async ([FromBody] CreateProductDto createProductDto, IProductService productService, HttpContext context) =>
         {
             var validateRes = new List<ValidationResult>();
             if (!Validator.TryValidateObject(createProductDto, new ValidationContext(createProductDto), validateRes, true))
@@ -29,9 +31,9 @@ public static class ProductApis
 
             return Results.BadRequest("Problem to add product in website ...");
 
-        }).RequireAuthorization();
+        });
 
-        app.MapGet("Api/Products/{productId:int}", async (IProductService productService, int productId) =>
+        app.MapGet("Api/Products/{productId:int}", [AllowAnonymous] async (IProductService productService, int productId) =>
         {
             var product = await productService.GetProductByIdWithUserAsync(productId);
             if (product is null)
@@ -41,9 +43,9 @@ public static class ProductApis
 
             return Results.Ok(product);
 
-        }).AllowAnonymous();
+        });
 
-        app.MapPut("Api/Products/UpdateProduct/{productId:int}", async ([FromBody] UpdateProductDto updateProductDto, IProductService productService, HttpContext context, int productId) =>
+        app.MapPut("Api/Products/UpdateProduct/{productId:int}", [Authorize(Roles = RolesContract.Admin)] async ([FromBody] UpdateProductDto updateProductDto, IProductService productService, HttpContext context, int productId) =>
         {
             var validateRes = new List<ValidationResult>();
             if (!Validator.TryValidateObject(updateProductDto, new ValidationContext(updateProductDto), validateRes, true))
@@ -60,9 +62,9 @@ public static class ProductApis
 
             return Results.BadRequest("Problem in edit product");
 
-        }).RequireAuthorization();
+        });
 
-        app.MapDelete("Api/Products/DeleteProduct/{productId:int}", async (IProductService productService, HttpContext context, int productId) =>
+        app.MapDelete("Api/Products/DeleteProduct/{productId:int}", [Authorize(Roles = RolesContract.Admin)] async (IProductService productService, HttpContext context, int productId) =>
         {
             var userId = context.GetUserId();
 
@@ -73,6 +75,6 @@ public static class ProductApis
 
             return Results.Ok("Problem in Delete product");
 
-        }).RequireAuthorization();
+        });
     }
 }

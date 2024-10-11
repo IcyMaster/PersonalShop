@@ -4,12 +4,13 @@ namespace PersonalShop.Interfaces.Features
 {
     public interface IUserService
     {
-        Task<bool> AssignUserRoleAsync(string userEmail, string roleName);
+        Task<bool> AssignUserRoleByEmailAsync(string userEmail, string roleName);
         Task<bool> CheckUserExistAsync(string userEmail);
-        string CreateToken(User user);
+        Task<string> CreateTokenAsync(User user);
         Task<bool> CreateUserAsync(string userName,
         string password, string email, string? firstName,
         string? lastName, string? phoneNumber);
-        Task<bool> RemoveUserRoleAsync(string userEmail, string roleName);
+        Task<List<string>?> GetUserRolesByIdAsync(string userId);
+        Task<bool> RemoveUserRoleByEmailAsync(string userEmail, string roleName);
     }
 }

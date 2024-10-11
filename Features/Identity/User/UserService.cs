@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MassTransit.Initializers;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Roles;
 using PersonalShop.Interfaces.Features;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using static MassTransit.ValidationResultExtensions;
 
 namespace PersonalShop.Features.Identity.User;
 
@@ -36,9 +37,16 @@ public class UserService : IUserService
             user.PhoneNumber = phoneNumber;
         }
 
-        var result = await _userManager.CreateAsync(user, password);
+        var userCreateResult = await _userManager.CreateAsync(user, password);
 
-        if (!result.Succeeded)
+        if (!userCreateResult.Succeeded)
+        {
+            return false;
+        }
+
+        var roleAssineResult = await _userManager.AddToRoleAsync(user, RolesContract.Customer);
+
+        if (!roleAssineResult.Succeeded)
         {
             return false;
         }
@@ -46,12 +54,19 @@ public class UserService : IUserService
         return true;
     }
 
-    public string CreateToken(Domain.Users.User user)
+    public async Task<string> CreateTokenAsync(Domain.Users.User user)
     {
-        IEnumerable<Claim> _claims = new List<Claim>
+        var roles = await _userManager.GetRolesAsync(user);
+
+        List<Claim> _claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier,user.Id.ToString())
+            new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
         };
+
+        foreach (var role in roles)
+        {
+            _claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        }
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JWT:key").Value!));
 
@@ -66,7 +81,6 @@ public class UserService : IUserService
         string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
         return tokenString;
     }
-
     public async Task<bool> CheckUserExistAsync(string userEmail)
     {
         var user = await _userManager.FindByEmailAsync(userEmail);
@@ -78,8 +92,7 @@ public class UserService : IUserService
 
         return false;
     }
-
-    public async Task<bool> AssignUserRoleAsync(string userEmail,string roleName)
+    public async Task<bool> AssignUserRoleByEmailAsync(string userEmail,string roleName)
     {
         var user = await _userManager.FindByEmailAsync(userEmail);
         if (user is null)
@@ -95,8 +108,7 @@ public class UserService : IUserService
 
         return false;
     }
-
-    public async Task<bool> RemoveUserRoleAsync(string userEmail, string roleName)
+    public async Task<bool> RemoveUserRoleByEmailAsync(string userEmail, string roleName)
     {
         var user = await _userManager.FindByEmailAsync(userEmail);
         if (user is null)
@@ -111,6 +123,19 @@ public class UserService : IUserService
         }
 
         return false;
+    }
+    public async Task<List<string>?> GetUserRolesByIdAsync(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (user is null)
+        {
+            return null;
+        }
+
+        var userRoles = await _userManager.GetRolesAsync(user);
+
+        return userRoles.Select(x => x.ToString()).ToList();
     }
 }
 
