@@ -1,0 +1,46 @@
+﻿@using PersonalShop.Domain.Products.Dtos;
+@model IEnumerable<SingleProductDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Products</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>شماره محصول</th>
+            <th>نام محصول</th>
+            <th>توضیحات محصول</th>
+            <th>قیمت محصول</th>
+            <th>عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @item.Price.ToString("00")
+                </td>
+                <td>
+                    <form asp-controller="Cart" asp-action="AddItem" method="post" class="d-inline">
+                        <input type="hidden" name="ProductId" value="@item.Id" />
+                        <input type="hidden" name="Quanity" value="1" />
+
+                        <button type="submit" class="btn btn-primary no-outline">افزودن به سبد خرید</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

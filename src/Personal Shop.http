@@ -1,0 +1,34 @@
+﻿@Personal Shop_HostAddress = https://localhost:7140
+
+GET https://localhost:7140/Api/Products
+
+###
+
+POST https://localhost:7140/Api/Products/AddProduct
+Content-Type: application/json
+
+{
+    "name":"test",
+    "description":"test2",
+    "price": 25000
+}
+###
+
+POST https://localhost:7140/Api/Account/Register
+Content-Type: application/json
+
+{
+    "name":"test",
+    "description":"test2",
+    "price": 25000
+}
+###
+
+POST https://localhost:7140/Api/Account/Login
+Content-Type: application/json
+
+{
+    "email":"icymaster2020@gmail.com",
+    "password":"2378mm23"
+}
+###
