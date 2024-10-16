@@ -1,25 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj": {}
+    "D:\\Programing\\Projects\\PersonalShop\\tests\\PersonalShop.Tests.csproj": {}
   },
   "projects": {
-    "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj": {
+    "D:\\Programing\\Projects\\PersonalShop\\tests\\PersonalShop.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
+        "projectUniqueName": "D:\\Programing\\Projects\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
         "projectName": "PersonalShop.Tests",
-        "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
+        "projectPath": "D:\\Programing\\Projects\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
         "packagesPath": "C:\\Users\\devic\\.nuget\\packages\\",
-        "outputPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\obj\\",
+        "outputPath": "D:\\Programing\\Projects\\PersonalShop\\tests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "D:\\DevExpress\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\devic\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 23.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -29,8 +27,6 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "C:\\Users\\devic\\OneDrive\\Desktop": {},
-          "D:\\DevExpress\\Components\\System\\Components\\Packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -87,7 +83,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

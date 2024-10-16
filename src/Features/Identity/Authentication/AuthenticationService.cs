@@ -17,7 +17,24 @@ public class AuthenticationService : IAuthenticationService
         _userManager = userManager;
         _cachingfactory = cachingfactory;
     }
+    public async Task<Domain.Users.User?> LoginAsyncAndCreateToken(string email, string password)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
 
+        if (user is null)
+        {
+            return null;
+        }
+
+        var result = await _signInManager.PasswordSignInAsync(user, password, true, false);
+
+        if (!result.Succeeded)
+        {
+            return null;
+        }
+
+        return user;
+    }
     public async Task<Domain.Users.User?> LoginAsync(string email, string password)
     {
         var user = await _userManager.FindByEmailAsync(email);

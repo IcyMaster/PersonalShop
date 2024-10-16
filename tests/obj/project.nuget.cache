@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gxeHUq5TmT7EMaCheWjFMxL+RPCWYryFnO7dV8iAYRaAogNTMwUdwzxQd0+GxsWE6OvkYuJhO0zjGK2jOFDDLw==",
+  "dgSpecHash": "coVk05C0U8Y=",
   "success": true,
-  "projectFilePath": "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
+  "projectFilePath": "D:\\Programing\\Projects\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\devic\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
     "C:\\Users\\devic\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",
