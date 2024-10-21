@@ -1,17 +1,16 @@
-﻿using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PersonalShop.Data;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Data.Repositories;
-using PersonalShop.Domain.Roles;
 using PersonalShop.Features.Cart;
 using PersonalShop.Features.Identity.Authentication;
 using PersonalShop.Features.Identity.Role;
 using PersonalShop.Features.Identity.User;
 using PersonalShop.Features.Order;
 using PersonalShop.Features.Product;
+using PersonalShop.Generator;
 using PersonalShop.Interfaces.Features;
+using PersonalShop.Interfaces.Generator;
 using PersonalShop.Interfaces.Repositories;
 using PersonalShop.Middleware;
 
@@ -39,9 +38,11 @@ internal static class ServicesConfig
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IOrderService, OrderService>();
 
+        //Generators
+        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
         //other services
         services.AddExceptionHandler<ExceptionHelper>();
         services.AddProblemDetails();
-        services.AddHttpClient();
     }
 }

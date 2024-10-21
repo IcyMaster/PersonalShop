@@ -2,10 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using PersonalShop.Data.Contracts;
+using PersonalShop.Domain.Authentication.Dtos;
+using PersonalShop.Domain.Response;
 using PersonalShop.Domain.Roles.Dtos;
 using PersonalShop.Domain.Users.Dtos;
 using PersonalShop.Extension;
 using PersonalShop.Interfaces.Features;
+using PersonalShop.Resources.Services.AuthenticationService;
 using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Api;
@@ -14,43 +17,44 @@ public static class AccountApis
 {
     public static void RegisterAccountApis(this WebApplication app)
     {
-        app.MapPost("Api/Account/Register",[AllowAnonymous] async ([FromBody] RegisterDto registerDto, IUserService userService) =>
+        app.MapPost("Api/Account/Register", [AllowAnonymous] async ([FromBody] RegisterDto registerDto, IUserService userService) =>
         {
-            var validateRes = new List<ValidationResult>();
-            if (!Validator.TryValidateObject(registerDto, new ValidationContext(registerDto), validateRes, true))
+            var validateObject = ObjectValidator.Validate(registerDto);
+            if (!validateObject.IsValid)
             {
-                return Results.BadRequest(validateRes.Select(e => e.ErrorMessage));
+                return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
             }
 
-            if (await userService.CreateUserAsync(registerDto.UserName,
+            var serviceResult = await userService.CreateUserAsync(registerDto.UserName,
                                               registerDto.Password,
                                               registerDto.Email,
                                               registerDto.FirstName,
                                               registerDto.LastName,
-                                              registerDto.PhoneNumber))
+                                              registerDto.PhoneNumber);
+
+            if (serviceResult.IsSuccess)
             {
-                return Results.Ok("User registered successfully");
+                return Results.Ok(ApiResult<string>.Success(serviceResult.Result!));
             }
 
-            return Results.Ok("Problem in register user");
+            return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
-        app.MapPost("Api/Account/Login",[AllowAnonymous] async ([FromBody] LoginDto loginDto, IAuthenticationService authenticationService, IUserService userService) =>
+        app.MapPost("Api/Account/Login", [AllowAnonymous] async ([FromBody] LoginDto loginDto, IAuthenticationService authenticationService) =>
         {
-            var validateRes = new List<ValidationResult>();
-            if (!Validator.TryValidateObject(loginDto, new ValidationContext(loginDto), validateRes, true))
+            var validateObject = ObjectValidator.Validate(loginDto);
+            if (!validateObject.IsValid)
             {
-                return Results.BadRequest(validateRes.Select(e => e.ErrorMessage));
+                return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
             }
 
-            var user = await authenticationService.LoginAsync(loginDto.Email, loginDto.Password);
-            if (user is not null)
+            var serviceResult = await authenticationService.LoginAsyncAndCreateToken(loginDto.Email, loginDto.Password);
+            if (serviceResult.IsSuccess)
             {
-                var tokenString = await userService.CreateTokenAsync(user);
-                return Results.Ok(tokenString);
+                return Results.Ok(ApiResult<TokenDto>.Success(serviceResult.Result!));
             }
 
-            return Results.BadRequest("Problem in login user to website");
+            return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
         app.MapPost("Api/Account/Logout", [Authorize] async (IAuthenticationService authenticationService, HttpContext context) =>
@@ -59,63 +63,67 @@ public static class AccountApis
 
             if (string.IsNullOrEmpty(token))
             {
-                return Results.BadRequest("Problem to get jwt token in request header");
+                return Results.BadRequest(ApiResult<string>.Failed(AuthenticationServiceErrors.GetJwtTokenProblem));
             }
 
-            token = token.Replace("Bearer ", string.Empty);
+            var serviceResult = await authenticationService.LogoutApiAsync(token);
 
-            if (await authenticationService.LogoutAsync(token))
+            if (serviceResult.IsSuccess)
             {
-                return Results.Ok("Your account logged out successfully");
+                return Results.Ok(ApiResult<string>.Success(serviceResult.Result!));
             }
 
-            return Results.BadRequest("Problem in logged out account");
+            return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
         app.MapGet("Api/Account/Roles", [Authorize] async (IUserService userService, HttpContext context) =>
         {
             var userId = context.GetUserId();
 
-            var userRoles = await userService.GetUserRolesByIdAsync(userId!);
+            var serviceResult = await userService.GetUserRolesByIdAsync(userId!);
 
-            if (userRoles is null)
+            if (serviceResult.IsSuccess)
             {
-                return Results.BadRequest("Problem to get user roles");
+                return Results.Ok(ApiResult<List<string>>.Success(serviceResult.Result!));
             }
 
-            return Results.Ok(userRoles);
+            return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
         app.MapPost("Api/Account/Roles/AssignRole", [Authorize(Roles = RolesContract.Owner)] async ([FromBody] AssignRoleDto assignRoleDto, IUserService userService) =>
         {
-            var validateRes = new List<ValidationResult>();
-            if (!Validator.TryValidateObject(assignRoleDto, new ValidationContext(assignRoleDto), validateRes, true))
+            var validateObject = ObjectValidator.Validate(assignRoleDto);
+            if (!validateObject.IsValid)
             {
-                return Results.BadRequest(validateRes.Select(e => e.ErrorMessage));
+                return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
             }
 
-            if (await userService.AssignUserRoleByEmailAsync(assignRoleDto.UserEmail, assignRoleDto.RoleName))
+            var serviceResult = await userService.AssignUserRoleByEmailAsync(assignRoleDto.UserEmail, assignRoleDto.RoleName);
+
+            if (serviceResult.IsSuccess)
             {
-                return Results.Ok("The role was successfully assigned");
+                return Results.Ok(ApiResult<string>.Success(serviceResult.Result!));
             }
 
-            return Results.BadRequest("Problem in assign Role to user");
+            return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
         app.MapDelete("Api/Account/Roles/RemoveRole", [Authorize(Roles = RolesContract.Owner)] async ([FromBody] RemoveRoleDto removeRoleDto, IUserService userService) =>
         {
-            var validateRes = new List<ValidationResult>();
-            if (!Validator.TryValidateObject(removeRoleDto, new ValidationContext(removeRoleDto), validateRes, true))
+            var validateObject = ObjectValidator.Validate(removeRoleDto);
+            if (!validateObject.IsValid)
             {
-                return Results.BadRequest(validateRes.Select(e => e.ErrorMessage));
+                return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
             }
 
-            if (await userService.RemoveUserRoleByEmailAsync(removeRoleDto.UserEmail, removeRoleDto.RoleName))
+            var serviceResult = await userService.RemoveUserRoleByEmailAsync(removeRoleDto.UserEmail, removeRoleDto.RoleName);
+
+            if (serviceResult.IsSuccess)
             {
-                return Results.Ok("The role was successfully removed");
+                return Results.Ok(ApiResult<string>.Success(serviceResult.Result!));
             }
 
-            return Results.BadRequest("Problem in remove Role from user");
+            return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
     }
 }

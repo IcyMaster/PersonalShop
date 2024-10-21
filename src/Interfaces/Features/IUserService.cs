@@ -1,16 +1,16 @@
-﻿using PersonalShop.Domain.Users;
+﻿using PersonalShop.Domain.Response;
+using PersonalShop.Domain.Users;
 
 namespace PersonalShop.Interfaces.Features
 {
     public interface IUserService
     {
-        Task<bool> AssignUserRoleByEmailAsync(string userEmail, string roleName);
+        Task<ServiceResult<string>> AssignUserRoleByEmailAsync(string userEmail, string roleName);
         Task<bool> CheckUserExistAsync(string userEmail);
-        Task<string> CreateTokenAsync(User user);
-        Task<bool> CreateUserAsync(string userName,
+        Task<ServiceResult<string>> CreateUserAsync(string userName,
         string password, string email, string? firstName,
         string? lastName, string? phoneNumber);
-        Task<List<string>?> GetUserRolesByIdAsync(string userId);
-        Task<bool> RemoveUserRoleByEmailAsync(string userEmail, string roleName);
+        Task<ServiceResult<List<string>>> GetUserRolesByIdAsync(string userId);
+        Task<ServiceResult<string>> RemoveUserRoleByEmailAsync(string userEmail, string roleName);
     }
 }

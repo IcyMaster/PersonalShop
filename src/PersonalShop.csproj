@@ -54,6 +54,26 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>RoleMessages.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Services\AuthenticationService\AuthenticationServiceErrors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AuthenticationServiceErrors.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Services\AuthenticationService\AuthenticationServiceSuccess.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AuthenticationServiceSuccess.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Services\UserServices\UserServiceErrors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UserServiceErrors.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Services\UserServices\UserServiceSuccess.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UserServiceSuccess.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -76,6 +96,22 @@
     <EmbeddedResource Update="Resources\RoleMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RoleMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Services\AuthenticationService\AuthenticationServiceErrors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AuthenticationServiceErrors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Services\AuthenticationService\AuthenticationServiceSuccess.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AuthenticationServiceSuccess.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Services\UserServices\UserServiceErrors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserServiceErrors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Services\UserServices\UserServiceSuccess.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserServiceSuccess.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 
