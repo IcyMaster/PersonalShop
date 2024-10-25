@@ -1,6 +1,13 @@
-﻿namespace PersonalShop.Domain.Carts.Dtos;
+﻿using PersonalShop.Resources.Validation.CartItem;
+using System.ComponentModel.DataAnnotations;
+
+namespace PersonalShop.Domain.Carts.Dtos;
 
 public class UpdateCartItemDto
 {
-    public int Quanity { get; set; }
+    [Required(ErrorMessageResourceType = typeof(CartItemMessages)
+    , ErrorMessageResourceName = nameof(CartItemMessages.QuantityRequired))]
+    [Range(1, int.MaxValue, ErrorMessageResourceType = typeof(CartItemDto)
+    , ErrorMessageResourceName = nameof(CartItemMessages.QuantityValueRangeError))]
+    public int Quantity { get; set; }
 }

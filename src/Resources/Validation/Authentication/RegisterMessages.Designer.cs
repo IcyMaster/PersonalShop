@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PersonalShop.Resources {
+namespace PersonalShop.Resources.Validation.Authentication {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace PersonalShop.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.RegisterMessages", typeof(RegisterMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validation.Authentication.RegisterMessages", typeof(RegisterMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

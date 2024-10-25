@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Card.Dtos;
 using PersonalShop.Domain.Carts.Dtos;
-using PersonalShop.Domain.Products.Dtos;
+using PersonalShop.Domain.Response;
 using PersonalShop.Extension;
-using PersonalShop.Features.Product;
 using PersonalShop.Interfaces.Features;
 
 namespace PersonalShop.Controllers;
@@ -26,7 +25,14 @@ public class CartController : Controller
     [HttpGet]
     public async Task<ActionResult> Index()
     {
-        return View(await _cartService.GetCartByUserIdWithProductAsync(User.Identity!.GetUserId()));
+        var serviceResult = await _cartService.GetCartByUserIdWithProductAsync(User.Identity!.GetUserId());
+
+        if(serviceResult.IsSuccess)
+        {
+            return View(serviceResult.Result);
+        }
+
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 
     [Authorize(Roles = RolesContract.Customer)]
@@ -39,12 +45,14 @@ public class CartController : Controller
             return View(createCartItemDto);
         }
 
-        if (await _cartService.AddCartItemByUserIdAsync(User.Identity!.GetUserId(), createCartItemDto.ProductId, createCartItemDto.Quanity))
+        var serviceResult = await _cartService.AddCartItemByUserIdAsync(User.Identity!.GetUserId(), createCartItemDto);
+
+        if (serviceResult.IsSuccess)
         {
-            return RedirectToAction(nameof(CartController.Index), "Cart");
+            return RedirectToAction(nameof(Index), nameof(CartController));
         }
 
-        return BadRequest("Problem in add item to cart ...");
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 
     [Authorize(Roles = RolesContract.Customer)]
@@ -52,12 +60,14 @@ public class CartController : Controller
     [Route("DeleteItem/{productId:int}", Name = "DeleteItem")]
     public async Task<ActionResult> DeleteItem(int productId)
     {
-        if (!await _cartService.DeleteCartItemByUserIdAsync(User.Identity!.GetUserId(),productId))
+        var serviceResult = await _cartService.DeleteCartItemByUserIdAsync(User.Identity!.GetUserId(), productId);
+
+        if (serviceResult.IsSuccess)
         {
-            return BadRequest("Problem delete item from cart ...");
+            return RedirectToAction(nameof(Index), nameof(CartController));
         }
 
-        return RedirectToAction(nameof(CartController.Index), "Cart");
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 
     [Authorize(Roles = RolesContract.Customer)]
@@ -65,12 +75,14 @@ public class CartController : Controller
     [Route("UpdateItem/{productId:int}", Name = "UpdateItem")]
     public async Task<ActionResult> UpdateItem(int productId,UpdateCartItemDto updateCartItemDto)
     {
-        if (!await _cartService.UpdateCartItemQuanityByUserIdAsync(User.Identity!.GetUserId(), productId, updateCartItemDto.Quanity))
+        var serviceResult = await _cartService.UpdateCartItemQuantityByUserIdAsync(User.Identity!.GetUserId(), productId, updateCartItemDto);
+
+        if (serviceResult.IsSuccess)
         {
-            return BadRequest("Problem to update cart item ...");
+            return RedirectToAction(nameof(Index), nameof(CartController));
         }
 
-        return RedirectToAction(nameof(CartController.Index), "Cart");
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 
     [Authorize(Roles = RolesContract.Customer)]
@@ -78,11 +90,13 @@ public class CartController : Controller
     [Route("CheckOut/{cartId:Guid}", Name = "CheckOut")]
     public async Task<ActionResult> CheckOut(Guid cartId)
     {
-        if (!await _orderService.CreateOrderByCartIdAsync(cartId))
+        var serviceResult = await _orderService.CreateOrderByCartIdAsync(cartId);
+
+        if (serviceResult.IsSuccess)
         {
-            return BadRequest("Problem processing payment ...");
+            return RedirectToAction(nameof(UserController.UserOrders), nameof(UserController));
         }
 
-        return RedirectToAction(nameof(UserController.UserOrders), "User");
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 }

@@ -9,7 +9,6 @@ using PersonalShop.Domain.Users.Dtos;
 using PersonalShop.Extension;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Resources.Services.AuthenticationService;
-using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Api;
 
@@ -25,12 +24,7 @@ public static class AccountApis
                 return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
             }
 
-            var serviceResult = await userService.CreateUserAsync(registerDto.UserName,
-                                              registerDto.Password,
-                                              registerDto.Email,
-                                              registerDto.FirstName,
-                                              registerDto.LastName,
-                                              registerDto.PhoneNumber);
+            var serviceResult = await userService.CreateUserAsync(registerDto);
 
             if (serviceResult.IsSuccess)
             {

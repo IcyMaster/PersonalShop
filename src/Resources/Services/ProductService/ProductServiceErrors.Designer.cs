@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PersonalShop.Resources {
+namespace PersonalShop.Resources.Services.ProductService {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace PersonalShop.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ProductMessages {
+    public class ProductServiceErrors {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ProductMessages() {
+        internal ProductServiceErrors() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.ProductMessages", typeof(ProductMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Services.ProductService.ProductServiceErrors", typeof(ProductServiceErrors).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace PersonalShop.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,56 +61,47 @@ namespace PersonalShop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to مقدار فیلد توضیحات از 50 کاراکتر بیشتر است.
+        ///   Looks up a localized string similar to مشکل در اضافه کردن محصول مورد نظر.
         /// </summary>
-        internal static string DescriptionLengthError {
+        public static string CreateProductProblem {
             get {
-                return ResourceManager.GetString("DescriptionLengthError", resourceCulture);
+                return ResourceManager.GetString("CreateProductProblem", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد توضیحات را تکمیل نمایید.
+        ///   Looks up a localized string similar to مشکل در حذف کردن محصول مورد نظر.
         /// </summary>
-        internal static string DescriptionRequired {
+        public static string DeleteProductProblem {
             get {
-                return ResourceManager.GetString("DescriptionRequired", resourceCulture);
+                return ResourceManager.GetString("DeleteProductProblem", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to مقدار فیلد نام از 20 کاراکتر بیشتر است.
+        ///   Looks up a localized string similar to محصول مورد نظر یافت نشد.
         /// </summary>
-        internal static string NameLengthError {
+        public static string ProductNotFound {
             get {
-                return ResourceManager.GetString("NameLengthError", resourceCulture);
+                return ResourceManager.GetString("ProductNotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد نام را تکمیل نمایید.
+        ///   Looks up a localized string similar to فقط کاربر سازنده محصول می تواند عمل موردنظر را اعمال کند.
         /// </summary>
-        internal static string NameRequired {
+        public static string ProductOwnerMatchProblem {
             get {
-                return ResourceManager.GetString("NameRequired", resourceCulture);
+                return ResourceManager.GetString("ProductOwnerMatchProblem", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to مقدار فیلد قیمت نباید منفی باشد.
+        ///   Looks up a localized string similar to مشکل در بروزرسانی محصول مورد نظر.
         /// </summary>
-        internal static string PriceRangeError {
+        public static string UpdateProductProblem {
             get {
-                return ResourceManager.GetString("PriceRangeError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد قیمت را تکمیل نمایید.
-        /// </summary>
-        internal static string PriceRequired {
-            get {
-                return ResourceManager.GetString("PriceRequired", resourceCulture);
+                return ResourceManager.GetString("UpdateProductProblem", resourceCulture);
             }
         }
     }

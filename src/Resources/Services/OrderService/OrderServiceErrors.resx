@@ -117,13 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ProductIdRequired" xml:space="preserve">
-    <value>لطفا فیلد شناسه محصول را تکمیل نمایید</value>
-  </data>
-  <data name="QuanityRequired" xml:space="preserve">
-    <value>لطفا فیلد مقدار را تکمیل نمایید</value>
-  </data>
-  <data name="ValueRangeError" xml:space="preserve">
-    <value>لطفا مقدار مناسب وارد کنید</value>
+  <data name="CreateOrderProblem" xml:space="preserve">
+    <value>مشکل در پرداخت سبد خرید شما</value>
   </data>
 </root>

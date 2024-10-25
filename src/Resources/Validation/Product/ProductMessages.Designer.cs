@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PersonalShop.Resources {
+namespace PersonalShop.Resources.Validation.Product {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace PersonalShop.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class LoginMessages {
+    internal class ProductMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal LoginMessages() {
+        internal ProductMessages() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.LoginMessages", typeof(LoginMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validation.Product.ProductMessages", typeof(ProductMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace PersonalShop.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,29 +61,56 @@ namespace PersonalShop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد ایمیل را تکمیل نمایید.
+        ///   Looks up a localized string similar to مقدار فیلد توضیحات از 50 کاراکتر بیشتر است.
         /// </summary>
-        public static string EmailRequired {
+        internal static string DescriptionLengthError {
             get {
-                return ResourceManager.GetString("EmailRequired", resourceCulture);
+                return ResourceManager.GetString("DescriptionLengthError", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ایمیل وارد شده معتبر نیست.
+        ///   Looks up a localized string similar to لطفا فیلد توضیحات را تکمیل نمایید.
         /// </summary>
-        public static string EmailValidateError {
+        internal static string DescriptionRequired {
             get {
-                return ResourceManager.GetString("EmailValidateError", resourceCulture);
+                return ResourceManager.GetString("DescriptionRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد رمز عبور را تکمیل نمایید.
+        ///   Looks up a localized string similar to مقدار فیلد نام از 20 کاراکتر بیشتر است.
         /// </summary>
-        public static string PasswordRequired {
+        internal static string NameLengthError {
             get {
-                return ResourceManager.GetString("PasswordRequired", resourceCulture);
+                return ResourceManager.GetString("NameLengthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لطفا فیلد نام را تکمیل نمایید.
+        /// </summary>
+        internal static string NameRequired {
+            get {
+                return ResourceManager.GetString("NameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مقدار فیلد قیمت نباید منفی باشد.
+        /// </summary>
+        internal static string PriceRangeError {
+            get {
+                return ResourceManager.GetString("PriceRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لطفا فیلد قیمت را تکمیل نمایید.
+        /// </summary>
+        internal static string PriceRequired {
+            get {
+                return ResourceManager.GetString("PriceRequired", resourceCulture);
             }
         }
     }

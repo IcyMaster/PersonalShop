@@ -1,6 +1,5 @@
 ﻿using EasyCaching.Core;
 using Microsoft.AspNetCore.Identity;
-using NuGet.Common;
 using PersonalShop.Domain.Authentication.Dtos;
 using PersonalShop.Domain.Response;
 using PersonalShop.Interfaces.Features;

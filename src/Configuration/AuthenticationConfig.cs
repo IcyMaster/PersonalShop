@@ -37,7 +37,7 @@ public static class AuthenticationConfig
         .AddCookie(options =>
         {
             options.LoginPath = "/Account/Login";
-            options.AccessDeniedPath = "/Error/AccessDenied";
+            options.AccessDeniedPath = "/AccessDenied";
             options.ExpireTimeSpan = TimeSpan.FromHours(10);
         })
         .AddJwtBearer(options =>

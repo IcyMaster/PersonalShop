@@ -1,10 +1,14 @@
 ﻿using EasyCaching.Core;
 using PersonalShop.Data.Contracts;
+using PersonalShop.Domain.Card.Dtos;
 using PersonalShop.Domain.Orders;
 using PersonalShop.Domain.Orders.Dtos;
+using PersonalShop.Domain.Response;
 using PersonalShop.Domain.Users;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Repositories;
+using PersonalShop.Resources.Services.CartService;
+using PersonalShop.Resources.Services.OrderService;
 
 namespace PersonalShop.Features.Order;
 
@@ -25,13 +29,13 @@ public class OrderService : IOrderService
         _cachingfactory = cachingfactory;
     }
 
-    public async Task<bool> CreateOrderByCartIdAsync(Guid cartId)
+    public async Task<ServiceResult<string>> CreateOrderByCartIdAsync(Guid cartId)
     {
         var cart = await _cartRepository.GetCartByCartIdWithOutProductAsync(cartId, track: false);
 
         if (cart is null)
         {
-            return false;
+            return ServiceResult<string>.Failed(CartServiceErrors.CartNotFound);
         }
 
         var order = new Domain.Orders.Order(cart.UserId, cart.TotalPrice);
@@ -54,13 +58,14 @@ public class OrderService : IOrderService
             var cartCashing = _cachingfactory.GetCachingProvider("Carts");
             cartCashing.Remove(cart.UserId);
 
-            return true;
+            return ServiceResult<string>.Success(OrderServiceSuccess.SuccessfulCreateOrder);
         }
 
-        return false;
+        return ServiceResult<string>.Failed(OrderServiceErrors.CreateOrderProblem);
     }
-    public async Task<List<SingleOrderDto>> GetAllOrderByUserIdAsync(string userId)
+    public async Task<ServiceResult<List<SingleOrderDto>>> GetAllOrderByUserIdAsync(string userId)
     {
-        return await _orderRepository.GetAllOrdersByUserIdAsync(userId);
+        var listOfOrders = await _orderRepository.GetAllOrdersByUserIdAsync(userId);
+        return ServiceResult<List<SingleOrderDto>>.Success(listOfOrders);
     }
 }

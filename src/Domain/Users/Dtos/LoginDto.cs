@@ -1,4 +1,4 @@
-﻿using PersonalShop.Resources;
+﻿using PersonalShop.Resources.Validation.Authentication;
 using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Domain.Users.Dtos;

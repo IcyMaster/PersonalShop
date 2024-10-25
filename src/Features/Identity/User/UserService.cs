@@ -1,7 +1,9 @@
 ﻿using MassTransit.Initializers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Response;
+using PersonalShop.Domain.Users.Dtos;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Resources.Services.UserServices;
 
@@ -16,29 +18,28 @@ public class UserService : IUserService
         _userManager = userManager;
     }
 
-    public async Task<ServiceResult<string>> CreateUserAsync(string userName,
-        string password, string email, string? firstName,
-        string? lastName, string? phoneNumber)
+    public async Task<ServiceResult<string>> CreateUserAsync(RegisterDto registerDto)
     {
-        var user = new Domain.Users.User { UserName = userName, Email = email };
+        var user = new Domain.Users.User { UserName = registerDto.UserName, Email = registerDto.Email };
 
-        if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName))
+        if (!string.IsNullOrEmpty(registerDto.FirstName) && !string.IsNullOrEmpty(registerDto.LastName))
         {
-            user.SetPersonalName(firstName, lastName);
+            user.SetPersonalName(registerDto.FirstName, registerDto.LastName);
         }
 
-        if (!string.IsNullOrEmpty(phoneNumber))
+        if (!string.IsNullOrEmpty(registerDto.PhoneNumber))
         {
-            user.PhoneNumber = phoneNumber;
+            user.PhoneNumber = registerDto.PhoneNumber;
         }
 
-        var userExistCheck = await _userManager.FindByEmailAsync(email);
+        var userExistCheck = await _userManager.FindByEmailAsync(registerDto.Email);
+
         if (userExistCheck is not null)
         {
             return ServiceResult<string>.Failed(UserServiceErrors.UserEmailExist);
         }
 
-        var userCreateResult = await _userManager.CreateAsync(user, password);
+        var userCreateResult = await _userManager.CreateAsync(user,registerDto.Password);
 
         if (!userCreateResult.Succeeded)
         {
@@ -54,7 +55,6 @@ public class UserService : IUserService
 
         return ServiceResult<string>.Success(UserServiceSuccess.SuccessfulRegisterAccount);
     }
-
     public async Task<bool> CheckUserExistAsync(string userEmail)
     {
         var user = await _userManager.FindByEmailAsync(userEmail);

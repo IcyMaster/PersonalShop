@@ -1,15 +1,15 @@
 ﻿using PersonalShop.Domain.Products.Dtos;
+using PersonalShop.Domain.Response;
 
 namespace PersonalShop.Interfaces.Features;
-
 public interface IProductService
 {
-    Task<bool> AddProductByUserIdAsync(CreateProductDto createProductDto, string userId);
-    Task<bool> DeleteProductByIdAndValidateOwnerAsync(int id, string userId);
-    Task<List<SingleProductDto>> GetAllProductsWithUserAndValidateOwnerAsync(string userId);
-    Task<List<SingleProductDto>> GetAllProductsWithUserAsync();
-    Task<SingleProductDto?> GetProductByIdWithOutUserAsync(int id);
-    Task<SingleProductDto?> GetProductByIdWithUserAndValidateOwnerAsync(int id, string userId);
-    Task<SingleProductDto?> GetProductByIdWithUserAsync(int id);
-    Task<bool> UpdateProductByIdAndValidateOwnerAsync(int id, UpdateProductDto updateProductDto, string userId);
+    Task<ServiceResult<string>> CreateProductByUserIdAsync(CreateProductDto createProductDto, string userId);
+    Task<ServiceResult<string>> DeleteProductByIdAndValidateOwnerAsync(int id, string userId);
+    Task<ServiceResult<List<SingleProductDto>>> GetAllProductsWithUserAndValidateOwnerAsync(string userId);
+    Task<ServiceResult<List<SingleProductDto>>> GetAllProductsWithUserAsync();
+    Task<ServiceResult<SingleProductDto>> GetProductByIdWithOutUserAsync(int id);
+    Task<ServiceResult<SingleProductDto>> GetProductByIdWithUserAndValidateOwnerAsync(int id, string userId);
+    Task<ServiceResult<SingleProductDto>> GetProductByIdWithUserAsync(int id);
+    Task<ServiceResult<string>> UpdateProductByIdAndValidateOwnerAsync(int id, UpdateProductDto updateProductDto, string userId);
 }

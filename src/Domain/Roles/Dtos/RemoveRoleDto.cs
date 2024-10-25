@@ -1,4 +1,4 @@
-﻿using PersonalShop.Resources;
+﻿using PersonalShop.Resources.Validation.Role;
 using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Domain.Roles.Dtos;

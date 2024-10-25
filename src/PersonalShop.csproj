@@ -29,27 +29,42 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\CartMessages.Designer.cs">
+    <Compile Update="Resources\Services\OrderService\OrderServiceErrors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrderServiceErrors.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Services\OrderService\OrderServiceSuccess.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrderServiceSuccess.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Validation\CartItem\CartItemMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CartItemMessages.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Validation\Cart\CartMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>CartMessages.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\LoginMessages.Designer.cs">
+    <Compile Update="Resources\Validation\Authentication\LoginMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>LoginMessages.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\ProductMessages.Designer.cs">
+    <Compile Update="Resources\Validation\Product\ProductMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ProductMessages.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\RegisterMessages.Designer.cs">
+    <Compile Update="Resources\Validation\Authentication\RegisterMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RegisterMessages.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\RoleMessages.Designer.cs">
+    <Compile Update="Resources\Validation\Role\RoleMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RoleMessages.resx</DependentUpon>
@@ -64,6 +79,26 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AuthenticationServiceSuccess.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Services\CartService\CartServiceErrors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CartServiceErrors.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Services\CartService\CartServiceSuccess.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CartServiceSuccess.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Services\ProductService\ProductServiceErrors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ProductServiceErrors.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Services\ProductService\ProductServiceSuccess.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ProductServiceSuccess.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Services\UserServices\UserServiceErrors.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -77,23 +112,35 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\CartMessages.resx">
+    <EmbeddedResource Update="Resources\Services\OrderService\OrderServiceErrors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>OrderServiceErrors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Services\OrderService\OrderServiceSuccess.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>OrderServiceSuccess.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Validation\CartItem\CartItemMessages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CartItemMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Validation\Cart\CartMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CartMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\LoginMessages.resx">
+    <EmbeddedResource Update="Resources\Validation\Authentication\LoginMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LoginMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ProductMessages.resx">
+    <EmbeddedResource Update="Resources\Validation\Product\ProductMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ProductMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\RegisterMessages.resx">
+    <EmbeddedResource Update="Resources\Validation\Authentication\RegisterMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RegisterMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\RoleMessages.resx">
+    <EmbeddedResource Update="Resources\Validation\Role\RoleMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RoleMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
@@ -104,6 +151,22 @@
     <EmbeddedResource Update="Resources\Services\AuthenticationService\AuthenticationServiceSuccess.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AuthenticationServiceSuccess.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Services\CartService\CartServiceErrors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CartServiceErrors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Services\CartService\CartServiceSuccess.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CartServiceSuccess.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Services\ProductService\ProductServiceErrors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProductServiceErrors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Services\ProductService\ProductServiceSuccess.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProductServiceSuccess.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Services\UserServices\UserServiceErrors.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -1,5 +1,4 @@
-﻿using PersonalShop.Domain.Products;
-using PersonalShop.Resources;
+﻿using PersonalShop.Resources.Validation.Cart;
 using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Domain.Card.Dtos;
@@ -11,8 +10,8 @@ public class CreateCartItemDto
     public int ProductId { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(CartMessages)
-        , ErrorMessageResourceName = nameof(CartMessages.QuanityRequired))]
+        , ErrorMessageResourceName = nameof(CartMessages.QuantityRequired))]
     [Range(1,int.MaxValue, ErrorMessageResourceType = typeof(CartMessages)
-        ,ErrorMessageResourceName = nameof(CartMessages.ValueRangeError))]
-    public int Quanity { get; set; }
+        ,ErrorMessageResourceName = nameof(CartMessages.QuantityValueRangeError))]
+    public int Quantity { get; set; }
 }

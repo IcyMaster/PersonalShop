@@ -8,10 +8,10 @@ using PersonalShop.Data;
 
 #nullable disable
 
-namespace PersonalShop.Data.Migrations
+namespace PersonalShop.Data.migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241011102611_First")]
+    [Migration("20241025175803_First")]
     partial class First
     {
         /// <inheritdoc />

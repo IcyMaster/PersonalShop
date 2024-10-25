@@ -2,11 +2,10 @@
 
 namespace PersonalShop.Controllers
 {
-    [Route("Error")]
     public class ErrorController : Controller
     {
         [HttpGet]
-        [Route("AccessDenied", Name = "AccessDenied")]
+        [Route("AccessDenied")]
         public IActionResult AccessDenied()
         {
             return View();

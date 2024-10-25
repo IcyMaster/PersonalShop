@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PersonalShop.Resources {
+namespace PersonalShop.Resources.Validation.CartItem {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace PersonalShop.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class RoleMessages {
+    public class CartItemMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal RoleMessages() {
+        internal CartItemMessages() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace PersonalShop.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.RoleMessages", typeof(RoleMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validation.CartItem.CartItemMessages", typeof(CartItemMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,20 @@ namespace PersonalShop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد نام نقش را تکمیل کنید.
+        ///   Looks up a localized string similar to لطفا فیلد مقدار را تکمیل نمایید.
         /// </summary>
-        public static string RoleNameRequired {
+        public static string QuantityRequired {
             get {
-                return ResourceManager.GetString("RoleNameRequired", resourceCulture);
+                return ResourceManager.GetString("QuantityRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد ایمیل کاربر را تکمیل کنید.
+        ///   Looks up a localized string similar to لطفا در فیلد مقدار ، عدد مناسب وارد کنید.
         /// </summary>
-        public static string UserEmailRequired {
+        public static string QuantityValueRangeError {
             get {
-                return ResourceManager.GetString("UserEmailRequired", resourceCulture);
+                return ResourceManager.GetString("QuantityValueRangeError", resourceCulture);
             }
         }
     }

@@ -1,12 +1,13 @@
 ﻿using EasyCaching.Core;
-using MassTransit;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Card;
 using PersonalShop.Domain.Card.Dtos;
 using PersonalShop.Domain.Carts.Commands;
-using PersonalShop.Domain.Users;
+using PersonalShop.Domain.Carts.Dtos;
+using PersonalShop.Domain.Response;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Repositories;
+using PersonalShop.Resources.Services.CartService;
 
 namespace PersonalShop.Features.Cart;
 
@@ -25,14 +26,15 @@ public class CartService : ICartService
         _cachingfactory = cachingfactory;
     }
 
-    public async Task<SingleCartDto?> GetCartByUserIdWithProductAsync(string userId)
+    public async Task<ServiceResult<SingleCartDto>> GetCartByUserIdWithProductAsync(string userId)
     {
         var cartCashing = _cachingfactory.GetCachingProvider("Carts");
 
         if (cartCashing.Exists(userId))
         {
             var result = await cartCashing.GetAsync<SingleCartDto>(userId);
-            return result.Value;
+
+            return ServiceResult<SingleCartDto>.Success(result.Value);
         }
         else
         {
@@ -40,7 +42,7 @@ public class CartService : ICartService
 
             if (cart is null)
             {
-                return null;
+                return ServiceResult<SingleCartDto>.Failed(CartServiceErrors.CartNotFound);
             }
 
             var cartDto = new SingleCartDto
@@ -48,11 +50,11 @@ public class CartService : ICartService
                 Id = cart.Id,
                 UserId = cart.UserId,
                 TotalPrice = cart.TotalPrice,
-                CartItems = cart.CartItems.Select(ci => new Domain.Carts.Dtos.CartItemDto
+                CartItems = cart.CartItems.Select(ci => new CartItemDto
                 {
                     ProductId = ci.ProductId,
                     Quanity = ci.Quanity,
-                    Product = new Domain.Carts.Dtos.CartItemProductDto
+                    Product = new CartItemProductDto
                     {
                         Name = ci.Product.Name,
                         Description = ci.Product.Description,
@@ -65,16 +67,16 @@ public class CartService : ICartService
 
             cartDto.ProcessTotalItemCount();
 
-            return cartDto;
+            return ServiceResult<SingleCartDto>.Success(cartDto);
         }
     }
-    public async Task<SingleCartDto?> GetCartByCartIdWithOutProductAsync(Guid cartId)
+    public async Task<ServiceResult<SingleCartDto>> GetCartByCartIdWithOutProductAsync(Guid cartId)
     {
         var cart = await _cartRepository.GetCartByCartIdWithOutProductAsync(cartId, track: false);
 
         if (cart is null)
         {
-            return null;
+            return ServiceResult<SingleCartDto>.Failed(CartServiceErrors.CartNotFound);
         }
 
         var cartDto = new SingleCartDto
@@ -92,25 +94,25 @@ public class CartService : ICartService
 
         cartDto.ProcessTotalItemCount();
 
-        return cartDto;
+        return ServiceResult<SingleCartDto>.Success(cartDto);
     }
-    public async Task<bool> AddCartItemByUserIdAsync(string userId, int productId, int quanity)
+    public async Task<ServiceResult<string>> AddCartItemByUserIdAsync(string userId, CreateCartItemDto createCartItemDto)
     {
-        var product = await _productRepository.GetProductByIdWithUserAsync(productId);
+        var product = await _productRepository.GetProductByIdWithUserAsync(createCartItemDto.ProductId);
         if (product is null)
         {
-            return false;
+            return ServiceResult<string>.Failed(CartServiceErrors.CartNotFound);
         }
 
-        var item = new CartItem(productId, quanity, product.Price);
+        var item = new CartItem(createCartItemDto.ProductId, createCartItemDto.Quantity, product.Price);
 
         var cart = await _cartRepository.GetCartByUserIdWithOutProductAsync(userId, track: true);
         if (cart is not null)
         {
-            var cartItem = cart.CartItems.FirstOrDefault(e => e.ProductId.Equals(productId));
+            var cartItem = cart.CartItems.FirstOrDefault(e => e.ProductId.Equals(createCartItemDto.ProductId));
             if (cartItem is not null)
             {
-                cartItem.IncreaseQuantity(quanity);
+                cartItem.IncreaseQuantity(createCartItemDto.Quantity);
             }
             else
             {
@@ -132,25 +134,25 @@ public class CartService : ICartService
             var cartCashing = _cachingfactory.GetCachingProvider("Carts");
             cartCashing.Remove(userId);
 
-            return true;
+            return ServiceResult<string>.Success(CartServiceSuccess.SuccessfulAddCartItem);
         }
 
-        return false;
+        return ServiceResult<string>.Failed(CartServiceErrors.AddCartItemProblem);
     }
-    public async Task<bool> DeleteCartItemByUserIdAsync(string userId, int productId)
+    public async Task<ServiceResult<string>> DeleteCartItemByUserIdAsync(string userId, int productId)
     {
         var cart = await _cartRepository.GetCartByUserIdWithProductAsync(userId, track: true);
 
         if (cart is null)
         {
-            return false;
+            return ServiceResult<string>.Failed(CartServiceErrors.CartNotFound);
         }
 
         var cartItem = cart.CartItems.FirstOrDefault(e => e.ProductId == productId);
 
         if (cartItem is null)
         {
-            return false;
+            return ServiceResult<string>.Failed(CartServiceErrors.CartItemNotFound);
         }
 
         cart.CartItems.Remove(cartItem);
@@ -169,38 +171,33 @@ public class CartService : ICartService
             var cartCashing = _cachingfactory.GetCachingProvider("Carts");
             cartCashing.Remove(userId);
 
-            return true;
+            return ServiceResult<string>.Success(CartServiceSuccess.SuccessfulDeleteCartItem);
         }
 
-        return false;
+        return ServiceResult<string>.Failed(CartServiceErrors.DeleteCartItemProblem);
     }
-    public async Task<bool> UpdateCartItemQuanityByUserIdAsync(string userId, int productId, int quanity)
+    public async Task<ServiceResult<string>> UpdateCartItemQuantityByUserIdAsync(string userId, int productId, UpdateCartItemDto updateCartItemDto)
     {
-        if (quanity < 1)
-        {
-            return false;
-        }
-
         var cart = await _cartRepository.GetCartByUserIdWithProductAsync(userId, track: true);
 
         if (cart is null)
         {
-            return false;
+            return ServiceResult<string>.Failed(CartServiceErrors.CartNotFound);
         }
 
         var cartItem = cart.CartItems.FirstOrDefault(e => e.ProductId == productId);
 
         if (cartItem is null)
         {
-            return false;
+            return ServiceResult<string>.Failed(CartServiceErrors.CartItemNotFound);
         }
 
-        if (cartItem.Quanity.Equals(quanity))
+        if (cartItem.Quanity.Equals(updateCartItemDto.Quantity))
         {
-            return true;
+            return ServiceResult<string>.Success(CartServiceSuccess.SuccessfulUpdateCartItem);
         }
 
-        cartItem.SetQuantity(quanity);
+        cartItem.SetQuantity(updateCartItemDto.Quantity);
 
         cart.ProcessTotalPrice();
 
@@ -209,12 +206,12 @@ public class CartService : ICartService
             var cartCashing = _cachingfactory.GetCachingProvider("Carts");
             cartCashing.Remove(userId);
 
-            return true;
+            return ServiceResult<string>.Success(CartServiceSuccess.SuccessfulUpdateCartItem);
         }
 
-        return false;
+        return ServiceResult<string>.Failed(CartServiceSuccess.SuccessfulUpdateCartItem);
     }
-    public async Task<bool> DeleteProductByProductIdFromAllCartsAsync(DeleteProductFromCartCommand command)
+    public async Task<ServiceResult<bool>> DeleteProductByProductIdFromAllCartsAsync(DeleteProductFromCartCommand command)
     {
         var cartCashing = _cachingfactory.GetCachingProvider("Carts");
 
@@ -243,12 +240,12 @@ public class CartService : ICartService
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
-            return true;
+            return ServiceResult<bool>.Success(true);
         }
 
-        return false;
+        return ServiceResult<bool>.Failed(CartServiceErrors.DeleteProductInCartsCommandProblem);
     }
-    public async Task<bool> UpdateProductInCartsAsync(UpdateProductInCartsCommand command)
+    public async Task<ServiceResult<bool>> UpdateProductInCartsAsync(UpdateProductInCartsCommand command)
     {
         var cartCashing = _cachingfactory.GetCachingProvider("Carts");
 
@@ -270,9 +267,9 @@ public class CartService : ICartService
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
-            return true;
+            return ServiceResult<bool>.Success(true);
         }
 
-        return false;
+        return ServiceResult<bool>.Failed(CartServiceErrors.UpdateProductInCartsCommandProblem);
     }
 }

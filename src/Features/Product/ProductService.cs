@@ -2,8 +2,10 @@
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Carts.Commands;
 using PersonalShop.Domain.Products.Dtos;
+using PersonalShop.Domain.Response;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Repositories;
+using PersonalShop.Resources.Services.ProductService;
 
 namespace PersonalShop.Features.Product;
 
@@ -20,7 +22,7 @@ public class ProductService : IProductService
         _bus = bus;
     }
 
-    public async Task<bool> AddProductByUserIdAsync(CreateProductDto createProductDto, string userId)
+    public async Task<ServiceResult<string>> CreateProductByUserIdAsync(CreateProductDto createProductDto, string userId)
     {
         await _productRepository.AddAsync(new Domain.Products.Product
         {
@@ -32,17 +34,18 @@ public class ProductService : IProductService
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
-            return true;
+            return ServiceResult<string>.Success(ProductServiceSuccess.SuccessfulCreateProduct);
         }
 
-        return false;
+        return ServiceResult<string>.Failed(ProductServiceErrors.CreateProductProblem);
     }
-    public async Task<SingleProductDto?> GetProductByIdWithUserAsync(int id)
+    public async Task<ServiceResult<SingleProductDto>> GetProductByIdWithUserAsync(int id)
     {
         var product = await _productRepository.GetProductByIdWithUserAsync(id, track: false);
+
         if (product is null)
         {
-            return null;
+            return ServiceResult<SingleProductDto>.Failed(ProductServiceErrors.ProductNotFound);
         }
 
         var singleProductDto = new SingleProductDto
@@ -60,14 +63,14 @@ public class ProductService : IProductService
             }
         };
 
-        return singleProductDto;
+        return ServiceResult<SingleProductDto>.Success(singleProductDto);
     }
-    public async Task<SingleProductDto?> GetProductByIdWithOutUserAsync(int id)
+    public async Task<ServiceResult<SingleProductDto>> GetProductByIdWithOutUserAsync(int id)
     {
         var product = await _productRepository.GetProductByIdWithOutUserAsync(id, track: false);
         if (product is null)
         {
-            return null;
+            return ServiceResult<SingleProductDto>.Failed(ProductServiceErrors.ProductNotFound);
         }
 
         var singleProductDto = new SingleProductDto
@@ -85,14 +88,15 @@ public class ProductService : IProductService
             }
         };
 
-        return singleProductDto;
+        return ServiceResult<SingleProductDto>.Success(singleProductDto);
     }
-    public async Task<SingleProductDto?> GetProductByIdWithUserAndValidateOwnerAsync(int id, string userId)
+    public async Task<ServiceResult<SingleProductDto>> GetProductByIdWithUserAndValidateOwnerAsync(int id, string userId)
     {
         var product = await _productRepository.GetProductByIdWithUserAsync(id, track: false);
+
         if (product is null)
         {
-            return null;
+            return ServiceResult<SingleProductDto>.Failed(ProductServiceErrors.ProductNotFound);
         }
 
         var singleProductDto = new SingleProductDto
@@ -114,13 +118,13 @@ public class ProductService : IProductService
             singleProductDto.User.IsOwner = true;
         }
 
-        return singleProductDto;
+        return ServiceResult<SingleProductDto>.Success(singleProductDto);
     }
-    public async Task<List<SingleProductDto>> GetAllProductsWithUserAsync()
+    public async Task<ServiceResult<List<SingleProductDto>>> GetAllProductsWithUserAsync()
     {
         var data = await _productRepository.GetAllProductsWithUserAsync(track: false);
 
-        return data.Select(ob => new SingleProductDto
+        var listOfProduct = data.Select(ob => new SingleProductDto
         {
             Id = ob.Id,
             Name = ob.Name,
@@ -135,12 +139,14 @@ public class ProductService : IProductService
                 IsOwner = false,
             }
         }).ToList();
+
+        return ServiceResult<List<SingleProductDto>>.Success(listOfProduct);
     }
-    public async Task<List<SingleProductDto>> GetAllProductsWithUserAndValidateOwnerAsync(string userId)
+    public async Task<ServiceResult<List<SingleProductDto>>> GetAllProductsWithUserAndValidateOwnerAsync(string userId)
     {
         var data = await _productRepository.GetAllProductsWithUserAsync(track: false);
 
-        var products = data.Select(ob => new SingleProductDto
+        var listOfProduct = data.Select(ob => new SingleProductDto
         {
             Id = ob.Id,
             Name = ob.Name,
@@ -157,7 +163,7 @@ public class ProductService : IProductService
 
         }).ToList();
 
-        products.ForEach(ob =>
+        listOfProduct.ForEach(ob =>
         {
             if (ob.User.UserId.Equals(userId))
             {
@@ -165,20 +171,20 @@ public class ProductService : IProductService
             }
         });
 
-        return products;
+        return ServiceResult<List<SingleProductDto>>.Success(listOfProduct);
     }
-    public async Task<bool> DeleteProductByIdAndValidateOwnerAsync(int id, string userId)
+    public async Task<ServiceResult<string>> DeleteProductByIdAndValidateOwnerAsync(int id, string userId)
     {
         var product = await _productRepository.GetProductByIdWithOutUserAsync(id);
 
         if (product is null)
         {
-            return false;
+            return ServiceResult<string>.Failed(ProductServiceErrors.ProductNotFound);
         }
 
         if (!product.UserId.Equals(userId))
         {
-            return false;
+            return ServiceResult<string>.Failed(ProductServiceErrors.ProductOwnerMatchProblem);
         }
 
         _productRepository.Delete(product);
@@ -190,22 +196,22 @@ public class ProductService : IProductService
                 ProductId = id
             });
 
-            return true;
+            return ServiceResult<string>.Success(ProductServiceSuccess.SuccessfulDeleteProduct);
         }
 
-        return false;
+        return ServiceResult<string>.Failed(ProductServiceErrors.DeleteProductProblem);
     }
-    public async Task<bool> UpdateProductByIdAndValidateOwnerAsync(int id, UpdateProductDto updateProductDto, string userId)
+    public async Task<ServiceResult<string>> UpdateProductByIdAndValidateOwnerAsync(int id, UpdateProductDto updateProductDto, string userId)
     {
         var product = await _productRepository.GetProductByIdWithOutUserAsync(id);
         if (product is null)
         {
-            return false;
+            return ServiceResult<string>.Failed(ProductServiceErrors.ProductNotFound);
         }
 
         if (!product.UserId.Equals(userId))
         {
-            return false;
+            return ServiceResult<string>.Failed(ProductServiceErrors.ProductOwnerMatchProblem);
         }
 
         product.Name = updateProductDto.Name;
@@ -220,9 +226,9 @@ public class ProductService : IProductService
                 Price = updateProductDto.Price
             });
 
-            return true;
+            return ServiceResult<string>.Success(ProductServiceSuccess.SuccessfulUpdateProduct);
         }
 
-        return false;
+        return ServiceResult<string>.Failed(ProductServiceErrors.UpdateProductProblem);
     }
 }

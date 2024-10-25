@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Card.Dtos;
 using PersonalShop.Domain.Carts.Dtos;
+using PersonalShop.Domain.Products.Dtos;
+using PersonalShop.Domain.Response;
 using PersonalShop.Extension;
 using PersonalShop.Interfaces.Features;
 using System.ComponentModel.DataAnnotations;
@@ -17,65 +19,75 @@ public static class CartApis
         {
             var userId = context.GetUserId();
 
-            return Results.Ok(await cartService.GetCartByUserIdWithProductAsync(userId!));
+            var serviceResult = await cartService.GetCartByUserIdWithProductAsync(userId!);
 
+            if(serviceResult.IsSuccess)
+            {
+                return Results.Ok(ApiResult<SingleCartDto>.Success(serviceResult.Result!));
+            }
+
+            return Results.Ok(ApiResult<SingleCartDto>.Failed(serviceResult.Errors));
         });
 
         app.MapPost("Api/Cart/AddItem", [Authorize(Roles = RolesContract.Customer)] async ([FromBody] CreateCartItemDto createCartItemDto, ICartService cartService, HttpContext context) =>
         {
             var userId = context.GetUserId();
 
-            var validateRes = new List<ValidationResult>();
-            if (!Validator.TryValidateObject(createCartItemDto, new ValidationContext(createCartItemDto), validateRes, true))
+            var validateObject = ObjectValidator.Validate(createCartItemDto);
+            if (!validateObject.IsValid)
             {
-                return Results.BadRequest(validateRes.Select(e => e.ErrorMessage));
+                return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
             }
 
-            if (await cartService.AddCartItemByUserIdAsync(userId!, createCartItemDto.ProductId, createCartItemDto.Quanity))
+            var serviceResult = await cartService.AddCartItemByUserIdAsync(userId!, createCartItemDto);
+
+            if (serviceResult.IsSuccess)
             {
-                return Results.Ok("Item added to cart Succesfully");
+                return Results.Ok(ApiResult<string>.Success(serviceResult.Result!));
             }
 
-            return Results.BadRequest("Problem to add item to cart ...");
-
+            return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
         app.MapDelete("Api/Cart/DeleteItem/{productId:int}", [Authorize(Roles = RolesContract.Customer)] async (ICartService cartService, HttpContext context, int productId) =>
         {
             var userId = context.GetUserId();
 
-            if (await cartService.DeleteCartItemByUserIdAsync(userId!, productId))
+            var serviceResult = await cartService.DeleteCartItemByUserIdAsync(userId!,productId);
+
+            if (serviceResult.IsSuccess)
             {
-                return Results.Ok("Item deleted from cart Succesfully");
+                return Results.Ok(ApiResult<string>.Success(serviceResult.Result!));
             }
 
-            return Results.BadRequest("Problem delete item from cart ...");
-
+            return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
         app.MapPut("Api/Cart/UpdateItem/{productId:int}", [Authorize(Roles = RolesContract.Customer)] async ([FromBody] UpdateCartItemDto updateCartItemDto, ICartService cartService, HttpContext context, int productId) =>
         {
             var userId = context.GetUserId();
 
-            if (await cartService.UpdateCartItemQuanityByUserIdAsync(userId!, productId, updateCartItemDto.Quanity))
+            var serviceResult = await cartService.UpdateCartItemQuantityByUserIdAsync(userId!, productId, updateCartItemDto);
+
+            if (serviceResult.IsSuccess)
             {
-                return Results.Ok("The item info in the shopping cart has been updated successfully");
+                return Results.Ok(ApiResult<string>.Success(serviceResult.Result!));
             }
 
-            return Results.BadRequest("Problem to update cart item ...");
-
+            return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
         //just complete checkout without process payment
         app.MapGet("Api/Cart/Checkout/{cartId:Guid}", [Authorize(Roles = RolesContract.Customer)] async (ICartService cartService, IOrderService orderService, Guid cartId) =>
         {
-            if (await orderService.CreateOrderByCartIdAsync(cartId))
+            var serviceResult = await orderService.CreateOrderByCartIdAsync(cartId);
+
+            if (serviceResult.IsSuccess)
             {
-                return Results.Ok("Payment has been made successfully");
+                return Results.Ok(ApiResult<string>.Success(serviceResult.Result!));
             }
 
-            return Results.BadRequest("Problem processing payment ...");
-
+            return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
     }
 }

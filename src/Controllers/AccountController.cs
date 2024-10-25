@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PersonalShop.Domain.Response;
 using PersonalShop.Domain.Users.Dtos;
 using PersonalShop.Interfaces.Features;
 
@@ -35,17 +36,14 @@ public class AccountController : Controller
             return View(registerDto);
         }
 
-        if (await _userService.CreateUserAsync(registerDto.UserName,
-                                           registerDto.Password,
-                                           registerDto.Email,
-                                           registerDto.FirstName,
-                                           registerDto.LastName,
-                                           registerDto.PhoneNumber))
+        var serviceResult = await _userService.CreateUserAsync(registerDto);
+
+        if (serviceResult.IsSuccess)
         {
             return RedirectToAction("Index", "Home");
         }
 
-        return BadRequest("Problem in register user");
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 
     [HttpGet]
@@ -65,13 +63,15 @@ public class AccountController : Controller
         {
             return View(loginDto);
         }
-        var user = await _authenticationService.LoginAsync(loginDto.Email, loginDto.Password);
-        if (user is not null)
+
+        var serviceResult = await _authenticationService.LoginAsync(loginDto.Email, loginDto.Password);
+
+        if (serviceResult.IsSuccess)
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index","Home");
         }
 
-        return BadRequest("Problem in login user to website");
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 
     [HttpPost]
@@ -79,8 +79,14 @@ public class AccountController : Controller
     [Route("Logout")]
     public async Task<ActionResult> LogOut()
     {
-        await _authenticationService.LogoutAsync();
-        return RedirectToAction("Index", "Home");
+        var serviceResult =  await _authenticationService.LogoutAsync();
+
+        if (serviceResult.IsSuccess)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 }
 

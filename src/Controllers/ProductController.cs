@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Products.Dtos;
+using PersonalShop.Domain.Response;
 using PersonalShop.Extension;
 using PersonalShop.Interfaces.Features;
 
@@ -23,7 +24,14 @@ public class ProductController : Controller
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SingleProductDto>>> Index()
     {
-        return View(await _productService.GetAllProductsWithUserAsync());
+        var serviceResult = await _productService.GetAllProductsWithUserAsync();
+
+        if(serviceResult.IsSuccess)
+        {
+            return View(serviceResult.Result);
+        }
+
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 
     [HttpGet]
@@ -44,12 +52,14 @@ public class ProductController : Controller
             return View(createProductDto);
         }
 
-        if(await _productService.AddProductByUserIdAsync(createProductDto, User.Identity!.GetUserId()))
+        var serviceResult = await _productService.CreateProductByUserIdAsync(createProductDto, User.Identity!.GetUserId());
+
+        if (serviceResult.IsSuccess)
         {
-            return RedirectToAction(nameof(UserController.UserProducts),"User");
+            return RedirectToAction(nameof(UserController.UserProducts), nameof(UserController));
         }
 
-        return BadRequest("Problem to add product in website ...");
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 
     [HttpPost]
@@ -57,12 +67,14 @@ public class ProductController : Controller
     [Route("DeleteProduct/{productId:int}", Name = "DeleteProduct")]
     public async Task<ActionResult> DeleteProduct(int productId)
     {
-        if (!await _productService.DeleteProductByIdAndValidateOwnerAsync(productId,User.Identity!.GetUserId()))
+        var serviceResult = await _productService.DeleteProductByIdAndValidateOwnerAsync(productId, User.Identity!.GetUserId());
+
+        if (serviceResult.IsSuccess)
         {
-            return BadRequest("Problem in Delete product");
+            return RedirectToAction(nameof(UserController.UserProducts), nameof(UserController));
         }
 
-        return RedirectToAction(nameof(UserController.UserProducts), "User");
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 
     [HttpGet]
@@ -70,13 +82,14 @@ public class ProductController : Controller
     [Route("UpdateProduct/{productId:int}", Name = "UpdateProduct")]
     public async Task<ActionResult> UpdateProduct(int productId)
     {
-        var product = await _productService.GetProductByIdWithUserAndValidateOwnerAsync(productId,User.Identity!.GetUserId());
-        if (product is null)
+        var serviceResult = await _productService.GetProductByIdWithUserAndValidateOwnerAsync(productId, User.Identity!.GetUserId());
+
+        if (serviceResult.IsSuccess)
         {
-            return BadRequest("Problem in Load product for edit");
+            return View(serviceResult.Result);
         }
 
-        return View(product);
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 
     [HttpPost]
@@ -89,11 +102,13 @@ public class ProductController : Controller
             return View(updateProductDto);
         }
 
-        if (!await _productService.UpdateProductByIdAndValidateOwnerAsync(productId, updateProductDto, User.Identity!.GetUserId()))
+        var serviceResult = await _productService.UpdateProductByIdAndValidateOwnerAsync(productId, updateProductDto, User.Identity!.GetUserId());
+
+        if (serviceResult.IsSuccess)
         {
-            return BadRequest("Problem in edit product");
+            return RedirectToAction(nameof(UserController.UserProducts),nameof(UserController));
         }
 
-        return RedirectToAction(nameof(UserController.UserProducts), "User");
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 }

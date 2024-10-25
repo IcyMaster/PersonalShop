@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PersonalShop.Resources {
+namespace PersonalShop.Resources.Validation.Role {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace PersonalShop.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class CartMessages {
+    public class RoleMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CartMessages() {
+        internal RoleMessages() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace PersonalShop.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.CartMessages", typeof(CartMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validation.Role.RoleMessages", typeof(RoleMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,20 @@ namespace PersonalShop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد شناسه محصول را تکمیل نمایید.
+        ///   Looks up a localized string similar to لطفا فیلد نام نقش را تکمیل کنید.
         /// </summary>
-        public static string ProductIdRequired {
+        public static string RoleNameRequired {
             get {
-                return ResourceManager.GetString("ProductIdRequired", resourceCulture);
+                return ResourceManager.GetString("RoleNameRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد مقدار را تکمیل نمایید.
+        ///   Looks up a localized string similar to لطفا فیلد ایمیل کاربر را تکمیل کنید.
         /// </summary>
-        public static string QuanityRequired {
+        public static string UserEmailRequired {
             get {
-                return ResourceManager.GetString("QuanityRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to لطفا مقدار مناسب وارد کنید.
-        /// </summary>
-        public static string ValueRangeError {
-            get {
-                return ResourceManager.GetString("ValueRangeError", resourceCulture);
+                return ResourceManager.GetString("UserEmailRequired", resourceCulture);
             }
         }
     }

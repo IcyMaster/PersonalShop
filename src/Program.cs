@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Identity;
 using PersonalShop.Api;
 using PersonalShop.Configuration;
-using PersonalShop.Domain.Users;
 using PersonalShop.Middleware;
 
 namespace PersonalShop;
@@ -59,7 +57,8 @@ public class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+            pattern: "{controller=Home}/{action=Index}/{id?}"
+        );
 
         //seed all roles and create defualt owner user for first time
         app.SeedRolesAndOwnerUserAsync();
