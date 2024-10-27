@@ -4,14 +4,14 @@
     "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj": {}
   },
   "projects": {
-    "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj": {
+    "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
-        "projectName": "PersonalShop.Tests",
-        "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
+        "projectUniqueName": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.csproj",
+        "projectName": "PersonalShop",
+        "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.csproj",
         "packagesPath": "C:\\Users\\devic\\.nuget\\packages\\",
-        "outputPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\obj\\",
+        "outputPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\DevExpress\\Components\\Offline Packages",
@@ -54,9 +54,137 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "EasyCaching.InMemory": {
+              "target": "Package",
+              "version": "[1.9.2, )"
+            },
+            "MassTransit": {
+              "target": "Package",
+              "version": "[8.2.5, )"
+            },
+            "MassTransit.RabbitMQ": {
+              "target": "Package",
+              "version": "[8.2.5, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[8.0.5, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
+        "projectName": "PersonalShop.Tests",
+        "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
+        "packagesPath": "C:\\Users\\devic\\.nuget\\packages\\",
+        "outputPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\DevExpress\\Components\\Offline Packages",
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\devic\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 23.2.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "C:\\Users\\devic\\OneDrive\\Desktop": {},
+          "D:\\DevExpress\\Components\\System\\Components\\Packages": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.csproj": {
+                "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Bogus": {
+              "target": "Package",
+              "version": "[35.6.1, )"
+            },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[17.8.0, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.72, )"
             },
             "coverlet.collector": {
               "target": "Package",
@@ -87,7 +215,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
