@@ -5,7 +5,7 @@ namespace PersonalShop.Domain.Orders;
 
 public class Order
 {
-    public Order(string userId,decimal totalPrice)
+    public Order(string userId, decimal totalPrice)
     {
         UserId = userId;
         TotalPrice = totalPrice;

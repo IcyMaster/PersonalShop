@@ -10,6 +10,6 @@ public class AssignRoleDto
     public string UserEmail { get; set; } = string.Empty;
 
     [Required(ErrorMessageResourceType = typeof(RoleMessages)
-        ,ErrorMessageResourceName = nameof(RoleMessages.RoleNameRequired))]
+        , ErrorMessageResourceName = nameof(RoleMessages.RoleNameRequired))]
     public string RoleName { get; set; } = string.Empty;
 }

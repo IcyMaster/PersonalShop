@@ -1,5 +1,4 @@
 ﻿using PersonalShop.Domain.Response;
-using PersonalShop.Domain.Users.Dtos;
 using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Extension;

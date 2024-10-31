@@ -1,5 +1,4 @@
-﻿using PersonalShop.Domain.Card.Dtos;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Domain.Card;
 

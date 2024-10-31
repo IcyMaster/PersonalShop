@@ -28,7 +28,7 @@ internal static class ServicesConfig
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<ICartRepository, CartRepository>();
-        services.AddScoped<IOrderRepository,OrderRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
 
         //services
         services.AddScoped<IProductService, ProductService>();

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonalShop.Domain.Card;
 using PersonalShop.Interfaces.Repositories;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PersonalShop.Data.Repositories;
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using PersonalShop.Domain.Roles;
-using PersonalShop.Domain.Users;
 using PersonalShop.Interfaces.Features;
 
 namespace PersonalShop.Features.Identity.Role;

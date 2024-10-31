@@ -26,15 +26,15 @@ public static class Seeder
             return;
         }
 
-        foreach(var roles in RolesContract.Roles)
+        foreach (var roles in RolesContract.Roles)
         {
-            if(!await roleService.CheckRoleExistAsync(roles))
+            if (!await roleService.CheckRoleExistAsync(roles))
             {
                 await roleService.CreateRoleAsync(roles);
             }
         }
 
-        var user = new RegisterDto 
+        var user = new RegisterDto
         {
             UserName = userName,
             Password = password,

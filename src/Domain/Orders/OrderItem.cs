@@ -1,11 +1,10 @@
-﻿using PersonalShop.Domain.Products;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Domain.Orders;
 
 public class OrderItem
 {
-    public OrderItem(int productId,string productName,decimal productPrice,int quanity)
+    public OrderItem(int productId, string productName, decimal productPrice, int quanity)
     {
         ProductId = productId;
         ProductName = productName;

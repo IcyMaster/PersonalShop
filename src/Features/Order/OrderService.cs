@@ -1,10 +1,8 @@
 ﻿using EasyCaching.Core;
 using PersonalShop.Data.Contracts;
-using PersonalShop.Domain.Card.Dtos;
 using PersonalShop.Domain.Orders;
 using PersonalShop.Domain.Orders.Dtos;
 using PersonalShop.Domain.Response;
-using PersonalShop.Domain.Users;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Repositories;
 using PersonalShop.Resources.Services.CartService;
@@ -42,10 +40,10 @@ public class OrderService : IOrderService
 
         cart.CartItems.ForEach(async e =>
         {
-            var product = await _productRepository.GetProductByIdWithOutUserAsync(e.ProductId,track: false);
-            if(product is not null)
+            var product = await _productRepository.GetProductByIdWithOutUserAsync(e.ProductId, track: false);
+            if (product is not null)
             {
-                order.OrderItems.Add(new OrderItem(e.ProductId,product.Name,product.Price, e.Quanity));
+                order.OrderItems.Add(new OrderItem(e.ProductId, product.Name, product.Price, e.Quanity));
             }
         });
 

@@ -28,7 +28,7 @@ public class UserController : Controller
     {
         var serviceResult = await _productService.GetAllProductsWithUserAndValidateOwnerAsync(User.Identity!.GetUserId());
 
-        if(serviceResult.IsSuccess)
+        if (serviceResult.IsSuccess)
         {
             return View(serviceResult.Result);
         }
@@ -43,7 +43,7 @@ public class UserController : Controller
     {
         var serviceResult = await _orderService.GetAllOrderByUserIdAsync(User.Identity!.GetUserId());
 
-        if(serviceResult.IsSuccess)
+        if (serviceResult.IsSuccess)
         {
             return View(serviceResult.Result);
         }

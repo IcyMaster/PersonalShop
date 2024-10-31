@@ -16,7 +16,7 @@ public static class ProductApis
         {
             var serviceResult = await productService.GetAllProductsWithUserAsync();
 
-            if(serviceResult.IsSuccess)
+            if (serviceResult.IsSuccess)
             {
                 return Results.Ok(ApiResult<List<SingleProductDto>>.Success(serviceResult.Result!));
             }

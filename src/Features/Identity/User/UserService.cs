@@ -1,6 +1,5 @@
 ﻿using MassTransit.Initializers;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Response;
 using PersonalShop.Domain.Users.Dtos;
@@ -39,7 +38,7 @@ public class UserService : IUserService
             return ServiceResult<string>.Failed(UserServiceErrors.UserEmailExist);
         }
 
-        var userCreateResult = await _userManager.CreateAsync(user,registerDto.Password);
+        var userCreateResult = await _userManager.CreateAsync(user, registerDto.Password);
 
         if (!userCreateResult.Succeeded)
         {
@@ -66,7 +65,7 @@ public class UserService : IUserService
 
         return false;
     }
-    public async Task<ServiceResult<string>> AssignUserRoleByEmailAsync(string userEmail,string roleName)
+    public async Task<ServiceResult<string>> AssignUserRoleByEmailAsync(string userEmail, string roleName)
     {
         var user = await _userManager.FindByEmailAsync(userEmail);
         if (user is null)
@@ -74,7 +73,7 @@ public class UserService : IUserService
             return ServiceResult<string>.Failed(UserServiceErrors.UserNotFound);
         }
 
-        var result = await _userManager.AddToRoleAsync(user,roleName);
+        var result = await _userManager.AddToRoleAsync(user, roleName);
         if (result.Succeeded)
         {
             return ServiceResult<string>.Failed(UserServiceSuccess.SuccessfulAssineRoleToUser);

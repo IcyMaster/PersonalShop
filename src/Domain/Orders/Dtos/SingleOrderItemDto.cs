@@ -1,7 +1,4 @@
-﻿using PersonalShop.Domain.Products;
-using System.ComponentModel.DataAnnotations;
-
-namespace PersonalShop.Domain.Orders.Dtos;
+﻿namespace PersonalShop.Domain.Orders.Dtos;
 
 public class SingleOrderItemDto
 {

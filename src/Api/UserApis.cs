@@ -18,7 +18,7 @@ public static class UserApis
 
             var serviceResult = await productService.GetAllProductsWithUserAndValidateOwnerAsync(userId!);
 
-            if(serviceResult.IsSuccess)
+            if (serviceResult.IsSuccess)
             {
                 return Results.Ok(ApiResult<List<SingleProductDto>>.Success(serviceResult.Result!));
             }
@@ -32,7 +32,7 @@ public static class UserApis
 
             var serviceResult = await orderService.GetAllOrderByUserIdAsync(userId!);
 
-            if(serviceResult.IsSuccess)
+            if (serviceResult.IsSuccess)
             {
                 return Results.Ok(ApiResult<List<SingleOrderDto>>.Success(serviceResult.Result!));
             }

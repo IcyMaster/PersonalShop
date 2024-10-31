@@ -1,6 +1,4 @@
-﻿using PersonalShop.Domain.Products;
-
-namespace PersonalShop.Domain.Carts.Dtos;
+﻿namespace PersonalShop.Domain.Carts.Dtos;
 
 public class CartItemDto
 {

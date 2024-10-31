@@ -11,7 +11,7 @@ public class CreateCartItemDto
 
     [Required(ErrorMessageResourceType = typeof(CartMessages)
         , ErrorMessageResourceName = nameof(CartMessages.QuantityRequired))]
-    [Range(1,int.MaxValue, ErrorMessageResourceType = typeof(CartMessages)
-        ,ErrorMessageResourceName = nameof(CartMessages.QuantityValueRangeError))]
+    [Range(1, int.MaxValue, ErrorMessageResourceType = typeof(CartMessages)
+        , ErrorMessageResourceName = nameof(CartMessages.QuantityValueRangeError))]
     public int Quantity { get; set; }
 }

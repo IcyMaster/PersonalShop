@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace PersonalShop.Middleware;
 
 internal sealed class ExceptionHelper : IExceptionHandler
 {
-    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext,Exception exception,CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
 
         var problemDetails = new ProblemDetails

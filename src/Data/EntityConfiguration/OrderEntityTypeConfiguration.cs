@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PersonalShop.Domain.Orders;
-using System.Reflection.Emit;
 
 namespace PersonalShop.Data.EntityConfiguration;
 

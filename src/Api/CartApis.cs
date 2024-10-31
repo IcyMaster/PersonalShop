@@ -3,11 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Card.Dtos;
 using PersonalShop.Domain.Carts.Dtos;
-using PersonalShop.Domain.Products.Dtos;
 using PersonalShop.Domain.Response;
 using PersonalShop.Extension;
 using PersonalShop.Interfaces.Features;
-using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Api;
 
@@ -21,7 +19,7 @@ public static class CartApis
 
             var serviceResult = await cartService.GetCartByUserIdWithProductAsync(userId!);
 
-            if(serviceResult.IsSuccess)
+            if (serviceResult.IsSuccess)
             {
                 return Results.Ok(ApiResult<SingleCartDto>.Success(serviceResult.Result!));
             }
@@ -53,7 +51,7 @@ public static class CartApis
         {
             var userId = context.GetUserId();
 
-            var serviceResult = await cartService.DeleteCartItemByUserIdAsync(userId!,productId);
+            var serviceResult = await cartService.DeleteCartItemByUserIdAsync(userId!, productId);
 
             if (serviceResult.IsSuccess)
             {

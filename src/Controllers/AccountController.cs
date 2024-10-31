@@ -68,7 +68,7 @@ public class AccountController : Controller
 
         if (serviceResult.IsSuccess)
         {
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
         return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
@@ -79,7 +79,7 @@ public class AccountController : Controller
     [Route("Logout")]
     public async Task<ActionResult> LogOut()
     {
-        var serviceResult =  await _authenticationService.LogoutAsync();
+        var serviceResult = await _authenticationService.LogoutAsync();
 
         if (serviceResult.IsSuccess)
         {

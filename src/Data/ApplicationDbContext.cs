@@ -1,16 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PersonalShop.Domain.Users;
-using PersonalShop.Domain.Products;
-using PersonalShop.Domain.Card;
 using PersonalShop.Data.EntityConfiguration;
+using PersonalShop.Domain.Card;
 using PersonalShop.Domain.Orders;
+using PersonalShop.Domain.Products;
 using PersonalShop.Domain.Roles;
+using PersonalShop.Domain.Users;
 
 namespace PersonalShop.Data;
 
-public class ApplicationDbContext : IdentityDbContext<User,UserRole,string>
+public class ApplicationDbContext : IdentityDbContext<User, UserRole, string>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 

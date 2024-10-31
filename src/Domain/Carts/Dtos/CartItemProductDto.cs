@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace PersonalShop.Domain.Carts.Dtos
+﻿namespace PersonalShop.Domain.Carts.Dtos
 {
     public class CartItemProductDto
     {

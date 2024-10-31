@@ -8,7 +8,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
 {
     public ProductRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-    public async Task<Product?> GetProductByIdWithUserAsync(int id,bool track = true)
+    public async Task<Product?> GetProductByIdWithUserAsync(int id, bool track = true)
     {
         var data = await _dbSet.Include(e => e.User).SingleOrDefaultAsync(e => e.Id.Equals(id));
 
@@ -19,7 +19,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
 
         return data;
     }
-    public async Task<Product?> GetProductByIdWithOutUserAsync(int id,bool track = true)
+    public async Task<Product?> GetProductByIdWithOutUserAsync(int id, bool track = true)
     {
         var data = await _dbSet.SingleOrDefaultAsync(e => e.Id.Equals(id));
 

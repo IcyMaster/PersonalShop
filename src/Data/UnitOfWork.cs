@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using PersonalShop.Data.Contracts;
-using System;
 using System.Data;
 
 namespace PersonalShop.Data;

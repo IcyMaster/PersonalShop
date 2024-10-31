@@ -1,5 +1,4 @@
 ﻿using MassTransit;
-using PersonalShop.Domain.Orders;
 using PersonalShop.Features.Cart.Consumers;
 
 namespace PersonalShop.Configuration;
@@ -15,7 +14,8 @@ public static class MassTransitConfig
 
             option.UsingRabbitMq((context, cfg) =>
             {
-                cfg.Host("localhost", "/", h => {
+                cfg.Host("localhost", "/", h =>
+                {
                     h.Username("guest");
                     h.Password("guest");
                 });

@@ -14,7 +14,7 @@ public static class AuthenticationConfig
 {
     public static void RegisterIdentity(this WebApplicationBuilder builder)
     {
-        builder.Services.AddIdentity<User,UserRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+        builder.Services.AddIdentity<User, UserRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
         builder.Services.Configure<IdentityOptions>(options =>
         {

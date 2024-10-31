@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PersonalShop.Domain.Products;
+﻿using PersonalShop.Domain.Products;
 using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Domain.Card;

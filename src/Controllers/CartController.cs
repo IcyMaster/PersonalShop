@@ -27,7 +27,7 @@ public class CartController : Controller
     {
         var serviceResult = await _cartService.GetCartByUserIdWithProductAsync(User.Identity!.GetUserId());
 
-        if(serviceResult.IsSuccess)
+        if (serviceResult.IsSuccess)
         {
             return View(serviceResult.Result);
         }
@@ -73,7 +73,7 @@ public class CartController : Controller
     [Authorize(Roles = RolesContract.Customer)]
     [HttpPost]
     [Route("UpdateItem/{productId:int}", Name = "UpdateItem")]
-    public async Task<ActionResult> UpdateItem(int productId,UpdateCartItemDto updateCartItemDto)
+    public async Task<ActionResult> UpdateItem(int productId, UpdateCartItemDto updateCartItemDto)
     {
         var serviceResult = await _cartService.UpdateCartItemQuantityByUserIdAsync(User.Identity!.GetUserId(), productId, updateCartItemDto);
 

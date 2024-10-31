@@ -26,7 +26,7 @@ public class ProductController : Controller
     {
         var serviceResult = await _productService.GetAllProductsWithUserAsync();
 
-        if(serviceResult.IsSuccess)
+        if (serviceResult.IsSuccess)
         {
             return View(serviceResult.Result);
         }
@@ -95,7 +95,7 @@ public class ProductController : Controller
     [HttpPost]
     [Authorize(Roles = RolesContract.Admin)]
     [Route("UpdateProduct/{productId:int}", Name = "UpdateProduct")]
-    public async Task<ActionResult> UpdateProduct(int productId,UpdateProductDto updateProductDto)
+    public async Task<ActionResult> UpdateProduct(int productId, UpdateProductDto updateProductDto)
     {
         if (!ModelState.IsValid)
         {
@@ -106,7 +106,7 @@ public class ProductController : Controller
 
         if (serviceResult.IsSuccess)
         {
-            return RedirectToAction(nameof(UserController.UserProducts),nameof(UserController));
+            return RedirectToAction(nameof(UserController.UserProducts), nameof(UserController));
         }
 
         return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
