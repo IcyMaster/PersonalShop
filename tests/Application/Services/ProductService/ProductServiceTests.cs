@@ -3,14 +3,14 @@ using MassTransit;
 using Moq;
 using PersonalShop.Data;
 using PersonalShop.Data.Repositories;
-using PersonalShop.Features.Product;
+using PersonalShop.Features.Products;
 using PersonalShop.Features.Products.Dtos;
 using PersonalShop.Tests.Application.Fixture;
 
 
 namespace PersonalShop.Tests.Application.Services.ProductServiceTests
 {
-    public class ProductServiceTests:IClassFixture<DbFixture>
+    public class ProductServiceTests : IClassFixture<DbFixture>
     {
         private readonly DbFixture _fixture;
         private readonly UnitOfWork _unitOfWork;
@@ -28,14 +28,14 @@ namespace PersonalShop.Tests.Application.Services.ProductServiceTests
         {
             //Arrange
             var mockBus = new Mock<IBus>();
-            var productService = new ProductService(_productRepo,_unitOfWork, mockBus.Object);
+            var productService = new ProductService(_productRepo, _unitOfWork, mockBus.Object);
 
             var userId = Guid.NewGuid().ToString();
 
             var productDto = new Faker<CreateProductDto>()
                 .RuleFor(x => x.Name, f => f.Commerce.ProductName())
                 .RuleFor(x => x.Name, f => f.Commerce.ProductDescription())
-                .RuleFor(p => p.Price, f => decimal.Parse(f.Commerce.Price(2000,1000000)));
+                .RuleFor(p => p.Price, f => decimal.Parse(f.Commerce.Price(2000, 1000000)));
 
 
             //Act
