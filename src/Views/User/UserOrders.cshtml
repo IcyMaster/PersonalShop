@@ -19,7 +19,7 @@
             {
                 <tr>
                     <td>@item.Id</td>
-                    <td>@item.OrderDate.ToShortDateString()</td>
+                    <td>@item.OrderDate.DateTime.ToShortDateString()</td>
                     <td>@item.TotalPrice.ToString("00")</td>
                     <td>
                         <button class="btn btn-primary no-outline" type="button" data-bs-toggle="collapse" data-bs-target="#detail-@item.Id" aria-expanded="false" aria-controls="details1">

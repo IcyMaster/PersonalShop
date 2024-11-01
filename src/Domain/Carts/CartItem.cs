@@ -5,10 +5,10 @@ namespace PersonalShop.Domain.Carts;
 
 public class CartItem
 {
-    public CartItem(int productId, int quanity, decimal itemPrice)
+    public CartItem(int productId, int quantity, decimal itemPrice)
     {
         ProductId = productId;
-        Quanity = quanity;
+        Quantity = quantity;
         ItemPrice = itemPrice;
     }
 
@@ -17,16 +17,16 @@ public class CartItem
     public Guid CartId { get; set; }
     public Product Product { get; set; } = null!;
     public int ProductId { get; private set; }
-    public int Quanity { get; private set; }
+    public int Quantity { get; private set; }
     public decimal ItemPrice { get; private set; }
 
     public void IncreaseQuantity(int count)
     {
-        Quanity = Quanity + count;
+        Quantity = Quantity + count;
     }
     public void SetQuantity(int count)
     {
-        Quanity = count;
+        Quantity = count;
     }
     public void SetItemPrice(decimal price)
     {

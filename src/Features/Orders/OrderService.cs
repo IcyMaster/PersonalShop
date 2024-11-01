@@ -43,7 +43,7 @@ public class OrderService : IOrderService
             var product = await _productRepository.GetProductByIdWithOutUserAsync(e.ProductId, track: false);
             if (product is not null)
             {
-                order.OrderItems.Add(new OrderItem(e.ProductId, product.Name, product.Price, e.Quanity));
+                order.OrderItems.Add(new OrderItem(e.ProductId, product.Name, product.Price, e.Quantity));
             }
         });
 
@@ -72,14 +72,14 @@ public class OrderService : IOrderService
 
         var order = new Order(cart.UserId, cart.TotalPrice);
 
-        cart.CartItems.ForEach(async e =>
+        foreach (var item in cart.CartItems)
         {
-            var product = await _productRepository.GetProductByIdWithOutUserAsync(e.ProductId, track: false);
+            var product = await _productRepository.GetProductByIdWithOutUserAsync(item.ProductId, track: false);
             if (product is not null)
             {
-                order.OrderItems.Add(new OrderItem(e.ProductId, product.Name, product.Price, e.Quanity));
+                order.OrderItems.Add(new OrderItem(item.ProductId, product.Name, product.Price, item.Quantity));
             }
-        });
+        }
 
         await _orderRepository.AddAsync(order);
 

@@ -38,10 +38,10 @@ else
                                     <div class="col-md-3 col-lg-3 col-xl-3 d-flex">
                                         <div class="d-flex mb-2" style="max-width: 300px">
 
-                                            @if (item.Quanity > 1)
+                                            @if (item.Quantity > 1)
                                             {
                                                 <form asp-controller="Cart" asp-action="UpdateItem" asp-route-productId="@item.ProductId" method="post" class="d-inline">
-                                                    <input type="hidden" name="Quanity" value="@(item.Quanity - 1)" />
+                                                    <input type="hidden" name="Quanity" value="@(item.Quantity - 1)" />
                                                     <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary px-2 me-2 no-outline">
                                                         <i class="bi bi-dash"></i>
                                                     </button>
@@ -55,11 +55,11 @@ else
                                             }
 
                                             <div data-mdb-input-init class="form-outline">
-                                                <input id="form1" min="1" name="quantity" value="@item.Quanity" type="number" class="form-control" />
+                                                <input id="form1" min="1" name="quantity" value="@item.Quantity" type="number" class="form-control" />
                                             </div>
 
                                             <form asp-controller="Cart" asp-action="UpdateItem" asp-route-productId="@item.ProductId" method="post" class="d-inline">
-                                                <input type="hidden" name="Quanity" value="@(item.Quanity + 1)" />
+                                                <input type="hidden" name="Quanity" value="@(item.Quantity + 1)" />
                                                 <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary px-2 ms-2 no-outline">
                                                     <i class="bi bi-plus"></i>
                                                 </button>

@@ -52,7 +52,7 @@ public class CartService : ICartService
                 CartItems = cart.CartItems.Select(ci => new CartItemDto
                 {
                     ProductId = ci.ProductId,
-                    Quanity = ci.Quanity,
+                    Quantity = ci.Quantity,
                     Product = new CartItemProductDto
                     {
                         Name = ci.Product.Name,
@@ -86,7 +86,7 @@ public class CartService : ICartService
             CartItems = cart.CartItems.Select(ci => new CartItemDto
             {
                 ProductId = ci.ProductId,
-                Quanity = ci.Quanity,
+                Quantity = ci.Quantity,
                 Product = null!,
             }).ToList(),
         };
@@ -191,7 +191,7 @@ public class CartService : ICartService
             return ServiceResult<string>.Failed(CartServiceErrors.CartItemNotFound);
         }
 
-        if (cartItem.Quanity.Equals(updateCartItemDto.Quantity))
+        if (cartItem.Quantity.Equals(updateCartItemDto.Quantity))
         {
             return ServiceResult<string>.Success(CartServiceSuccess.SuccessfulUpdateCartItem);
         }

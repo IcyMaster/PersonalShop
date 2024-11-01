@@ -15,6 +15,6 @@ public class Cart
 
     public void ProcessTotalPrice()
     {
-        TotalPrice = CartItems.Select(x => x.ItemPrice * x.Quanity).Sum();
+        TotalPrice = CartItems.Select(x => x.ItemPrice * x.Quantity).Sum();
     }
 }
