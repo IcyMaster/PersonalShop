@@ -1,7 +1,7 @@
 ﻿using PersonalShop.Domain.Products;
 using System.ComponentModel.DataAnnotations;
 
-namespace PersonalShop.Domain.Card;
+namespace PersonalShop.Domain.Carts;
 
 public class CartItem
 {

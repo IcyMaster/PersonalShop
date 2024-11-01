@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using PersonalShop.Data.Contracts;
-using PersonalShop.Domain.Authentication.Dtos;
-using PersonalShop.Domain.Response;
-using PersonalShop.Domain.Roles.Dtos;
-using PersonalShop.Domain.Users.Dtos;
+using PersonalShop.Domain.Responses;
 using PersonalShop.Extension;
+using PersonalShop.Features.Identitys.Authentications.Dtos;
+using PersonalShop.Features.Identitys.Roles.Dtos;
+using PersonalShop.Features.Identitys.Users.Dtos;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Resources.Services.AuthenticationService;
 
@@ -16,7 +16,7 @@ public static class AccountApis
 {
     public static void RegisterAccountApis(this WebApplication app)
     {
-        app.MapPost("Api/Account/Register", [AllowAnonymous] async ([FromBody] RegisterDto registerDto, IUserService userService) =>
+        app.MapPost("api/account/register", [AllowAnonymous] async ([FromBody] RegisterDto registerDto, IUserService userService) =>
         {
             var validateObject = ObjectValidator.Validate(registerDto);
             if (!validateObject.IsValid)
@@ -34,7 +34,7 @@ public static class AccountApis
             return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
-        app.MapPost("Api/Account/Login", [AllowAnonymous] async ([FromBody] LoginDto loginDto, IAuthenticationService authenticationService) =>
+        app.MapPost("api/account/login", [AllowAnonymous] async ([FromBody] LoginDto loginDto, IAuthenticationService authenticationService) =>
         {
             var validateObject = ObjectValidator.Validate(loginDto);
             if (!validateObject.IsValid)
@@ -51,7 +51,7 @@ public static class AccountApis
             return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
-        app.MapPost("Api/Account/Logout", [Authorize] async (IAuthenticationService authenticationService, HttpContext context) =>
+        app.MapPost("api/account/logout", [Authorize] async (IAuthenticationService authenticationService, HttpContext context) =>
         {
             string? token = context.Request.Headers[HeaderNames.Authorization];
 
@@ -70,7 +70,7 @@ public static class AccountApis
             return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
-        app.MapGet("Api/Account/Roles", [Authorize] async (IUserService userService, HttpContext context) =>
+        app.MapGet("api/account/roles", [Authorize] async (IUserService userService, HttpContext context) =>
         {
             var userId = context.GetUserId();
 
@@ -84,7 +84,7 @@ public static class AccountApis
             return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
-        app.MapPost("Api/Account/Roles/AssignRole", [Authorize(Roles = RolesContract.Owner)] async ([FromBody] AssignRoleDto assignRoleDto, IUserService userService) =>
+        app.MapPost("api/account/roles/assignRole", [Authorize(Roles = RolesContract.Owner)] async ([FromBody] AssignRoleDto assignRoleDto, IUserService userService) =>
         {
             var validateObject = ObjectValidator.Validate(assignRoleDto);
             if (!validateObject.IsValid)
@@ -102,7 +102,7 @@ public static class AccountApis
             return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
-        app.MapDelete("Api/Account/Roles/RemoveRole", [Authorize(Roles = RolesContract.Owner)] async ([FromBody] RemoveRoleDto removeRoleDto, IUserService userService) =>
+        app.MapDelete("api/account/roles/removeRole", [Authorize(Roles = RolesContract.Owner)] async ([FromBody] RemoveRoleDto removeRoleDto, IUserService userService) =>
         {
             var validateObject = ObjectValidator.Validate(removeRoleDto);
             if (!validateObject.IsValid)

@@ -1,5 +1,5 @@
-﻿using PersonalShop.Domain.Response;
-using PersonalShop.Domain.Users.Dtos;
+﻿using PersonalShop.Domain.Responses;
+using PersonalShop.Features.Identitys.Users.Dtos;
 
 namespace PersonalShop.Interfaces.Features;
 

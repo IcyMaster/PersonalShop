@@ -1,4 +1,4 @@
-﻿namespace PersonalShop.Domain.Response
+﻿namespace PersonalShop.Domain.Responses
 {
     public class ServiceResult<TResult>
     {

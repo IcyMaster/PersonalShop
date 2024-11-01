@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Data.Contracts;
-using PersonalShop.Domain.Card.Dtos;
-using PersonalShop.Domain.Carts.Dtos;
-using PersonalShop.Domain.Response;
+using PersonalShop.Domain.Responses;
 using PersonalShop.Extension;
+using PersonalShop.Features.Carts.Dtos;
 using PersonalShop.Interfaces.Features;
 
 namespace PersonalShop.Controllers;

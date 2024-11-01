@@ -8,15 +8,18 @@ public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {
-        builder.HasMany(e => e.OrderItems)
+        builder.HasKey(x => x.Id);
+        builder.HasIndex(x => x.UserId);
+
+        builder.HasMany(x => x.OrderItems)
             .WithOne()
-            .HasForeignKey(e => e.OrderId)
+            .HasForeignKey(x => x.OrderId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
-        builder.HasOne(e => e.User)
+        builder.HasOne(x => x.User)
             .WithMany()
-            .HasForeignKey(e => e.UserId)
+            .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
     }

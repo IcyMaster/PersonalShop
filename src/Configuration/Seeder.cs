@@ -1,5 +1,5 @@
 ﻿using PersonalShop.Data.Contracts;
-using PersonalShop.Domain.Users.Dtos;
+using PersonalShop.Features.Identitys.Users.Dtos;
 using PersonalShop.Interfaces.Features;
 
 namespace PersonalShop.Configuration;

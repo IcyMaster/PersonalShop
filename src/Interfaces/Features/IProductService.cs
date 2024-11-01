@@ -1,5 +1,5 @@
-﻿using PersonalShop.Domain.Products.Dtos;
-using PersonalShop.Domain.Response;
+﻿using PersonalShop.Domain.Responses;
+using PersonalShop.Features.Products.Dtos;
 
 namespace PersonalShop.Interfaces.Features;
 public interface IProductService

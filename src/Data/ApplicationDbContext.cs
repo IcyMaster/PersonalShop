@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PersonalShop.Data.EntityConfiguration;
-using PersonalShop.Domain.Card;
+using PersonalShop.Domain.Carts;
 using PersonalShop.Domain.Orders;
 using PersonalShop.Domain.Products;
 using PersonalShop.Domain.Roles;

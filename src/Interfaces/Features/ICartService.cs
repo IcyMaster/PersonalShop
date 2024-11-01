@@ -1,7 +1,6 @@
-﻿using PersonalShop.Domain.Card.Dtos;
-using PersonalShop.Domain.Carts.Commands;
-using PersonalShop.Domain.Carts.Dtos;
-using PersonalShop.Domain.Response;
+﻿using PersonalShop.Domain.Responses;
+using PersonalShop.Features.Carts.Commands;
+using PersonalShop.Features.Carts.Dtos;
 
 namespace PersonalShop.Interfaces.Features
 {

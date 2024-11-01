@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Data.Contracts;
-using PersonalShop.Domain.Card.Dtos;
-using PersonalShop.Domain.Carts.Dtos;
-using PersonalShop.Domain.Response;
+using PersonalShop.Domain.Responses;
 using PersonalShop.Extension;
+using PersonalShop.Features.Carts.Dtos;
 using PersonalShop.Interfaces.Features;
 
 namespace PersonalShop.Api;
@@ -13,7 +12,7 @@ public static class CartApis
 {
     public static void RegisterCardApis(this WebApplication app)
     {
-        app.MapGet("Api/Cart", [Authorize(Roles = RolesContract.Customer)] async (ICartService cartService, HttpContext context) =>
+        app.MapGet("api/cart", [Authorize(Roles = RolesContract.Customer)] async (ICartService cartService, HttpContext context) =>
         {
             var userId = context.GetUserId();
 
@@ -27,7 +26,7 @@ public static class CartApis
             return Results.Ok(ApiResult<SingleCartDto>.Failed(serviceResult.Errors));
         });
 
-        app.MapPost("Api/Cart/AddItem", [Authorize(Roles = RolesContract.Customer)] async ([FromBody] CreateCartItemDto createCartItemDto, ICartService cartService, HttpContext context) =>
+        app.MapPost("api/cart", [Authorize(Roles = RolesContract.Customer)] async ([FromBody] CreateCartItemDto createCartItemDto, ICartService cartService, HttpContext context) =>
         {
             var userId = context.GetUserId();
 
@@ -47,7 +46,7 @@ public static class CartApis
             return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
-        app.MapDelete("Api/Cart/DeleteItem/{productId:int}", [Authorize(Roles = RolesContract.Customer)] async (ICartService cartService, HttpContext context, int productId) =>
+        app.MapDelete("api/cart/{productId:int}", [Authorize(Roles = RolesContract.Customer)] async (ICartService cartService, HttpContext context, int productId) =>
         {
             var userId = context.GetUserId();
 
@@ -61,7 +60,7 @@ public static class CartApis
             return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
-        app.MapPut("Api/Cart/UpdateItem/{productId:int}", [Authorize(Roles = RolesContract.Customer)] async ([FromBody] UpdateCartItemDto updateCartItemDto, ICartService cartService, HttpContext context, int productId) =>
+        app.MapPut("api/cart/{productId:int}", [Authorize(Roles = RolesContract.Customer)] async ([FromBody] UpdateCartItemDto updateCartItemDto, ICartService cartService, HttpContext context, int productId) =>
         {
             var userId = context.GetUserId();
 
@@ -76,9 +75,11 @@ public static class CartApis
         });
 
         //just complete checkout without process payment
-        app.MapGet("Api/Cart/Checkout/{cartId:Guid}", [Authorize(Roles = RolesContract.Customer)] async (ICartService cartService, IOrderService orderService, Guid cartId) =>
+        app.MapPost("api/cart/checkout", [Authorize(Roles = RolesContract.Customer)] async (IOrderService orderService, HttpContext context) =>
         {
-            var serviceResult = await orderService.CreateOrderByCartIdAsync(cartId);
+            var userId = context.GetUserId();
+
+            var serviceResult = await orderService.CreateOrderByUserIdAsync(userId!);
 
             if (serviceResult.IsSuccess)
             {

@@ -1,10 +1,11 @@
-﻿using PersonalShop.Domain.Orders.Dtos;
-using PersonalShop.Domain.Response;
+﻿using PersonalShop.Domain.Responses;
+using PersonalShop.Features.Orders.Dtos;
 
 namespace PersonalShop.Interfaces.Features;
 
 public interface IOrderService
 {
     Task<ServiceResult<string>> CreateOrderByCartIdAsync(Guid cartId);
+    Task<ServiceResult<string>> CreateOrderByUserIdAsync(string userId);
     Task<ServiceResult<List<SingleOrderDto>>> GetAllOrderByUserIdAsync(string userId);
 }

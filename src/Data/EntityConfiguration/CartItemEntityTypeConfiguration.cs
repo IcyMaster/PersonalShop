@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PersonalShop.Domain.Card;
+using PersonalShop.Domain.Carts;
 
 namespace PersonalShop.Data.EntityConfiguration
 {
@@ -8,9 +8,12 @@ namespace PersonalShop.Data.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<CartItem> builder)
         {
-            builder.HasOne(e => e.Product)
+            builder.HasKey(x => x.Id);
+            builder.HasIndex(x => x.CartId);
+
+            builder.HasOne(x => x.Product)
                 .WithOne()
-                .HasForeignKey<CartItem>(e => e.ProductId).IsRequired();
+                .HasForeignKey<CartItem>(x => x.ProductId).IsRequired();
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace PersonalShop.Domain.Orders;
+﻿namespace PersonalShop.Domain.Orders;
 
 public class OrderItem
 {
@@ -12,11 +10,10 @@ public class OrderItem
         Quanity = quanity;
     }
 
-    [Key]
     public int Id { get; set; }
-    public int OrderId { get; set; }
-    public int ProductId { get; set; }
+    public int OrderId { get; set; } = 0;
+    public int ProductId { get; set; } = 0;
     public string ProductName { get; set; } = string.Empty;
-    public decimal ProductPrice { get; set; }
-    public int Quanity { get; set; }
+    public decimal ProductPrice { get; set; } = decimal.Zero;
+    public int Quanity { get; set; } = 0;
 }

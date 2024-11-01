@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonalShop.Domain.Orders;
-using PersonalShop.Domain.Orders.Dtos;
+using PersonalShop.Features.Orders.Dtos;
 using PersonalShop.Interfaces.Repositories;
 
 namespace PersonalShop.Data.Repositories;

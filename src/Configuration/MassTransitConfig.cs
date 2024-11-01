@@ -1,5 +1,5 @@
 ﻿using MassTransit;
-using PersonalShop.Features.Cart.Consumers;
+using PersonalShop.Features.Carts.Consumers;
 
 namespace PersonalShop.Configuration;
 

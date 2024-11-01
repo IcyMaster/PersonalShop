@@ -3,8 +3,8 @@ using MassTransit;
 using Moq;
 using PersonalShop.Data;
 using PersonalShop.Data.Repositories;
-using PersonalShop.Domain.Products.Dtos;
 using PersonalShop.Features.Product;
+using PersonalShop.Features.Products.Dtos;
 using PersonalShop.Tests.Application.Fixture;
 
 

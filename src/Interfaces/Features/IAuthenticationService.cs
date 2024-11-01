@@ -1,6 +1,6 @@
-﻿using PersonalShop.Domain.Authentication.Dtos;
-using PersonalShop.Domain.Response;
+﻿using PersonalShop.Domain.Responses;
 using PersonalShop.Domain.Users;
+using PersonalShop.Features.Identitys.Authentications.Dtos;
 
 namespace PersonalShop.Interfaces.Features
 {

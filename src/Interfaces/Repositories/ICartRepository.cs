@@ -1,5 +1,5 @@
 ﻿using PersonalShop.Data.Contracts;
-using PersonalShop.Domain.Card;
+using PersonalShop.Domain.Carts;
 
 namespace PersonalShop.Interfaces.Repositories
 {
