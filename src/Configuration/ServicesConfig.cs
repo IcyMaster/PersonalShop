@@ -2,6 +2,7 @@
 using PersonalShop.Data;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Data.Repositories;
+using PersonalShop.Data.Seeders;
 using PersonalShop.Features.Carts;
 using PersonalShop.Features.Identitys.Authentications;
 using PersonalShop.Features.Identitys.Roles;
@@ -41,7 +42,11 @@ internal static class ServicesConfig
         //Generators
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
-        //other services
+        //Seeders
+        services.AddTransient<IDataBaseSeeder, RoleSeeder>();
+        services.AddTransient<IDataBaseSeeder, OwnerSeeder>();
+
+        //Other services
         services.AddExceptionHandler<ExceptionHelper>();
         services.AddProblemDetails();
     }

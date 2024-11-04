@@ -4,15 +4,26 @@ using PersonalShop.Interfaces.Features;
 
 namespace PersonalShop.Configuration;
 
-public static class Seeder
+public static class Migrations
 {
-    public static async void SeedRolesAndOwnerUserAsync(this WebApplication app)
+    public static async void MigrateApplication(this WebApplication app)
     {
-        var serviceScope = app.Services.CreateScope();
-        var services = serviceScope.ServiceProvider;
+        await using var serviceScope = app.Services.CreateAsyncScope();
 
-        var roleService = services.GetRequiredService<IRoleService>();
-        var userService = services.GetRequiredService<IUserService>();
+        var seeders = serviceScope.ServiceProvider.GetServices<IDataBaseSeeder>();
+
+        Console.WriteLine("Starting Seeding database");
+
+        foreach (var seeder in seeders)
+        {
+            if(await seeder.MigrateAsync())
+            {
+                Console.WriteLine("Failed to migrate database");
+                await app.StopAsync();
+            }
+        }
+
+        Console.WriteLine("Seeding database done !");
 
         const string email = "icyMaster2020@gmail.com";
         const string firstName = "Mohammad";

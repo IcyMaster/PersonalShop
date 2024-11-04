@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Responses;
+using PersonalShop.Domain.Users;
 using PersonalShop.Features.Identitys.Users.Dtos;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Resources.Services.UserServices;
@@ -10,32 +11,32 @@ namespace PersonalShop.Features.Identitys.Users;
 
 public class UserService : IUserService
 {
-    private readonly UserManager<Domain.Users.User> _userManager;
+    private readonly UserManager<User> _userManager;
 
-    public UserService(UserManager<Domain.Users.User> userManager)
+    public UserService(UserManager<User> userManager)
     {
         _userManager = userManager;
     }
 
     public async Task<ServiceResult<string>> CreateUserAsync(RegisterDto registerDto)
     {
-        var user = new Domain.Users.User { UserName = registerDto.UserName, Email = registerDto.Email };
-
-        if (!string.IsNullOrEmpty(registerDto.FirstName) && !string.IsNullOrEmpty(registerDto.LastName))
-        {
-            user.SetPersonalName(registerDto.FirstName, registerDto.LastName);
-        }
-
-        if (!string.IsNullOrEmpty(registerDto.PhoneNumber))
-        {
-            user.PhoneNumber = registerDto.PhoneNumber;
-        }
-
         var userExistCheck = await _userManager.FindByEmailAsync(registerDto.Email);
 
         if (userExistCheck is not null)
         {
             return ServiceResult<string>.Failed(UserServiceErrors.UserEmailExist);
+        }
+
+        var user = User.CreateNew(registerDto.Email,registerDto.UserName);
+
+        if (!string.IsNullOrEmpty(registerDto.FirstName) && !string.IsNullOrEmpty(registerDto.LastName))
+        {
+            user.SetFullName(registerDto.FirstName, registerDto.LastName);
+        }
+
+        if (!string.IsNullOrEmpty(registerDto.PhoneNumber))
+        {
+            user.SetPhoneNumber(registerDto.PhoneNumber);
         }
 
         var userCreateResult = await _userManager.CreateAsync(user, registerDto.Password);

@@ -1,6 +1,7 @@
 ﻿using EasyCaching.Core;
 using Microsoft.AspNetCore.Identity;
 using PersonalShop.Domain.Responses;
+using PersonalShop.Domain.Users;
 using PersonalShop.Features.Identitys.Authentications.Dtos;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Generator;
@@ -11,12 +12,12 @@ namespace PersonalShop.Features.Identitys.Authentications;
 
 public class AuthenticationService : IAuthenticationService
 {
-    private readonly SignInManager<Domain.Users.User> _signInManager;
-    private readonly UserManager<Domain.Users.User> _userManager;
+    private readonly SignInManager<User> _signInManager;
+    private readonly UserManager<User> _userManager;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
     private readonly IEasyCachingProviderFactory _cachingfactory;
 
-    public AuthenticationService(SignInManager<Domain.Users.User> signInManager, UserManager<Domain.Users.User> userManager, IJwtTokenGenerator jwtTokenGenerator, IEasyCachingProviderFactory cachingfactory)
+    public AuthenticationService(SignInManager<User> signInManager, UserManager<User> userManager, IJwtTokenGenerator jwtTokenGenerator, IEasyCachingProviderFactory cachingfactory)
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -46,23 +47,23 @@ public class AuthenticationService : IAuthenticationService
 
         return ServiceResult<TokenDto>.Success(tokenDto);
     }
-    public async Task<ServiceResult<Domain.Users.User>> LoginAsync(string email, string password)
+    public async Task<ServiceResult<User>> LoginAsync(string email, string password)
     {
         var user = await _userManager.FindByEmailAsync(email);
 
         if (user is null)
         {
-            return ServiceResult<Domain.Users.User>.Failed(AuthenticationServiceErrors.UserNotFound);
+            return ServiceResult<User>.Failed(AuthenticationServiceErrors.UserNotFound);
         }
 
         var result = await _signInManager.PasswordSignInAsync(user, password, true, false);
 
         if (!result.Succeeded)
         {
-            return ServiceResult<Domain.Users.User>.Failed(AuthenticationServiceErrors.UserNotFound);
+            return ServiceResult<User>.Failed(AuthenticationServiceErrors.UserNotFound);
         }
 
-        return ServiceResult<Domain.Users.User>.Success(user); ;
+        return ServiceResult<User>.Success(user); ;
     }
     public async Task<ServiceResult<string>> LogoutAsync()
     {
