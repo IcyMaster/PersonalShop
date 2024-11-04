@@ -4,16 +4,14 @@ using PersonalShop.Domain.Roles;
 
 namespace PersonalShop.Data.Seeders;
 
-internal class RoleSeeder:IDataBaseSeeder
+internal class RoleSeeder : IDataBaseSeeder
 {
     private readonly RoleManager<UserRole> _roleManager;
-    private readonly ApplicationDbContext _dbContext;
     private readonly ILogger<RoleSeeder> _logger;
 
-    public RoleSeeder(RoleManager<UserRole> roleManager, ApplicationDbContext dbContext, ILogger<RoleSeeder> logger)
+    public RoleSeeder(RoleManager<UserRole> roleManager, ILogger<RoleSeeder> logger)
     {
         _roleManager = roleManager;
-        _dbContext = dbContext;
         _logger = logger;
     }
 
@@ -21,26 +19,27 @@ internal class RoleSeeder:IDataBaseSeeder
     {
         List<UserRole> unCreatedRoles = new List<UserRole>();
 
-        foreach(var role in GetRoles())
+        foreach (var role in GetRoles())
         {
-            if(!await _roleManager.RoleExistsAsync(role))
+            if (!await _roleManager.RoleExistsAsync(role))
             {
                 unCreatedRoles.Add(new UserRole(role));
             }
         }
 
-        if(unCreatedRoles.Count() is 0)
+        if (unCreatedRoles.Count() is 0)
         {
             return true;
         }
 
         _logger.LogInformation("Role Seeder Migration Started!");
 
-        await _dbContext.AddRangeAsync(unCreatedRoles);
-
         try
         {
-            await _dbContext.SaveChangesAsync();
+            foreach (var role in unCreatedRoles)
+            {
+                await _roleManager.CreateAsync(role);
+            }
         }
         catch (Exception ex)
         {

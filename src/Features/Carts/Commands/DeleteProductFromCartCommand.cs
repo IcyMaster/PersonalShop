@@ -1,6 +1,8 @@
-﻿namespace PersonalShop.Features.Carts.Commands;
+﻿using PersonalShop.Interfaces.Commands;
 
-public class DeleteProductFromCartCommand
+namespace PersonalShop.Features.Carts.Commands;
+
+public class DeleteProductFromCartCommand : IDeleteProductFromCartCommand
 {
     public int ProductId { get; set; }
 }

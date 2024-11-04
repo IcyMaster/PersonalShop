@@ -1,5 +1,6 @@
 ﻿using EasyCaching.Core;
 using Microsoft.AspNetCore.Identity;
+using PersonalShop.Builders.Caches;
 using PersonalShop.Domain.Responses;
 using PersonalShop.Domain.Users;
 using PersonalShop.Features.Identitys.Authentications.Dtos;
@@ -15,14 +16,15 @@ public class AuthenticationService : IAuthenticationService
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
-    private readonly IEasyCachingProviderFactory _cachingfactory;
+    private readonly IEasyCachingProvider _cachingProvider;
 
-    public AuthenticationService(SignInManager<User> signInManager, UserManager<User> userManager, IJwtTokenGenerator jwtTokenGenerator, IEasyCachingProviderFactory cachingfactory)
+    public AuthenticationService(SignInManager<User> signInManager, UserManager<User> userManager,
+        IJwtTokenGenerator jwtTokenGenerator, IEasyCachingProvider cachingProvider)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _jwtTokenGenerator = jwtTokenGenerator;
-        _cachingfactory = cachingfactory;
+        _cachingProvider = cachingProvider;
     }
 
     public async Task<ServiceResult<TokenDto>> LoginAsyncAndCreateToken(string email, string password)
@@ -65,18 +67,15 @@ public class AuthenticationService : IAuthenticationService
 
         return ServiceResult<User>.Success(user); ;
     }
-    public async Task<ServiceResult<string>> LogoutAsync()
-    {
-        await _signInManager.SignOutAsync();
-        return ServiceResult<string>.Success(AuthenticationServiceSuccess.SuccessfulLogout);
-    }
-    public async Task<ServiceResult<string>> LogoutApiAsync(string jwtToken)
+    public async Task<ServiceResult<string>> LogoutApiAsync(string jwtToken, string userId)
     {
         jwtToken = jwtToken.Replace("Bearer ", string.Empty);
 
-        var jwtBlackList = _cachingfactory.GetCachingProvider("JwtBlackList");
+        string cacheKey = JwtCacheKeyBuilder.JwtCacheKeyWithUserId(userId);
 
-        if (await jwtBlackList.GetCountAsync($"JwtBlackList:{jwtToken}") > 0)
+        var cache = await _cachingProvider.GetAsync<string>(cacheKey);
+
+        if (cache.HasValue)
         {
             return ServiceResult<string>.Success(AuthenticationServiceSuccess.SuccessfulLogout);
         }
@@ -98,13 +97,18 @@ public class AuthenticationService : IAuthenticationService
                 }
                 else
                 {
-                    await jwtBlackList.SetAsync($"JwtBlackList:{jwtToken}", string.Empty, TimeSpan.FromTicks(unixExp));
+                    await _cachingProvider.TrySetAsync(cacheKey, jwtToken, TimeSpan.FromTicks(unixExp));
                     return ServiceResult<string>.Success(AuthenticationServiceSuccess.SuccessfulLogout);
                 }
             }
         }
 
         return ServiceResult<string>.Success(AuthenticationServiceErrors.LogoutProblem);
+    }
+    public async Task<ServiceResult<string>> LogoutAsync()
+    {
+        await _signInManager.SignOutAsync();
+        return ServiceResult<string>.Success(AuthenticationServiceSuccess.SuccessfulLogout);
     }
 }
 

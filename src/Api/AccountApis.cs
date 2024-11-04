@@ -54,13 +54,14 @@ public static class AccountApis
         app.MapPost("api/account/logout", [Authorize] async (IAuthenticationService authenticationService, HttpContext context) =>
         {
             string? token = context.Request.Headers[HeaderNames.Authorization];
+            var userId = context.GetUserId();
 
             if (string.IsNullOrEmpty(token))
             {
                 return Results.BadRequest(ApiResult<string>.Failed(AuthenticationServiceErrors.GetJwtTokenProblem));
             }
 
-            var serviceResult = await authenticationService.LogoutApiAsync(token);
+            var serviceResult = await authenticationService.LogoutApiAsync(token, userId!);
 
             if (serviceResult.IsSuccess)
             {

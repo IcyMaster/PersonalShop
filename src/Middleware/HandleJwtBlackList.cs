@@ -1,17 +1,19 @@
 ﻿using EasyCaching.Core;
 using Microsoft.Net.Http.Headers;
+using PersonalShop.Builders.Caches;
+using PersonalShop.Extension;
 
 namespace PersonalShop.Middleware;
 
 public class HandleJwtBlackList
 {
     private readonly RequestDelegate _next;
-    private readonly IEasyCachingProviderFactory _cachingfactory;
+    private readonly IEasyCachingProvider _cachingProvider;
 
-    public HandleJwtBlackList(RequestDelegate next, IEasyCachingProviderFactory cachingfactory)
+    public HandleJwtBlackList(RequestDelegate next, IEasyCachingProvider cachingProvider)
     {
         _next = next;
-        _cachingfactory = cachingfactory;
+        _cachingProvider = cachingProvider;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -20,11 +22,15 @@ public class HandleJwtBlackList
 
         if (!string.IsNullOrEmpty(token))
         {
+            var userId = context.GetUserId();
+
             token = token.Replace("Bearer ", string.Empty);
 
-            var jwtBlackList = _cachingfactory.GetCachingProvider("JwtBlackList");
+            string cacheKey = JwtCacheKeyBuilder.JwtCacheKeyWithUserId(userId!);
 
-            if (await jwtBlackList.GetCountAsync($"JwtBlackList:{token}") > 0)
+            var cache = await _cachingProvider.GetAsync<string>(cacheKey);
+
+            if (cache.HasValue)
             {
                 await context.Response.WriteAsJsonAsync("Please Login and get new token");
                 return;

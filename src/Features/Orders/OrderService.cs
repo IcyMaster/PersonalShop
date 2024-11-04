@@ -1,4 +1,5 @@
 ﻿using EasyCaching.Core;
+using PersonalShop.Builders.Caches;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Orders;
 using PersonalShop.Domain.Responses;
@@ -16,15 +17,16 @@ public class OrderService : IOrderService
     private readonly ICartRepository _cartRepository;
     private readonly IProductRepository _productRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IEasyCachingProviderFactory _cachingfactory;
+    private readonly IEasyCachingProvider _cachingProvider;
 
-    public OrderService(IOrderRepository orderRepository, IProductRepository productRepository, ICartRepository cartRepository, IUnitOfWork unitOfWork, IEasyCachingProviderFactory cachingfactory)
+    public OrderService(IOrderRepository orderRepository, IProductRepository productRepository,
+        ICartRepository cartRepository, IUnitOfWork unitOfWork, IEasyCachingProvider cachingProvider)
     {
         _orderRepository = orderRepository;
         _productRepository = productRepository;
         _unitOfWork = unitOfWork;
         _cartRepository = cartRepository;
-        _cachingfactory = cachingfactory;
+        _cachingProvider = cachingProvider;
     }
 
     public async Task<ServiceResult<string>> CreateOrderByCartIdAsync(Guid cartId)
@@ -38,14 +40,14 @@ public class OrderService : IOrderService
 
         var order = new Order(cart.UserId, cart.TotalPrice);
 
-        cart.CartItems.ForEach(async e =>
+        foreach (var item in cart.CartItems)
         {
-            var product = await _productRepository.GetProductByIdWithOutUserAsync(e.ProductId, track: false);
+            var product = await _productRepository.GetProductByIdWithOutUserAsync(item.ProductId, track: false);
             if (product is not null)
             {
-                order.OrderItems.Add(new OrderItem(e.ProductId, product.Name, product.Price, e.Quantity));
+                order.OrderItems.Add(new OrderItem(item.ProductId, product.Name, product.Price, item.Quantity));
             }
-        });
+        }
 
         await _orderRepository.AddAsync(order);
 
@@ -53,8 +55,9 @@ public class OrderService : IOrderService
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
-            var cartCashing = _cachingfactory.GetCachingProvider("Carts");
-            cartCashing.Remove(cart.UserId);
+            string cacheKey = CartCacheKeyBuilder.CartCacheKeyWithUserId(cart.UserId);
+
+            await _cachingProvider.RemoveAsync(cacheKey);
 
             return ServiceResult<string>.Success(OrderServiceSuccess.SuccessfulCreateOrder);
         }
@@ -87,8 +90,9 @@ public class OrderService : IOrderService
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
-            var cartCashing = _cachingfactory.GetCachingProvider("Carts");
-            cartCashing.Remove(cart.UserId);
+            string cacheKey = CartCacheKeyBuilder.CartCacheKeyWithUserId(cart.UserId);
+
+            await _cachingProvider.RemoveAsync(cacheKey);
 
             return ServiceResult<string>.Success(OrderServiceSuccess.SuccessfulCreateOrder);
         }

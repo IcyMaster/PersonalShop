@@ -16,9 +16,6 @@ public class Program
         // Register MassTransit and RabitMQ services
         builder.Services.RegisterMassTransit();
 
-        // Add Caching services
-        builder.Services.RegisterCachingServices();
-
         // Use Configuration Services
         builder.Services.RegisterExternalServices();
 
@@ -60,8 +57,8 @@ public class Program
             pattern: "{controller=Home}/{action=Index}/{id?}"
         );
 
-        //seed all roles and create defualt owner user for first time
-        app.SeedRolesAndOwnerUserAsync();
+        app.ApplyMigrations();
+        app.MigrateApplicationSeeder();
 
         app.Run();
     }

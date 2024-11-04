@@ -49,5 +49,11 @@ internal static class ServicesConfig
         //Other services
         services.AddExceptionHandler<ExceptionHelper>();
         services.AddProblemDetails();
+
+        //Cache Service
+        services.AddEasyCaching(options =>
+        {
+            options.UseInMemory();
+        });
     }
 }

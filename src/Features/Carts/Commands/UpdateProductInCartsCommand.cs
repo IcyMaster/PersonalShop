@@ -1,6 +1,8 @@
-﻿namespace PersonalShop.Features.Carts.Commands;
+﻿using PersonalShop.Interfaces.Commands;
 
-public class UpdateProductInCartsCommand
+namespace PersonalShop.Features.Carts.Commands;
+
+public class UpdateProductInCartsCommand : IUpdateProductInCartsCommand
 {
     public int ProductId { get; set; }
     public decimal Price { get; set; }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonalShop.Domain.Products;
-using PersonalShop.Features.Products.Dtos;
 using PersonalShop.Interfaces.Repositories;
 
 namespace PersonalShop.Data.Repositories;
@@ -9,7 +8,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
 {
     public ProductRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-    public async Task<SingleProductDto?> GetProductByIdWithUserAsync(int id, bool track = true)
+    public async Task<Product?> GetProductByIdWithUserAsync(int id, bool track = true)
     {
         var data = await _dbSet.Include(e => e.User).FirstOrDefaultAsync(e => e.Id.Equals(id));
 

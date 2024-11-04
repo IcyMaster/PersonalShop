@@ -11,7 +11,7 @@ internal sealed class OwnerSeeder : IDataBaseSeeder
     private readonly UserManager<User> _userManager;
     private readonly ILogger<OwnerSeeder> _logger;
 
-    public OwnerSeeder(UserManager<User> userManager,ILogger<OwnerSeeder> logger)
+    public OwnerSeeder(UserManager<User> userManager, ILogger<OwnerSeeder> logger)
     {
         _userManager = userManager;
         _logger = logger;
@@ -19,7 +19,6 @@ internal sealed class OwnerSeeder : IDataBaseSeeder
 
     public async Task<bool> MigrateAsync()
     {
-        _logger.LogInformation("Owner Seeder Migration Started!");
 
         var ownerUserDto = UserRegisterDto();
 
@@ -30,10 +29,10 @@ internal sealed class OwnerSeeder : IDataBaseSeeder
             return true;
         }
 
-        var ownerUser = User.CreateNewWithFirstNameAndLastName(ownerUserDto.Email, ownerUserDto.UserName,
-            ownerUserDto.FirstName!, ownerUserDto.LastName!);
+        _logger.LogInformation("Owner Seeder Migration Started!");
 
-        ownerUser.SetPhoneNumber(ownerUserDto.PhoneNumber!);
+        var ownerUser = User.CreateNewWithFullNameAndPhoneNumber(ownerUserDto.Email, ownerUserDto.UserName,
+            ownerUserDto.FirstName, ownerUserDto.LastName, ownerUserDto.PhoneNumber);
 
         try
         {
@@ -51,7 +50,7 @@ internal sealed class OwnerSeeder : IDataBaseSeeder
         _logger.LogInformation("Owner Seeder Migration Has Finished!");
         return true;
     }
-    
+
     private static RegisterDto UserRegisterDto()
     {
         return new RegisterDto

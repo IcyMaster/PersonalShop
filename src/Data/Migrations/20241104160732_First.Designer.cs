@@ -11,7 +11,7 @@ using PersonalShop.Data;
 namespace PersonalShop.Data.migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241025175803_First")]
+    [Migration("20241104160732_First")]
     partial class First
     {
         /// <inheritdoc />
@@ -122,7 +122,7 @@ namespace PersonalShop.Data.migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("PersonalShop.Domain.Card.Cart", b =>
+            modelBuilder.Entity("PersonalShop.Domain.Carts.Cart", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -137,10 +137,12 @@ namespace PersonalShop.Data.migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("PersonalShop.Domain.Card.CartItem", b =>
+            modelBuilder.Entity("PersonalShop.Domain.Carts.CartItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -155,7 +157,7 @@ namespace PersonalShop.Data.migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Quanity")
+                    b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -174,7 +176,7 @@ namespace PersonalShop.Data.migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("OrderDate")
+                    b.Property<DateTimeOffset>("OrderDate")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("TotalPrice")
@@ -397,9 +399,9 @@ namespace PersonalShop.Data.migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PersonalShop.Domain.Card.CartItem", b =>
+            modelBuilder.Entity("PersonalShop.Domain.Carts.CartItem", b =>
                 {
-                    b.HasOne("PersonalShop.Domain.Card.Cart", null)
+                    b.HasOne("PersonalShop.Domain.Carts.Cart", null)
                         .WithMany("CartItems")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -407,7 +409,7 @@ namespace PersonalShop.Data.migrations
 
                     b.HasOne("PersonalShop.Domain.Products.Product", "Product")
                         .WithOne()
-                        .HasForeignKey("PersonalShop.Domain.Card.CartItem", "ProductId")
+                        .HasForeignKey("PersonalShop.Domain.Carts.CartItem", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -445,7 +447,7 @@ namespace PersonalShop.Data.migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PersonalShop.Domain.Card.Cart", b =>
+            modelBuilder.Entity("PersonalShop.Domain.Carts.Cart", b =>
                 {
                     b.Navigation("CartItems");
                 });

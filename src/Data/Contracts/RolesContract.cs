@@ -1,6 +1,6 @@
 ﻿namespace PersonalShop.Data.Contracts;
 
-public static class RolesContract
+internal static class RolesContract
 {
     public const string Owner = "Owner";
     public const string Admin = "Admin";

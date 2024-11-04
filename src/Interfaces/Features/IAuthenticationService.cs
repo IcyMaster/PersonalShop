@@ -8,7 +8,7 @@ namespace PersonalShop.Interfaces.Features
     {
         Task<ServiceResult<User>> LoginAsync(string email, string password);
         Task<ServiceResult<TokenDto>> LoginAsyncAndCreateToken(string email, string password);
-        Task<ServiceResult<string>> LogoutApiAsync(string jwtToken);
+        Task<ServiceResult<string>> LogoutApiAsync(string jwtToken, string userId);
         Task<ServiceResult<string>> LogoutAsync();
     }
 }

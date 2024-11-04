@@ -14,11 +14,29 @@ public class User : IdentityUser
 
     }
 
-    protected User(string email, string userName, string firstName, string lastName)
+    protected User(string email, string userName, string? firstName, string? lastName)
         : this(email, userName)
     {
-        FirstName = firstName;
-        LastName = lastName;
+        if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName))
+        {
+            FirstName = firstName;
+            LastName = lastName;
+        }
+    }
+
+    protected User(string email, string userName, string? firstName, string? lastName, string? phoneNumber)
+    : this(email, userName)
+    {
+        if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName))
+        {
+            FirstName = firstName;
+            LastName = lastName;
+        }
+
+        if (!string.IsNullOrEmpty(phoneNumber))
+        {
+            PhoneNumber = phoneNumber;
+        }
     }
 
     public static User CreateNew(string email, string username)
@@ -26,23 +44,18 @@ public class User : IdentityUser
         return new User(email, username);
     }
 
-    public static User CreateNewWithFirstNameAndLastName(string email, string username,
-        string firstName, string lastName)
+    public static User CreateNewWithFullName(string email, string username,
+    string? firstName, string? lastName)
     {
         return new User(email, username, firstName, lastName);
     }
 
+    public static User CreateNewWithFullNameAndPhoneNumber(string email, string username,
+    string? firstName, string? lastName, string? phoneNumber)
+    {
+        return new User(email, username, firstName, lastName, phoneNumber);
+    }
+
     public string FirstName { get; private set; } = string.Empty;
     public string LastName { get; private set; } = string.Empty;
-
-    public void SetFullName(string firstName,string lastName)
-    {
-        FirstName = firstName;
-        LastName = lastName;
-    }
-
-    public void SetPhoneNumber(string phoneNumber)
-    {
-        PhoneNumber = phoneNumber;
-    }
 }

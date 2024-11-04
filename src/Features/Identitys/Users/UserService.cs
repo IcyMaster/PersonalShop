@@ -27,17 +27,8 @@ public class UserService : IUserService
             return ServiceResult<string>.Failed(UserServiceErrors.UserEmailExist);
         }
 
-        var user = User.CreateNew(registerDto.Email,registerDto.UserName);
-
-        if (!string.IsNullOrEmpty(registerDto.FirstName) && !string.IsNullOrEmpty(registerDto.LastName))
-        {
-            user.SetFullName(registerDto.FirstName, registerDto.LastName);
-        }
-
-        if (!string.IsNullOrEmpty(registerDto.PhoneNumber))
-        {
-            user.SetPhoneNumber(registerDto.PhoneNumber);
-        }
+        var user = User.CreateNewWithFullNameAndPhoneNumber(registerDto.Email, registerDto.UserName,
+            registerDto.FirstName, registerDto.LastName, registerDto.PhoneNumber);
 
         var userCreateResult = await _userManager.CreateAsync(user, registerDto.Password);
 
