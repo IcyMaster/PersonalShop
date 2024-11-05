@@ -5,8 +5,8 @@ namespace PersonalShop.Interfaces.Repositories
 {
     public interface IProductRepository : IRepository<Product>
     {
-        Task<List<Product>> GetAllProductsWithUserAsync(bool track = true);
-        Task<Product?> GetProductByIdWithOutUserAsync(int id, bool track = true);
-        Task<Product?> GetProductByIdWithUserAsync(int id, bool track = true);
+        Task<List<Product>> GetAllProductsWithUserAsync(int productId, bool track = true);
+        Task<Product?> GetProductDetailsWithOutUserAsync(int productId, bool track = true);
+        Task<Product?> GetProductDetailsWithUserAsync(int productId, bool track = true);
     }
 }

@@ -15,15 +15,15 @@ public class OrderService : IOrderService
 {
     private readonly IOrderRepository _orderRepository;
     private readonly ICartRepository _cartRepository;
-    private readonly IProductRepository _productRepository;
+    private readonly IProductQueryRepository _productQueryRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEasyCachingProvider _cachingProvider;
 
-    public OrderService(IOrderRepository orderRepository, IProductRepository productRepository,
+    public OrderService(IOrderRepository orderRepository, IProductQueryRepository productQueryRepository,
         ICartRepository cartRepository, IUnitOfWork unitOfWork, IEasyCachingProvider cachingProvider)
     {
         _orderRepository = orderRepository;
-        _productRepository = productRepository;
+        _productQueryRepository = productQueryRepository;
         _unitOfWork = unitOfWork;
         _cartRepository = cartRepository;
         _cachingProvider = cachingProvider;
@@ -42,7 +42,7 @@ public class OrderService : IOrderService
 
         foreach (var item in cart.CartItems)
         {
-            var product = await _productRepository.GetProductByIdWithOutUserAsync(item.ProductId, track: false);
+            var product = await _productQueryRepository.GetProductDetailsWithOutUserAsync(item.ProductId);
             if (product is not null)
             {
                 order.OrderItems.Add(new OrderItem(item.ProductId, product.Name, product.Price, item.Quantity));
@@ -77,7 +77,7 @@ public class OrderService : IOrderService
 
         foreach (var item in cart.CartItems)
         {
-            var product = await _productRepository.GetProductByIdWithOutUserAsync(item.ProductId, track: false);
+            var product = await _productQueryRepository.GetProductDetailsWithOutUserAsync(item.ProductId);
             if (product is not null)
             {
                 order.OrderItems.Add(new OrderItem(item.ProductId, product.Name, product.Price, item.Quantity));

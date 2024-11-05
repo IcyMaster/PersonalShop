@@ -14,16 +14,16 @@ namespace PersonalShop.Features.Carts;
 public class CartService : ICartService
 {
     private readonly ICartRepository _cartRepository;
-    private readonly IProductRepository _productRepository;
+    private readonly IProductQueryRepository _productQueryRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEasyCachingProvider _cachingProvider;
 
-    public CartService(ICartRepository cartRepository, IUnitOfWork unitOfWork,
-        IProductRepository productRepository, IEasyCachingProvider cachingProvider)
+    public CartService(ICartRepository cartRepository, IProductQueryRepository productQueryRepository,
+        IUnitOfWork unitOfWork,IEasyCachingProvider cachingProvider)
     {
         _cartRepository = cartRepository;
+        _productQueryRepository = productQueryRepository;
         _unitOfWork = unitOfWork;
-        _productRepository = productRepository;
         _cachingProvider = cachingProvider;
     }
 
@@ -97,7 +97,7 @@ public class CartService : ICartService
     }
     public async Task<ServiceResult<string>> AddCartItemByUserIdAsync(string userId, CreateCartItemDto createCartItemDto)
     {
-        var product = await _productRepository.GetProductByIdWithUserAsync(createCartItemDto.ProductId);
+        var product = await _productQueryRepository.GetProductDetailsWithUserAsync(createCartItemDto.ProductId);
         if (product is null)
         {
             return ServiceResult<string>.Failed(CartServiceErrors.CartNotFound);

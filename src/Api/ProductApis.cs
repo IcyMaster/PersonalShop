@@ -34,7 +34,7 @@ public static class ProductApis
 
             var userId = context.GetUserId();
 
-            var serviceResult = await productService.CreateProductByUserIdAsync(createProductDto, userId!);
+            var serviceResult = await productService.CreateProductAsync(createProductDto, userId!);
 
             if (serviceResult.IsSuccess)
             {
@@ -46,7 +46,7 @@ public static class ProductApis
 
         app.MapGet("api/products/{productId:int}", [AllowAnonymous] async (IProductService productService, int productId) =>
         {
-            var serviceResult = await productService.GetProductByIdWithUserAsync(productId);
+            var serviceResult = await productService.GetProductDetailsWithUserAsync(productId);
 
             if (serviceResult.IsSuccess)
             {
@@ -66,7 +66,7 @@ public static class ProductApis
 
             var userId = context.GetUserId();
 
-            var serviceResult = await productService.UpdateProductByIdAndValidateOwnerAsync(productId, updateProductDto, userId!);
+            var serviceResult = await productService.UpdateProductAndValidateOwnerAsync(productId, updateProductDto, userId!);
 
             if (serviceResult.IsSuccess)
             {
@@ -80,7 +80,7 @@ public static class ProductApis
         {
             var userId = context.GetUserId();
 
-            var serviceResult = await productService.DeleteProductByIdAndValidateOwnerAsync(productId, userId!);
+            var serviceResult = await productService.DeleteProductAndValidateOwnerAsync(productId, userId!);
 
             if (serviceResult.IsSuccess)
             {

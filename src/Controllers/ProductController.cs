@@ -52,7 +52,7 @@ public class ProductController : Controller
             return View(createProductDto);
         }
 
-        var serviceResult = await _productService.CreateProductByUserIdAsync(createProductDto, User.Identity!.GetUserId());
+        var serviceResult = await _productService.CreateProductAsync(createProductDto, User.Identity!.GetUserId());
 
         if (serviceResult.IsSuccess)
         {
@@ -67,7 +67,7 @@ public class ProductController : Controller
     [Route("DeleteProduct/{productId:int}", Name = "DeleteProduct")]
     public async Task<ActionResult> DeleteProduct(int productId)
     {
-        var serviceResult = await _productService.DeleteProductByIdAndValidateOwnerAsync(productId, User.Identity!.GetUserId());
+        var serviceResult = await _productService.DeleteProductAndValidateOwnerAsync(productId, User.Identity!.GetUserId());
 
         if (serviceResult.IsSuccess)
         {
@@ -82,7 +82,7 @@ public class ProductController : Controller
     [Route("UpdateProduct/{productId:int}", Name = "UpdateProduct")]
     public async Task<ActionResult> UpdateProduct(int productId)
     {
-        var serviceResult = await _productService.GetProductByIdWithUserAndValidateOwnerAsync(productId, User.Identity!.GetUserId());
+        var serviceResult = await _productService.GetProductDetailsWithUserAndValidateOwnerAsync(productId, User.Identity!.GetUserId());
 
         if (serviceResult.IsSuccess)
         {
@@ -102,7 +102,7 @@ public class ProductController : Controller
             return View(updateProductDto);
         }
 
-        var serviceResult = await _productService.UpdateProductByIdAndValidateOwnerAsync(productId, updateProductDto, User.Identity!.GetUserId());
+        var serviceResult = await _productService.UpdateProductAndValidateOwnerAsync(productId, updateProductDto, User.Identity!.GetUserId());
 
         if (serviceResult.IsSuccess)
         {
