@@ -30,6 +30,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Resources\Contracts\PagedResultOffsetMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PagedResultOffsetMessages.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Services\OrderService\OrderServiceErrors.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -40,32 +45,32 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>OrderServiceSuccess.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Validation\CartItem\CartItemMessages.Designer.cs">
+    <Compile Update="Resources\Validations\CartItem\CartItemMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>CartItemMessages.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Validation\Cart\CartMessages.Designer.cs">
+    <Compile Update="Resources\Validations\Cart\CartMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>CartMessages.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Validation\Authentication\LoginMessages.Designer.cs">
+    <Compile Update="Resources\Validations\Authentication\LoginMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>LoginMessages.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Validation\Product\ProductMessages.Designer.cs">
+    <Compile Update="Resources\Validations\Product\ProductMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ProductMessages.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Validation\Authentication\RegisterMessages.Designer.cs">
+    <Compile Update="Resources\Validations\Authentication\RegisterMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RegisterMessages.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Validation\Role\RoleMessages.Designer.cs">
+    <Compile Update="Resources\Validations\Role\RoleMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RoleMessages.resx</DependentUpon>
@@ -113,6 +118,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Contracts\PagedResultOffsetMessages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PagedResultOffsetMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Services\OrderService\OrderServiceErrors.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>OrderServiceErrors.Designer.cs</LastGenOutput>
@@ -121,27 +130,27 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>OrderServiceSuccess.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Validation\CartItem\CartItemMessages.resx">
+    <EmbeddedResource Update="Resources\Validations\CartItem\CartItemMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CartItemMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Validation\Cart\CartMessages.resx">
+    <EmbeddedResource Update="Resources\Validations\Cart\CartMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CartMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Validation\Authentication\LoginMessages.resx">
+    <EmbeddedResource Update="Resources\Validations\Authentication\LoginMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LoginMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Validation\Product\ProductMessages.resx">
+    <EmbeddedResource Update="Resources\Validations\Product\ProductMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ProductMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Validation\Authentication\RegisterMessages.resx">
+    <EmbeddedResource Update="Resources\Validations\Authentication\RegisterMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RegisterMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Validation\Role\RoleMessages.resx">
+    <EmbeddedResource Update="Resources\Validations\Role\RoleMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RoleMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>

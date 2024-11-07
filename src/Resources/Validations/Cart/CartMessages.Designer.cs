@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PersonalShop.Resources.Validation.Cart {
+namespace PersonalShop.Resources.Validations.Cart {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace PersonalShop.Resources.Validation.Cart {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validation.Cart.CartMessages", typeof(CartMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validations.Cart.CartMessages", typeof(CartMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

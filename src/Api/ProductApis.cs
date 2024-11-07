@@ -12,16 +12,22 @@ public static class ProductApis
 {
     public static void RegisterProductApis(this WebApplication app)
     {
-        app.MapGet("api/products", [AllowAnonymous] async (IProductService productService) =>
+        app.MapGet("api/products", [AllowAnonymous] async (PagedResultOffset resultOffset,IProductService productService) =>
         {
-            var serviceResult = await productService.GetAllProductsWithUserAsync();
+            var validateObject = ObjectValidator.Validate(resultOffset);
+            if (!validateObject.IsValid)
+            {
+                return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
+            }
+
+            var serviceResult = await productService.GetAllProductsWithUserAsync(resultOffset);
 
             if (serviceResult.IsSuccess)
             {
-                return Results.Ok(ApiResult<List<SingleProductDto>>.Success(serviceResult.Result!));
+                return Results.Ok(ApiResult<PagedResult<SingleProductDto>>.Success(serviceResult.Result!));
             }
 
-            return Results.BadRequest(ApiResult<List<SingleProductDto>>.Failed(serviceResult.Errors));
+            return Results.BadRequest(ApiResult<PagedResult<SingleProductDto>>.Failed(serviceResult.Errors));
         });
 
         app.MapPost("api/products", [Authorize(Roles = RolesContract.Admin)] async ([FromBody] CreateProductDto createProductDto, IProductService productService, HttpContext context) =>

@@ -140,17 +140,17 @@ public class ProductService : IProductService
 
         return ServiceResult<SingleProductDto>.Success(product);
     }
-    public async Task<ServiceResult<List<SingleProductDto>>> GetAllProductsWithUserAsync()
+    public async Task<ServiceResult<PagedResult<SingleProductDto>>> GetAllProductsWithUserAsync(PagedResultOffset resultOffset)
     {
-        var products = await _productQueryRepository.GetAllProductsWithUserAsync();
+        var products = await _productQueryRepository.GetAllProductsWithUserAsync(resultOffset);
 
-        return ServiceResult<List<SingleProductDto>>.Success(products);
+        return ServiceResult<PagedResult<SingleProductDto>>.Success(products);
     }
-    public async Task<ServiceResult<List<SingleProductDto>>> GetAllProductsWithUserAndValidateOwnerAsync(string userId)
+    public async Task<ServiceResult<PagedResult<SingleProductDto>>> GetAllProductsWithUserAndValidateOwnerAsync(string userId,PagedResultOffset resultOffset)
     {
-        var products = await _productQueryRepository.GetAllProductsWithUserAsync();
+        var products = await _productQueryRepository.GetAllProductsWithUserAsync(resultOffset);
 
-        foreach (var product in products)
+        foreach (var product in products.Data)
         {
             if (product.User.UserId.Equals(userId))
             {
@@ -158,6 +158,6 @@ public class ProductService : IProductService
             }
         }
 
-        return ServiceResult<List<SingleProductDto>>.Success(products);
+        return ServiceResult<PagedResult<SingleProductDto>>.Success(products);
     }
 }

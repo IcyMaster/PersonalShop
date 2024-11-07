@@ -22,9 +22,15 @@ public class ProductController : Controller
 
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<SingleProductDto>>> Index()
+    public async Task<ActionResult<PagedResult<SingleProductDto>>> Index([FromQuery] PagedResultOffset resultOffset)
     {
-        var serviceResult = await _productService.GetAllProductsWithUserAsync();
+        var validateObject = Extension.ObjectValidator.Validate(resultOffset);
+        if (!validateObject.IsValid)
+        {
+            return BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
+        }
+
+        var serviceResult = await _productService.GetAllProductsWithUserAsync(resultOffset);
 
         if (serviceResult.IsSuccess)
         {

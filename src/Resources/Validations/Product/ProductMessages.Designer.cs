@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PersonalShop.Resources.Validation.Product {
+namespace PersonalShop.Resources.Validations.Product {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace PersonalShop.Resources.Validation.Product {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validation.Product.ProductMessages", typeof(ProductMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validations.Product.ProductMessages", typeof(ProductMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Responses;
 using PersonalShop.Extension;
@@ -12,18 +13,24 @@ public static class UserApis
 {
     public static void RegisterUserApis(this WebApplication app)
     {
-        app.MapGet("api/user/products", [Authorize(Roles = RolesContract.Customer)] async (IProductService productService, HttpContext context) =>
+        app.MapGet("api/user/products", [Authorize(Roles = RolesContract.Customer)] async (PagedResultOffset resultOffset, IProductService productService, HttpContext context) =>
         {
+            var validateObject = ObjectValidator.Validate(resultOffset);
+            if (!validateObject.IsValid)
+            {
+                return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
+            }
+
             var userId = context.GetUserId();
 
-            var serviceResult = await productService.GetAllProductsWithUserAndValidateOwnerAsync(userId!);
+            var serviceResult = await productService.GetAllProductsWithUserAndValidateOwnerAsync(userId!,resultOffset);
 
             if (serviceResult.IsSuccess)
             {
-                return Results.Ok(ApiResult<List<SingleProductDto>>.Success(serviceResult.Result!));
+                return Results.Ok(ApiResult<PagedResult<SingleProductDto>>.Success(serviceResult.Result!));
             }
 
-            return Results.BadRequest(ApiResult<List<SingleProductDto>>.Failed(serviceResult.Errors));
+            return Results.BadRequest(ApiResult<PagedResult<SingleProductDto>>.Failed(serviceResult.Errors));
         });
 
         app.MapGet("api/user/orders", [Authorize(Roles = RolesContract.Customer)] async (IOrderService orderService, HttpContext context) =>

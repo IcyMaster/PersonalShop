@@ -1,5 +1,6 @@
-﻿@using PersonalShop.Features.Products.Dtos;
-@model IEnumerable<SingleProductDto>
+﻿@using PersonalShop.Domain.Responses
+@using PersonalShop.Features.Products.Dtos
+@model PagedResult<SingleProductDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -17,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Data)
         {
             <tr>
                 <td>

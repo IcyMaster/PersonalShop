@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PersonalShop.Resources.Validation.Role {
+namespace PersonalShop.Resources.Validations.Authentication {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace PersonalShop.Resources.Validation.Role {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class RoleMessages {
+    public class LoginMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal RoleMessages() {
+        internal LoginMessages() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace PersonalShop.Resources.Validation.Role {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validation.Role.RoleMessages", typeof(RoleMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validations.Authentication.LoginMessages", typeof(LoginMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,29 @@ namespace PersonalShop.Resources.Validation.Role {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد نام نقش را تکمیل کنید.
+        ///   Looks up a localized string similar to لطفا فیلد ایمیل را تکمیل نمایید.
         /// </summary>
-        public static string RoleNameRequired {
+        public static string EmailRequired {
             get {
-                return ResourceManager.GetString("RoleNameRequired", resourceCulture);
+                return ResourceManager.GetString("EmailRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد ایمیل کاربر را تکمیل کنید.
+        ///   Looks up a localized string similar to ایمیل وارد شده معتبر نیست.
         /// </summary>
-        public static string UserEmailRequired {
+        public static string EmailValidateError {
             get {
-                return ResourceManager.GetString("UserEmailRequired", resourceCulture);
+                return ResourceManager.GetString("EmailValidateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لطفا فیلد رمز عبور را تکمیل نمایید.
+        /// </summary>
+        public static string PasswordRequired {
+            get {
+                return ResourceManager.GetString("PasswordRequired", resourceCulture);
             }
         }
     }

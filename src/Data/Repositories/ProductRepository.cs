@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Products;
+using PersonalShop.Domain.Responses;
 using PersonalShop.Features.Products.Dtos;
 using PersonalShop.Interfaces.Repositories;
+using System.Drawing.Printing;
 
 namespace PersonalShop.Data.Repositories;
 
@@ -53,11 +56,16 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
             })
             .FirstOrDefaultAsync();
     }
-    public async Task<List<SingleProductDto>> GetAllProductsWithUserAsync()
+    public async Task<PagedResult<SingleProductDto>> GetAllProductsWithUserAsync(PagedResultOffset resultOffset)
     {
-        return await
+        var totalRecord = await _dbSet.CountAsync();
+
+        var data = await
             _dbSet
             .AsNoTracking()
+            .OrderBy(x => x.Id)
+            .Skip((resultOffset.PageNumber - 1) * resultOffset.PageSize)
+            .Take(resultOffset.PageSize)
             .Select(ob => new SingleProductDto
             {
                 Id = ob.Id,
@@ -73,6 +81,8 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
                     IsOwner = false,
                 }
             }).ToListAsync();
+
+        return PagedResult<SingleProductDto>.CreateNew(data,resultOffset,totalRecord);
     }
 
     public async Task<Product?> GetProductDetailsWithUserAsync(int productId, bool track = true)
@@ -96,16 +106,5 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
         }
 
         return data;
-    }
-    public async Task<List<Product>> GetAllProductsWithUserAsync(bool track = true)
-    {
-        var query = _dbContext.Products.Include(x => x.User);
-
-        if (!track)
-        {
-            _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-        }
-
-        return await query.ToListAsync();
     }
 }

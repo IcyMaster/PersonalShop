@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PersonalShop.Resources.Validation.Authentication {
+namespace PersonalShop.Resources.Validations.CartItem {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace PersonalShop.Resources.Validation.Authentication {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class LoginMessages {
+    public class CartItemMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal LoginMessages() {
+        internal CartItemMessages() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace PersonalShop.Resources.Validation.Authentication {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validation.Authentication.LoginMessages", typeof(LoginMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validations.CartItem.CartItemMessages", typeof(CartItemMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,20 @@ namespace PersonalShop.Resources.Validation.Authentication {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد ایمیل را تکمیل نمایید.
+        ///   Looks up a localized string similar to لطفا فیلد مقدار را تکمیل نمایید.
         /// </summary>
-        public static string EmailRequired {
+        public static string QuantityRequired {
             get {
-                return ResourceManager.GetString("EmailRequired", resourceCulture);
+                return ResourceManager.GetString("QuantityRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ایمیل وارد شده معتبر نیست.
+        ///   Looks up a localized string similar to لطفا در فیلد مقدار ، عدد مناسب وارد کنید.
         /// </summary>
-        public static string EmailValidateError {
+        public static string QuantityValueRangeError {
             get {
-                return ResourceManager.GetString("EmailValidateError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد رمز عبور را تکمیل نمایید.
-        /// </summary>
-        public static string PasswordRequired {
-            get {
-                return ResourceManager.GetString("PasswordRequired", resourceCulture);
+                return ResourceManager.GetString("QuantityValueRangeError", resourceCulture);
             }
         }
     }
