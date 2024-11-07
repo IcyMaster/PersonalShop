@@ -15,6 +15,6 @@ public class DeleteProductFromCarts : IConsumer<DeleteProductFromCartCommand>
 
     public async Task Consume(ConsumeContext<DeleteProductFromCartCommand> context)
     {
-        await _cartService.DeleteProductByProductIdFromAllCartsAsync(context.Message);
+        await _cartService.DeleteProductFromAllCartsAsync(context.Message);
     }
 }

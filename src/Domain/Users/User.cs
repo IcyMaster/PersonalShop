@@ -11,7 +11,7 @@ public class User : IdentityUser
 
     protected User(string email, string userName) : base(userName)
     {
-
+        Email = email;
     }
 
     protected User(string email, string userName, string? firstName, string? lastName)

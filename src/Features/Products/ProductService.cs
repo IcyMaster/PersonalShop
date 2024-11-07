@@ -47,7 +47,7 @@ public class ProductService : IProductService
     }
     public async Task<ServiceResult<string>> DeleteProductAndValidateOwnerAsync(int productId, string userId)
     {
-        var product = await _productRepository.GetProductDetailsWithOutUserAsync(productId);
+        var product = await _productRepository.GetProductDetailsWithoutUserAsync(productId);
 
         if (product is null)
         {
@@ -75,7 +75,7 @@ public class ProductService : IProductService
     }
     public async Task<ServiceResult<string>> UpdateProductAndValidateOwnerAsync(int productId, UpdateProductDto updateProductDto, string userId)
     {
-        var product = await _productRepository.GetProductDetailsWithOutUserAsync(productId);
+        var product = await _productRepository.GetProductDetailsWithoutUserAsync(productId);
         if (product is null)
         {
             return ServiceResult<string>.Failed(ProductServiceErrors.ProductNotFound);
@@ -116,7 +116,7 @@ public class ProductService : IProductService
     }
     public async Task<ServiceResult<SingleProductDto>> GetProductDetailsWithOutUserAsync(int productId)
     {
-        var product = await _productQueryRepository.GetProductDetailsWithOutUserAsync(productId);
+        var product = await _productQueryRepository.GetProductDetailsWithoutUserAsync(productId);
         if (product is null)
         {
             return ServiceResult<SingleProductDto>.Failed(ProductServiceErrors.ProductNotFound);

@@ -31,7 +31,7 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
             })
             .FirstOrDefaultAsync();
     }
-    public async Task<SingleProductDto?> GetProductDetailsWithOutUserAsync(int productId)
+    public async Task<SingleProductDto?> GetProductDetailsWithoutUserAsync(int productId)
     {
         return await
             _dbSet
@@ -77,7 +77,7 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
 
     public async Task<Product?> GetProductDetailsWithUserAsync(int productId, bool track = true)
     {
-        var data = await _dbSet.Include(e => e.User).FirstOrDefaultAsync(e => e.Id.Equals(productId));
+        var data = await _dbSet.Include(x => x.User).FirstOrDefaultAsync(x => x.Id.Equals(productId));
 
         if (!track && data is not null)
         {
@@ -86,9 +86,9 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
 
         return data;
     }
-    public async Task<Product?> GetProductDetailsWithOutUserAsync(int productId, bool track = true)
+    public async Task<Product?> GetProductDetailsWithoutUserAsync(int productId, bool track = true)
     {
-        var data = await _dbSet.FirstOrDefaultAsync(e => e.Id.Equals(productId));
+        var data = await _dbSet.FirstOrDefaultAsync(x => x.Id.Equals(productId));
 
         if (!track && data is not null)
         {
@@ -97,9 +97,9 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
 
         return data;
     }
-    public async Task<List<Product>> GetAllProductsWithUserAsync(int productId, bool track = true)
+    public async Task<List<Product>> GetAllProductsWithUserAsync(bool track = true)
     {
-        var query = _dbContext.Products.Include(e => e.User);
+        var query = _dbContext.Products.Include(x => x.User);
 
         if (!track)
         {

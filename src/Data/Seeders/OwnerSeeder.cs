@@ -36,7 +36,7 @@ internal sealed class OwnerSeeder : IDataBaseSeeder
 
         try
         {
-            await _userManager.CreateAsync(ownerUser);
+            await _userManager.CreateAsync(ownerUser,ownerUserDto.Password);
 
             //It can be placed in a UserRole Seeder 
             await _userManager.AddToRoleAsync(ownerUser, RolesContract.Owner);
@@ -55,7 +55,7 @@ internal sealed class OwnerSeeder : IDataBaseSeeder
     {
         return new RegisterDto
         {
-            Email = "icyMaster2020@gmail.com",
+            Email = "icymaster2020@gmail.com",
             FirstName = "Mohammad",
             LastName = "Taheri",
             UserName = "icyMaster",

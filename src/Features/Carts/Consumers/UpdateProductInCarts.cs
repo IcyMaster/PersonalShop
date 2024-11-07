@@ -15,7 +15,7 @@ namespace PersonalShop.Features.Carts.Consumers
 
         public async Task Consume(ConsumeContext<UpdateProductInCartsCommand> context)
         {
-            await _cartService.UpdateProductInCartsAsync(context.Message);
+            await _cartService.UpdateProductInAllCartsAsync(context.Message);
         }
     }
 }

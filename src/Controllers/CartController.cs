@@ -24,7 +24,7 @@ public class CartController : Controller
     [HttpGet]
     public async Task<ActionResult> Index()
     {
-        var serviceResult = await _cartService.GetCartByUserIdWithProductAsync(User.Identity!.GetUserId());
+        var serviceResult = await _cartService.GetCartDetailsWithCartItemsAsync(User.Identity!.GetUserId());
 
         if (serviceResult.IsSuccess)
         {
@@ -44,7 +44,7 @@ public class CartController : Controller
             return View(createCartItemDto);
         }
 
-        var serviceResult = await _cartService.AddCartItemByUserIdAsync(User.Identity!.GetUserId(), createCartItemDto);
+        var serviceResult = await _cartService.AddCartItemAsync(User.Identity!.GetUserId(), createCartItemDto);
 
         if (serviceResult.IsSuccess)
         {
@@ -59,7 +59,7 @@ public class CartController : Controller
     [Route("DeleteItem/{productId:int}", Name = "DeleteItem")]
     public async Task<ActionResult> DeleteItem(int productId)
     {
-        var serviceResult = await _cartService.DeleteCartItemByUserIdAsync(User.Identity!.GetUserId(), productId);
+        var serviceResult = await _cartService.DeleteCartItemAsync(User.Identity!.GetUserId(), productId);
 
         if (serviceResult.IsSuccess)
         {
@@ -74,7 +74,7 @@ public class CartController : Controller
     [Route("UpdateItem/{productId:int}", Name = "UpdateItem")]
     public async Task<ActionResult> UpdateItem(int productId, UpdateCartItemDto updateCartItemDto)
     {
-        var serviceResult = await _cartService.UpdateCartItemQuantityByUserIdAsync(User.Identity!.GetUserId(), productId, updateCartItemDto);
+        var serviceResult = await _cartService.UpdateCartItemQuantityAsync(User.Identity!.GetUserId(), productId, updateCartItemDto);
 
         if (serviceResult.IsSuccess)
         {
@@ -85,11 +85,11 @@ public class CartController : Controller
     }
 
     [Authorize(Roles = RolesContract.Customer)]
-    [HttpGet]
-    [Route("CheckOut/{cartId:Guid}", Name = "CheckOut")]
-    public async Task<ActionResult> CheckOut(Guid cartId)
+    [HttpPost]
+    [Route("Checkout", Name = "Checkout")]
+    public async Task<ActionResult> CheckOut()
     {
-        var serviceResult = await _orderService.CreateOrderByCartIdAsync(cartId);
+        var serviceResult = await _orderService.CreateOrderByUserIdAsync(User.Identity!.GetUserId());
 
         if (serviceResult.IsSuccess)
         {

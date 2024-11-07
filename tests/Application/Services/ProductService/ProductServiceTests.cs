@@ -14,13 +14,15 @@ namespace PersonalShop.Tests.Application.Services.ProductServiceTests
     {
         private readonly DbFixture _fixture;
         private readonly UnitOfWork _unitOfWork;
-        private readonly ProductRepository _productRepo;
+        private readonly ProductRepository _productRepository;
+        private readonly ProductRepository _productQueryRepository;
 
         public ProductServiceTests(DbFixture fixture)
         {
             _fixture = fixture;
             _unitOfWork = new(_fixture.DbContext);
-            _productRepo = new(_fixture.DbContext);
+            _productRepository = new(_fixture.DbContext);
+            _productQueryRepository = new(_fixture.DbContext);
         }
 
         [Fact]
@@ -28,7 +30,7 @@ namespace PersonalShop.Tests.Application.Services.ProductServiceTests
         {
             //Arrange
             var mockBus = new Mock<IBus>();
-            var productService = new ProductService(_productRepo, _unitOfWork, mockBus.Object);
+            var productService = new ProductService(_productRepository, _productQueryRepository, _unitOfWork, mockBus.Object);
 
             var userId = Guid.NewGuid().ToString();
 
@@ -39,7 +41,7 @@ namespace PersonalShop.Tests.Application.Services.ProductServiceTests
 
 
             //Act
-            var result = await productService.CreateProductByUserIdAsync(productDto, userId);
+            var result = await productService.CreateProductAsync(productDto, userId);
 
             //Assert
             Assert.True(result.IsSuccess);

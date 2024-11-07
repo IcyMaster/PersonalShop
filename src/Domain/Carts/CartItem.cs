@@ -15,10 +15,10 @@ public class CartItem
     [Key]
     public int Id { get; set; }
     public Guid CartId { get; set; }
-    public Product Product { get; set; } = null!;
     public int ProductId { get; private set; }
     public int Quantity { get; private set; }
     public decimal ItemPrice { get; private set; }
+    public Product Product { get; private set; } = new Product();
 
     public void IncreaseQuantity(int count)
     {

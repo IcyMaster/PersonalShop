@@ -16,7 +16,7 @@ public static class CartApis
         {
             var userId = context.GetUserId();
 
-            var serviceResult = await cartService.GetCartByUserIdWithProductAsync(userId!);
+            var serviceResult = await cartService.GetCartDetailsWithCartItemsAsync(userId!);
 
             if (serviceResult.IsSuccess)
             {
@@ -36,7 +36,7 @@ public static class CartApis
                 return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
             }
 
-            var serviceResult = await cartService.AddCartItemByUserIdAsync(userId!, createCartItemDto);
+            var serviceResult = await cartService.AddCartItemAsync(userId!, createCartItemDto);
 
             if (serviceResult.IsSuccess)
             {
@@ -50,7 +50,7 @@ public static class CartApis
         {
             var userId = context.GetUserId();
 
-            var serviceResult = await cartService.DeleteCartItemByUserIdAsync(userId!, productId);
+            var serviceResult = await cartService.DeleteCartItemAsync(userId!, productId);
 
             if (serviceResult.IsSuccess)
             {
@@ -64,7 +64,7 @@ public static class CartApis
         {
             var userId = context.GetUserId();
 
-            var serviceResult = await cartService.UpdateCartItemQuantityByUserIdAsync(userId!, productId, updateCartItemDto);
+            var serviceResult = await cartService.UpdateCartItemQuantityAsync(userId!, productId, updateCartItemDto);
 
             if (serviceResult.IsSuccess)
             {
