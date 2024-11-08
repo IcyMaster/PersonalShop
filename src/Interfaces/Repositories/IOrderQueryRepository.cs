@@ -1,7 +1,9 @@
-﻿using PersonalShop.Features.Orders.Dtos;
+﻿using PersonalShop.Data.Contracts;
+using PersonalShop.Domain.Responses;
+using PersonalShop.Features.Orders.Dtos;
 
 namespace PersonalShop.Interfaces.Repositories;
 public interface IOrderQueryRepository
 {
-    Task<List<SingleOrderDto>> GetAllOrdersAsync(string userId);
+    Task<PagedResult<SingleOrderDto>> GetAllOrdersAsync(string userId, PagedResultOffset resultOffset);
 }

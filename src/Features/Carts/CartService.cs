@@ -44,7 +44,7 @@ public class CartService : ICartService
 
         if (cart is null)
         {
-            return ServiceResult<SingleCartDto>.Failed(CartServiceErrors.CartNotFound);
+            return ServiceResult<SingleCartDto>.Success(null!);
         }
 
         await _cachingProvider.TrySetAsync(userId, cart, TimeSpan.FromHours(1));

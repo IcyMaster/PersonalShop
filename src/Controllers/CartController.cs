@@ -30,13 +30,8 @@ public class CartController : Controller
         {
             return View(serviceResult.Result);
         }
-        else
-        {
-            return View(null);
-        }
 
-        //To show that the card is not available on the front (temporary)
-        //return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 
     [Authorize(Roles = RolesContract.Customer)]
@@ -89,11 +84,11 @@ public class CartController : Controller
     [Route("Checkout", Name = "Checkout")]
     public async Task<ActionResult> CheckOut()
     {
-        var serviceResult = await _orderService.CreateOrderByUserIdAsync(User.Identity!.GetUserId());
+        var serviceResult = await _orderService.CreateOrderAsync(User.Identity!.GetUserId());
 
         if (serviceResult.IsSuccess)
         {
-            return RedirectToAction(nameof(UserController.UserOrders), nameof(UserController).Replace("Controller",string.Empty));
+            return RedirectToAction(nameof(UserController.UserOrders), nameof(UserController).Replace("Controller", string.Empty));
         }
 
         return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));

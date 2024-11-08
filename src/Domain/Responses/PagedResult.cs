@@ -9,7 +9,7 @@ public record PagedResult<TResult>
     public int TotalPages { get; set; } = 1;
     public List<TResult> Data { get; set; } = null!;
 
-    public PagedResult(List<TResult> data, int pageNumber,int pageSize,int totalRecord)
+    public PagedResult(List<TResult> data, int pageNumber, int pageSize, int totalRecord)
     {
         PageNumber = pageNumber;
         PageSize = pageSize;
@@ -17,8 +17,8 @@ public record PagedResult<TResult>
         Data = data;
     }
 
-    public static PagedResult<TResult> CreateNew(List<TResult> Data,PagedResultOffset resultOffset,int totalRecord)
+    public static PagedResult<TResult> CreateNew(List<TResult> Data, PagedResultOffset resultOffset, int totalRecord)
     {
-        return new PagedResult<TResult>(Data,resultOffset.PageNumber,resultOffset.PageSize,totalRecord);
+        return new PagedResult<TResult>(Data, resultOffset.PageNumber, resultOffset.PageSize, totalRecord);
     }
 }

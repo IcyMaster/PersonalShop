@@ -12,9 +12,9 @@ public static class ProductApis
 {
     public static void RegisterProductApis(this WebApplication app)
     {
-        app.MapGet("api/products", [AllowAnonymous] async (PagedResultOffset resultOffset,IProductService productService) =>
+        app.MapGet("api/products", [AllowAnonymous] async (PagedResultOffset resultOffset, IProductService productService) =>
         {
-            var validateObject = ObjectValidator.Validate(resultOffset);
+            var validateObject = ObjectValidatorExtension.Validate(resultOffset);
             if (!validateObject.IsValid)
             {
                 return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
@@ -32,7 +32,7 @@ public static class ProductApis
 
         app.MapPost("api/products", [Authorize(Roles = RolesContract.Admin)] async ([FromBody] CreateProductDto createProductDto, IProductService productService, HttpContext context) =>
         {
-            var validateObject = ObjectValidator.Validate(createProductDto);
+            var validateObject = ObjectValidatorExtension.Validate(createProductDto);
             if (!validateObject.IsValid)
             {
                 return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
@@ -64,7 +64,7 @@ public static class ProductApis
 
         app.MapPut("api/products/{productId:int}", [Authorize(Roles = RolesContract.Admin)] async ([FromBody] UpdateProductDto updateProductDto, IProductService productService, HttpContext context, int productId) =>
         {
-            var validateObject = ObjectValidator.Validate(updateProductDto);
+            var validateObject = ObjectValidatorExtension.Validate(updateProductDto);
             if (!validateObject.IsValid)
             {
                 return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));

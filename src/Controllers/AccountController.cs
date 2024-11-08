@@ -40,7 +40,7 @@ public class AccountController : Controller
 
         if (serviceResult.IsSuccess)
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller", string.Empty));
         }
 
         return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
@@ -68,7 +68,7 @@ public class AccountController : Controller
 
         if (serviceResult.IsSuccess)
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller", string.Empty));
         }
 
         return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
@@ -83,7 +83,7 @@ public class AccountController : Controller
 
         if (serviceResult.IsSuccess)
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller", string.Empty));
         }
 
         return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));

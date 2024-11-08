@@ -1,20 +1,39 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Orders;
+using PersonalShop.Domain.Responses;
 using PersonalShop.Features.Orders.Dtos;
 using PersonalShop.Interfaces.Repositories;
 
 namespace PersonalShop.Data.Repositories;
 
-public class OrderRepository : Repository<Order>, IOrderRepository,IOrderQueryRepository
+public class OrderRepository : Repository<Order>, IOrderRepository, IOrderQueryRepository
 {
     public OrderRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-    public async Task<List<SingleOrderDto>> GetAllOrdersAsync(string userId)
+    public async Task<Order?> GetOrderDetailsAsync(string userId, bool track = true)
     {
-        return await _dbSet
+        var data = await _dbSet.Where(e => e.UserId == userId)
+            .Include(e => e.OrderItems)
+            .FirstOrDefaultAsync();
+
+        if (!track && data is not null)
+        {
+            _dbContext.Entry(data).State = EntityState.Detached;
+        }
+
+        return data;
+    }
+    public async Task<PagedResult<SingleOrderDto>> GetAllOrdersAsync(string userId, PagedResultOffset resultOffset)
+    {
+        var totalRecord = await _dbSet.CountAsync();
+
+        var data = await _dbSet
             .Where(e => e.UserId == userId)
-            .AsSplitQuery()
             .AsNoTracking()
+            .OrderBy(x => x.Id)
+            .Skip((resultOffset.PageNumber - 1) * resultOffset.PageSize)
+            .Take(resultOffset.PageSize)
             .Select(ob => new SingleOrderDto
             {
                 Id = ob.Id,
@@ -38,18 +57,7 @@ public class OrderRepository : Repository<Order>, IOrderRepository,IOrderQueryRe
 
                 }).ToList()
             }).ToListAsync();
-    }
-    public async Task<Order?> GetOrderDetailsAsync(string userId, bool track = true)
-    {
-        var data = await _dbSet.Where(e => e.UserId == userId)
-            .Include(e => e.OrderItems)
-            .FirstOrDefaultAsync();
 
-        if (!track && data is not null)
-        {
-            _dbContext.Entry(data).State = EntityState.Detached;
-        }
-
-        return data;
+        return PagedResult<SingleOrderDto>.CreateNew(data, resultOffset, totalRecord);
     }
 }

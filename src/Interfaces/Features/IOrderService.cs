@@ -1,10 +1,11 @@
-﻿using PersonalShop.Domain.Responses;
+﻿using PersonalShop.Data.Contracts;
+using PersonalShop.Domain.Responses;
 using PersonalShop.Features.Orders.Dtos;
 
 namespace PersonalShop.Interfaces.Features;
 
 public interface IOrderService
 {
-    Task<ServiceResult<string>> CreateOrderByUserIdAsync(string userId);
-    Task<ServiceResult<List<SingleOrderDto>>> GetAllOrderByUserIdAsync(string userId);
+    Task<ServiceResult<string>> CreateOrderAsync(string userId);
+    Task<ServiceResult<PagedResult<SingleOrderDto>>> GetAllOrderAsync(string userId, PagedResultOffset resultOffset);
 }

@@ -18,7 +18,7 @@ public static class AccountApis
     {
         app.MapPost("api/account/register", [AllowAnonymous] async ([FromBody] RegisterDto registerDto, IUserService userService) =>
         {
-            var validateObject = ObjectValidator.Validate(registerDto);
+            var validateObject = ObjectValidatorExtension.Validate(registerDto);
             if (!validateObject.IsValid)
             {
                 return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
@@ -36,7 +36,7 @@ public static class AccountApis
 
         app.MapPost("api/account/login", [AllowAnonymous] async ([FromBody] LoginDto loginDto, IAuthenticationService authenticationService) =>
         {
-            var validateObject = ObjectValidator.Validate(loginDto);
+            var validateObject = ObjectValidatorExtension.Validate(loginDto);
             if (!validateObject.IsValid)
             {
                 return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
@@ -87,7 +87,7 @@ public static class AccountApis
 
         app.MapPost("api/account/roles/assignRole", [Authorize(Roles = RolesContract.Owner)] async ([FromBody] AssignRoleDto assignRoleDto, IUserService userService) =>
         {
-            var validateObject = ObjectValidator.Validate(assignRoleDto);
+            var validateObject = ObjectValidatorExtension.Validate(assignRoleDto);
             if (!validateObject.IsValid)
             {
                 return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
@@ -105,7 +105,7 @@ public static class AccountApis
 
         app.MapDelete("api/account/roles/removeRole", [Authorize(Roles = RolesContract.Owner)] async ([FromBody] RemoveRoleDto removeRoleDto, IUserService userService) =>
         {
-            var validateObject = ObjectValidator.Validate(removeRoleDto);
+            var validateObject = ObjectValidatorExtension.Validate(removeRoleDto);
             if (!validateObject.IsValid)
             {
                 return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));

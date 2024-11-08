@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Responses;
 using PersonalShop.Extension;
@@ -25,15 +24,15 @@ public class UserController : Controller
     [HttpGet]
     [Route("Products", Name = "UserProducts")]
     [Authorize(Roles = RolesContract.Admin)]
-    public async Task<ActionResult<PagedResult<SingleProductDto>>> UserProducts([FromQuery]PagedResultOffset resultOffset)
+    public async Task<ActionResult<PagedResult<SingleProductDto>>> UserProducts([FromQuery] PagedResultOffset resultOffset)
     {
-        var validateObject = Extension.ObjectValidator.Validate(resultOffset);
+        var validateObject = Extension.ObjectValidatorExtension.Validate(resultOffset);
         if (!validateObject.IsValid)
         {
             return BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
         }
 
-        var serviceResult = await _productService.GetAllProductsWithUserAndValidateOwnerAsync(User.Identity!.GetUserId(),resultOffset);
+        var serviceResult = await _productService.GetAllProductsWithUserAndValidateOwnerAsync(User.Identity!.GetUserId(), resultOffset);
 
         if (serviceResult.IsSuccess)
         {
@@ -46,9 +45,9 @@ public class UserController : Controller
     [HttpGet]
     [Route("Orders", Name = "UserOrders")]
     [Authorize(Roles = RolesContract.Customer)]
-    public async Task<ActionResult<IEnumerable<SingleOrderDto>>> UserOrders()
+    public async Task<ActionResult<PagedResult<SingleOrderDto>>> UserOrders([FromQuery] PagedResultOffset resultOffset)
     {
-        var serviceResult = await _orderService.GetAllOrderByUserIdAsync(User.Identity!.GetUserId());
+        var serviceResult = await _orderService.GetAllOrderAsync(User.Identity!.GetUserId(), resultOffset);
 
         if (serviceResult.IsSuccess)
         {

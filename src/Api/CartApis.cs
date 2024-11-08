@@ -30,7 +30,7 @@ public static class CartApis
         {
             var userId = context.GetUserId();
 
-            var validateObject = ObjectValidator.Validate(createCartItemDto);
+            var validateObject = ObjectValidatorExtension.Validate(createCartItemDto);
             if (!validateObject.IsValid)
             {
                 return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
@@ -79,7 +79,7 @@ public static class CartApis
         {
             var userId = context.GetUserId();
 
-            var serviceResult = await orderService.CreateOrderByUserIdAsync(userId!);
+            var serviceResult = await orderService.CreateOrderAsync(userId!);
 
             if (serviceResult.IsSuccess)
             {

@@ -29,10 +29,10 @@ internal static class ServicesConfig
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddScoped<IProductRepository, ProductRepository>();
-        services.AddScoped<IProductQueryRepository,ProductRepository>();
+        services.AddScoped<IProductQueryRepository, ProductRepository>();
 
         services.AddScoped<ICartRepository, CartRepository>();
-        services.AddScoped<ICartQueryRepository,CartRepository>();
+        services.AddScoped<ICartQueryRepository, CartRepository>();
 
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IOrderQueryRepository, OrderRepository>();

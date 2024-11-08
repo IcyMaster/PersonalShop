@@ -36,7 +36,7 @@ internal sealed class OwnerSeeder : IDataBaseSeeder
 
         try
         {
-            await _userManager.CreateAsync(ownerUser,ownerUserDto.Password);
+            await _userManager.CreateAsync(ownerUser, ownerUserDto.Password);
 
             //It can be placed in a UserRole Seeder 
             await _userManager.AddToRoleAsync(ownerUser, RolesContract.Owner);

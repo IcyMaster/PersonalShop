@@ -4,7 +4,6 @@ using PersonalShop.Domain.Products;
 using PersonalShop.Domain.Responses;
 using PersonalShop.Features.Products.Dtos;
 using PersonalShop.Interfaces.Repositories;
-using System.Drawing.Printing;
 
 namespace PersonalShop.Data.Repositories;
 
@@ -82,7 +81,7 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
                 }
             }).ToListAsync();
 
-        return PagedResult<SingleProductDto>.CreateNew(data,resultOffset,totalRecord);
+        return PagedResult<SingleProductDto>.CreateNew(data, resultOffset, totalRecord);
     }
 
     public async Task<Product?> GetProductDetailsWithUserAsync(int productId, bool track = true)

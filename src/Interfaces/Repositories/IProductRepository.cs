@@ -1,7 +1,5 @@
 ﻿using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Products;
-using PersonalShop.Domain.Responses;
-using PersonalShop.Features.Products.Dtos;
 
 namespace PersonalShop.Interfaces.Repositories
 {

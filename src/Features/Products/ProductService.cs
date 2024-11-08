@@ -1,4 +1,6 @@
-﻿using MassTransit;
+﻿using EasyCaching.Core;
+using MassTransit;
+using PersonalShop.Builders.Caches;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Products;
 using PersonalShop.Domain.Responses;
@@ -15,14 +17,16 @@ public class ProductService : IProductService
     private readonly IProductRepository _productRepository;
     private readonly IProductQueryRepository _productQueryRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IEasyCachingProvider _cachingProvider;
     private readonly IBus _bus;
 
     public ProductService(IProductRepository productRepository, IProductQueryRepository productQueryRepository,
-        IUnitOfWork unitOfWork, IBus bus)
+        IUnitOfWork unitOfWork, IEasyCachingProvider cachingProvider, IBus bus)
     {
         _productRepository = productRepository;
         _productQueryRepository = productQueryRepository;
         _unitOfWork = unitOfWork;
+        _cachingProvider = cachingProvider;
         _bus = bus;
     }
 
@@ -40,6 +44,7 @@ public class ProductService : IProductService
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
+            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
             return ServiceResult<string>.Success(ProductServiceSuccess.SuccessfulCreateProduct);
         }
 
@@ -142,12 +147,32 @@ public class ProductService : IProductService
     }
     public async Task<ServiceResult<PagedResult<SingleProductDto>>> GetAllProductsWithUserAsync(PagedResultOffset resultOffset)
     {
+        string cacheKey = ProductCacheKeyBuilder.ProductPaginationCacheKey(resultOffset);
+
+        var cache = await _cachingProvider.GetAsync<PagedResult<SingleProductDto>>(cacheKey);
+
+        if (cache.HasValue)
+        {
+            return ServiceResult<PagedResult<SingleProductDto>>.Success(cache.Value);
+        }
+
         var products = await _productQueryRepository.GetAllProductsWithUserAsync(resultOffset);
+
+        await _cachingProvider.TrySetAsync(cacheKey, products, TimeSpan.FromHours(1));
 
         return ServiceResult<PagedResult<SingleProductDto>>.Success(products);
     }
-    public async Task<ServiceResult<PagedResult<SingleProductDto>>> GetAllProductsWithUserAndValidateOwnerAsync(string userId,PagedResultOffset resultOffset)
+    public async Task<ServiceResult<PagedResult<SingleProductDto>>> GetAllProductsWithUserAndValidateOwnerAsync(string userId, PagedResultOffset resultOffset)
     {
+        string cacheKey = ProductCacheKeyBuilder.ProductPaginationCacheKeyWithUserId(userId, resultOffset);
+
+        var cache = await _cachingProvider.GetAsync<PagedResult<SingleProductDto>>(cacheKey);
+
+        if (cache.HasValue)
+        {
+            return ServiceResult<PagedResult<SingleProductDto>>.Success(cache.Value);
+        }
+
         var products = await _productQueryRepository.GetAllProductsWithUserAsync(resultOffset);
 
         foreach (var product in products.Data)
@@ -157,6 +182,8 @@ public class ProductService : IProductService
                 product.User.IsOwner = true;
             }
         }
+
+        await _cachingProvider.TrySetAsync(cacheKey, products, TimeSpan.FromHours(1));
 
         return ServiceResult<PagedResult<SingleProductDto>>.Success(products);
     }

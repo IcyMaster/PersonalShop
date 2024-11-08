@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Responses;
 using PersonalShop.Extension;
@@ -15,7 +14,7 @@ public static class UserApis
     {
         app.MapGet("api/user/products", [Authorize(Roles = RolesContract.Customer)] async (PagedResultOffset resultOffset, IProductService productService, HttpContext context) =>
         {
-            var validateObject = ObjectValidator.Validate(resultOffset);
+            var validateObject = ObjectValidatorExtension.Validate(resultOffset);
             if (!validateObject.IsValid)
             {
                 return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
@@ -23,7 +22,7 @@ public static class UserApis
 
             var userId = context.GetUserId();
 
-            var serviceResult = await productService.GetAllProductsWithUserAndValidateOwnerAsync(userId!,resultOffset);
+            var serviceResult = await productService.GetAllProductsWithUserAndValidateOwnerAsync(userId!, resultOffset);
 
             if (serviceResult.IsSuccess)
             {
@@ -33,18 +32,18 @@ public static class UserApis
             return Results.BadRequest(ApiResult<PagedResult<SingleProductDto>>.Failed(serviceResult.Errors));
         });
 
-        app.MapGet("api/user/orders", [Authorize(Roles = RolesContract.Customer)] async (IOrderService orderService, HttpContext context) =>
+        app.MapGet("api/user/orders", [Authorize(Roles = RolesContract.Customer)] async (PagedResultOffset resultOffset, IOrderService orderService, HttpContext context) =>
         {
             var userId = context.GetUserId();
 
-            var serviceResult = await orderService.GetAllOrderByUserIdAsync(userId!);
+            var serviceResult = await orderService.GetAllOrderAsync(userId!, resultOffset);
 
             if (serviceResult.IsSuccess)
             {
-                return Results.Ok(ApiResult<List<SingleOrderDto>>.Success(serviceResult.Result!));
+                return Results.Ok(ApiResult<PagedResult<SingleOrderDto>>.Success(serviceResult.Result!));
             }
 
-            return Results.BadRequest(ApiResult<List<SingleOrderDto>>.Failed(serviceResult.Errors));
+            return Results.BadRequest(ApiResult<PagedResult<SingleOrderDto>>.Failed(serviceResult.Errors));
         });
     }
 }

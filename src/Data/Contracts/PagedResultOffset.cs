@@ -32,7 +32,7 @@ public class PagedResultOffset
         {
             pageSize = 10;
         }
-        
+
 
         var result = new PagedResultOffset
         {

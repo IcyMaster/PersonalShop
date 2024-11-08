@@ -24,7 +24,7 @@ public class ProductController : Controller
     [HttpGet]
     public async Task<ActionResult<PagedResult<SingleProductDto>>> Index([FromQuery] PagedResultOffset resultOffset)
     {
-        var validateObject = Extension.ObjectValidator.Validate(resultOffset);
+        var validateObject = ObjectValidatorExtension.Validate(resultOffset);
         if (!validateObject.IsValid)
         {
             return BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
@@ -62,7 +62,7 @@ public class ProductController : Controller
 
         if (serviceResult.IsSuccess)
         {
-            return RedirectToAction(nameof(UserController.UserProducts), nameof(UserController));
+            return RedirectToAction(nameof(UserController.UserProducts), nameof(UserController).Replace("Controller", string.Empty));
         }
 
         return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
@@ -77,7 +77,7 @@ public class ProductController : Controller
 
         if (serviceResult.IsSuccess)
         {
-            return RedirectToAction(nameof(UserController.UserProducts), nameof(UserController));
+            return RedirectToAction(nameof(UserController.UserProducts), nameof(UserController).Replace("Controller", string.Empty));
         }
 
         return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
@@ -112,7 +112,7 @@ public class ProductController : Controller
 
         if (serviceResult.IsSuccess)
         {
-            return RedirectToAction(nameof(UserController.UserProducts), nameof(UserController));
+            return RedirectToAction(nameof(UserController.UserProducts), nameof(UserController).Replace("Controller", string.Empty));
         }
 
         return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));

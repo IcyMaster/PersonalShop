@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.Extension;
 
-public static class ObjectValidator
+public static class ObjectValidatorExtension
 {
     public static ValidateResult Validate(object instance)
     {

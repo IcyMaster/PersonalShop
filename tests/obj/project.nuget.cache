@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "UMVbTuRk3EE=",
+  "dgSpecHash": "7tW/82UlAqs=",
   "success": true,
-  "projectFilePath": "D:\\Programing\\Projects\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
+  "projectFilePath": "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\devic\\.nuget\\packages\\bogus\\35.6.1\\bogus.35.6.1.nupkg.sha512",
     "C:\\Users\\devic\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
