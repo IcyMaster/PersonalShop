@@ -41,7 +41,7 @@ else
                                             @if (item.Quantity > 1)
                                             {
                                                 <form asp-controller="Cart" asp-action="UpdateItem" asp-route-productId="@item.ProductId" method="post" class="d-inline">
-                                                    <input type="hidden" name="Quanity" value="@(item.Quantity - 1)" />
+                                                    <input type="hidden" name="Quantity" value="@(item.Quantity - 1)" />
                                                     <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary px-2 me-2 no-outline">
                                                         <i class="bi bi-dash"></i>
                                                     </button>
@@ -55,11 +55,11 @@ else
                                             }
 
                                             <div data-mdb-input-init class="form-outline">
-                                                <input id="form1" min="1" name="quantity" value="@item.Quantity" type="number" class="form-control" />
+                                                <input id="form1" min="1" name="Quantity" value="@item.Quantity" type="number" class="form-control" />
                                             </div>
 
                                             <form asp-controller="Cart" asp-action="UpdateItem" asp-route-productId="@item.ProductId" method="post" class="d-inline">
-                                                <input type="hidden" name="Quanity" value="@(item.Quantity + 1)" />
+                                                <input type="hidden" name="Quantity" value="@(item.Quantity + 1)" />
                                                 <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary px-2 ms-2 no-outline">
                                                     <i class="bi bi-plus"></i>
                                                 </button>
@@ -113,7 +113,7 @@ else
                                     <span><strong>@Model.TotalPrice.ToString("00")</strong></span>
                                 </li>
                             </ul>
-                            <form asp-controller="Cart" asp-action="CheckOut" asp-route-cartId="@Model.Id" method="get" class="d-inline">
+                            <form asp-controller="Cart" asp-action="Checkout" method="post" class="d-inline">
                                 <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block no-outline">
                                     پرداخت
                                 </button>

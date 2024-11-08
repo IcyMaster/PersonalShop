@@ -6,7 +6,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h2>Index</h2>
 
 @if (User.Identity!.IsAuthenticated)
 {
@@ -58,3 +58,49 @@
         }
     </tbody>
 </table>
+<br/>
+<nav aria-label="Product Pagination">
+    <ul class="pagination justify-content-end">
+        @if(Model.PageNumber > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" href="?pageNumber=@(Model.PageNumber - 1)">صفحه قبل</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link">صفحه قبل</span>
+            </li>
+        }
+
+        @for (int number = 1; number <= Model.TotalPages; number++)
+        {
+            if (number == Model.PageNumber)
+            {
+                <li class="page-item active">
+                    <span class="page-link">
+                        @number
+                    </span>
+                </li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-link" href="?pageNumber=@number">@number</a></li>
+            }
+        }
+
+        @if (Model.PageNumber < Model.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" href="?pageNumber=@(Model.PageNumber + 1)">صفحه بعد</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <a class="page-link">صفحه بعد</a>
+            </li>
+        }
+    </ul>
+</nav>

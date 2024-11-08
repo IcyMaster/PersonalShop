@@ -9,7 +9,7 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly Dictionary<Type, object> _repositories;
-    private IDbContextTransaction _transaction;
+    private IDbContextTransaction _transaction = null!;
     private bool _disposed = false;
 
     public UnitOfWork(ApplicationDbContext dbContext)

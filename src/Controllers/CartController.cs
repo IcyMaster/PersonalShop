@@ -30,8 +30,13 @@ public class CartController : Controller
         {
             return View(serviceResult.Result);
         }
+        else
+        {
+            return View(null);
+        }
 
-        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
+        //To show that the card is not available on the front (temporary)
+        //return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
     }
 
     [Authorize(Roles = RolesContract.Customer)]
@@ -39,16 +44,11 @@ public class CartController : Controller
     [Route("AddItem")]
     public async Task<ActionResult> AddItem(CreateCartItemDto createCartItemDto)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(createCartItemDto);
-        }
-
         var serviceResult = await _cartService.AddCartItemAsync(User.Identity!.GetUserId(), createCartItemDto);
 
         if (serviceResult.IsSuccess)
         {
-            return RedirectToAction(nameof(Index), nameof(CartController));
+            return RedirectToAction(nameof(Index));
         }
 
         return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
@@ -63,7 +63,7 @@ public class CartController : Controller
 
         if (serviceResult.IsSuccess)
         {
-            return RedirectToAction(nameof(Index), nameof(CartController));
+            return RedirectToAction(nameof(Index));
         }
 
         return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
@@ -78,7 +78,7 @@ public class CartController : Controller
 
         if (serviceResult.IsSuccess)
         {
-            return RedirectToAction(nameof(Index), nameof(CartController));
+            return RedirectToAction(nameof(Index));
         }
 
         return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
@@ -93,7 +93,7 @@ public class CartController : Controller
 
         if (serviceResult.IsSuccess)
         {
-            return RedirectToAction(nameof(UserController.UserOrders), nameof(UserController));
+            return RedirectToAction(nameof(UserController.UserOrders), nameof(UserController).Replace("Controller",string.Empty));
         }
 
         return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));

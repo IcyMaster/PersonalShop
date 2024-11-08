@@ -19,7 +19,7 @@ public class CartService : ICartService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEasyCachingProvider _cachingProvider;
 
-    public CartService(ICartRepository cartRepository,ICartQueryRepository cartQueryRepository, IProductQueryRepository productQueryRepository,
+    public CartService(ICartRepository cartRepository, ICartQueryRepository cartQueryRepository, IProductQueryRepository productQueryRepository,
         IUnitOfWork unitOfWork, IEasyCachingProvider cachingProvider)
     {
         _cartRepository = cartRepository;
@@ -47,7 +47,7 @@ public class CartService : ICartService
             return ServiceResult<SingleCartDto>.Failed(CartServiceErrors.CartNotFound);
         }
 
-        await _cachingProvider.TrySetAsync(userId,cart, TimeSpan.FromHours(1));
+        await _cachingProvider.TrySetAsync(userId, cart, TimeSpan.FromHours(1));
 
         return ServiceResult<SingleCartDto>.Success(cart);
     }
@@ -78,6 +78,7 @@ public class CartService : ICartService
         {
             cart = new(userId);
             cart.CartItems.Add(cartitem);
+            await _cartRepository.AddAsync(cart);
         }
 
         cart.ProcessTotalPrice();
@@ -90,7 +91,6 @@ public class CartService : ICartService
 
             return ServiceResult<string>.Success(CartServiceSuccess.SuccessfulAddCartItem);
         }
-
         return ServiceResult<string>.Failed(CartServiceErrors.AddCartItemProblem);
     }
     public async Task<ServiceResult<string>> UpdateCartItemQuantityAsync(string userId, int productId, UpdateCartItemDto updateCartItemDto)

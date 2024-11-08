@@ -18,7 +18,7 @@ public class CartItem
     public int ProductId { get; private set; }
     public int Quantity { get; private set; }
     public decimal ItemPrice { get; private set; }
-    public Product Product { get; private set; } = new Product();
+    public Product Product { get; } = null!;
 
     public void IncreaseQuantity(int count)
     {

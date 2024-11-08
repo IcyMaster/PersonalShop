@@ -21,7 +21,7 @@ public class CartRepository : Repository<Cart>, ICartRepository, ICartQueryRepos
                 Id = x.Id,
                 UserId = x.UserId,
                 TotalPrice = x.TotalPrice,
-                TotalItemCount = x.CartItems.Count(),
+                TotalItemCount = x.CartItems.Select(e => e.Quantity).Sum(),
                 CartItems = x.CartItems.Select(e => new CartItemDto
                 {
                     ProductId = e.ProductId,
@@ -32,7 +32,7 @@ public class CartRepository : Repository<Cart>, ICartRepository, ICartQueryRepos
                         Description = e.Product.Description,
                         Price = e.Product.Price,
                     }
-                }).ToList()
+                }).ToList(),
             })
             .FirstOrDefaultAsync();
     }
