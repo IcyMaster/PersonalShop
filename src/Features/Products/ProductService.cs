@@ -32,13 +32,8 @@ public class ProductService : IProductService
 
     public async Task<ServiceResult<string>> CreateProductAsync(CreateProductDto createProductDto, string userId)
     {
-        var newProduct = new Product
-        {
-            UserId = userId,
-            Name = createProductDto.Name,
-            Description = createProductDto.Description,
-            Price = createProductDto.Price,
-        };
+        var newProduct = new Product(userId,createProductDto.Name,
+            createProductDto.Description, createProductDto.Price);
 
         await _productRepository.AddAsync(newProduct);
 
@@ -91,9 +86,9 @@ public class ProductService : IProductService
             return ServiceResult<string>.Failed(ProductServiceErrors.ProductOwnerMatchProblem);
         }
 
-        product.Name = updateProductDto.Name;
-        product.Description = updateProductDto.Description;
-        product.Price = updateProductDto.Price;
+        product.ChangeName(updateProductDto.Name);
+        product.ChangeDescription(updateProductDto.Description);
+        product.ChangePrice(updateProductDto.Price);
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
