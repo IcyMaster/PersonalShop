@@ -9,14 +9,12 @@ public class Category
     {
         //for ef ...
     }
-
     public Category(string userId, string name, string description)
     {
         UserId = userId;
         Name = name;
         Description = description;
     }
-
     public Category(string userId, string name, string description, int parentId)
     {
         UserId = userId;
@@ -37,12 +35,10 @@ public class Category
     {
         ParentId = parentId;
     }
-
     public void ChangeName(string name)
     {
         Name = name;
     }
-
     public void ChangeDescription(string description)
     {
         Description = description;

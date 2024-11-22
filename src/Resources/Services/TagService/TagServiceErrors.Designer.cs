@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PersonalShop.Resources.Validations.Category {
+namespace PersonalShop.Resources.Services.TagService {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace PersonalShop.Resources.Validations.Category {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class CategoryMessages {
+    public class TagServiceErrors {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CategoryMessages() {
+        internal TagServiceErrors() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace PersonalShop.Resources.Validations.Category {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validations.Category.CategoryMessages", typeof(CategoryMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Services.TagService.TagServiceErrors", typeof(TagServiceErrors).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,38 +61,47 @@ namespace PersonalShop.Resources.Validations.Category {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to مقدار فیلد توضیحات از 50 کاراکتر بیشتر است.
+        ///   Looks up a localized string similar to مشکل در ساختن تگ مورد نظر.
         /// </summary>
-        public static string DescriptionLengthError {
+        public static string CreateTagProblem {
             get {
-                return ResourceManager.GetString("DescriptionLengthError", resourceCulture);
+                return ResourceManager.GetString("CreateTagProblem", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد توضیحات را تکمیل نمایید.
+        ///   Looks up a localized string similar to مشکل در حذف کردن تگ مورد نظر.
         /// </summary>
-        public static string DescriptionRequired {
+        public static string DeleteTagProblem {
             get {
-                return ResourceManager.GetString("DescriptionRequired", resourceCulture);
+                return ResourceManager.GetString("DeleteTagProblem", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to مقدار فیلد نام از 20 کاراکتر بیشتر است.
+        ///   Looks up a localized string similar to تگ مورد نظر یافت نشد.
         /// </summary>
-        public static string NameLengthError {
+        public static string TagNotFound {
             get {
-                return ResourceManager.GetString("NameLengthError", resourceCulture);
+                return ResourceManager.GetString("TagNotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد نام را تکمیل نمایید.
+        ///   Looks up a localized string similar to فقط کاربر سازنده تگ می تواند عمل موردنظر را اعمال کند.
         /// </summary>
-        public static string NameRequired {
+        public static string TagOwnerMatchProblem {
             get {
-                return ResourceManager.GetString("NameRequired", resourceCulture);
+                return ResourceManager.GetString("TagOwnerMatchProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مشکل در بروزرسانی تگ مورد نظر.
+        /// </summary>
+        public static string UpdateTagProblem {
+            get {
+                return ResourceManager.GetString("UpdateTagProblem", resourceCulture);
             }
         }
     }

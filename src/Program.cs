@@ -43,6 +43,7 @@ public class Program
         // Register Minimal Apis
         app.RegisterAccountApis();
         app.RegisterCategoryApis();
+        app.RegisterTagApis();
         app.RegisterProductApis();
         app.RegisterUserApis();
         app.RegisterCardApis();

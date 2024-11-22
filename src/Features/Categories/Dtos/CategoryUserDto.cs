@@ -1,4 +1,4 @@
-﻿namespace PersonalShop.Features.Categorys.Dtos;
+﻿namespace PersonalShop.Features.Categories.Dtos;
 
 public class CategoryUserDto
 {

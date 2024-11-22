@@ -68,7 +68,7 @@ public class UserService : IUserService
         var result = await _userManager.AddToRoleAsync(user, roleName);
         if (result.Succeeded)
         {
-            return ServiceResult<string>.Failed(UserServiceSuccess.SuccessfulAssineRoleToUser);
+            return ServiceResult<string>.Success(UserServiceSuccess.SuccessfulAssineRoleToUser);
         }
 
         return ServiceResult<string>.Failed(UserServiceErrors.AssineRoleToUserProblem);

@@ -1,4 +1,5 @@
 ﻿using PersonalShop.Domain.Categorys;
+using PersonalShop.Domain.Tags;
 using PersonalShop.Domain.Users;
 
 namespace PersonalShop.Domain.Products
@@ -9,9 +10,9 @@ namespace PersonalShop.Domain.Products
         {
             //for ef ...
         }
-
         public Product(string userId, string name, string description, decimal price)
         {
+            UserId = userId;
             Name = name;
             Description = description;
             Price = price;
@@ -23,26 +24,20 @@ namespace PersonalShop.Domain.Products
         public string Description { get; private set; } = string.Empty;
         public decimal Price { get; private set; } = decimal.Zero;
         public User User { get; set; } = null!;
-        public List<Category> Categories { get; private set; } = [];
+        public List<Category> Categories { get; set; } = [];
+        public List<Tag> Tags { get; set; } = [];
 
         public void ChangeName(string name)
         {
             Name = name;
         }
-
         public void ChangeDescription(string description)
         {
             Description = description;
         }
-
         public void ChangePrice(decimal price)
         {
             Price = price;
-        }
-
-        public void AddCategory(Category category)
-        {
-            Categories.Add(category);
         }
     }
 }

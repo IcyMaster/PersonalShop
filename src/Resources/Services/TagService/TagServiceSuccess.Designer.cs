@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PersonalShop.Resources.Validations.Category {
+namespace PersonalShop.Resources.Services.TagService {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace PersonalShop.Resources.Validations.Category {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class CategoryMessages {
+    public class TagServiceSuccess {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CategoryMessages() {
+        internal TagServiceSuccess() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace PersonalShop.Resources.Validations.Category {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validations.Category.CategoryMessages", typeof(CategoryMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Services.TagService.TagServiceSuccess", typeof(TagServiceSuccess).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,38 +61,29 @@ namespace PersonalShop.Resources.Validations.Category {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to مقدار فیلد توضیحات از 50 کاراکتر بیشتر است.
+        ///   Looks up a localized string similar to تگ مورد نظر با موفقیت ساخته شد.
         /// </summary>
-        public static string DescriptionLengthError {
+        public static string SuccessfulCreateTag {
             get {
-                return ResourceManager.GetString("DescriptionLengthError", resourceCulture);
+                return ResourceManager.GetString("SuccessfulCreateTag", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد توضیحات را تکمیل نمایید.
+        ///   Looks up a localized string similar to تگ مورد نظر با موفقیت حذف شد.
         /// </summary>
-        public static string DescriptionRequired {
+        public static string SuccessfulDeleteTag {
             get {
-                return ResourceManager.GetString("DescriptionRequired", resourceCulture);
+                return ResourceManager.GetString("SuccessfulDeleteTag", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to مقدار فیلد نام از 20 کاراکتر بیشتر است.
+        ///   Looks up a localized string similar to تگ مورد نظر با موفقیت بروزرسانی شد.
         /// </summary>
-        public static string NameLengthError {
+        public static string SuccessfulUpdateTag {
             get {
-                return ResourceManager.GetString("NameLengthError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد نام را تکمیل نمایید.
-        /// </summary>
-        public static string NameRequired {
-            get {
-                return ResourceManager.GetString("NameRequired", resourceCulture);
+                return ResourceManager.GetString("SuccessfulUpdateTag", resourceCulture);
             }
         }
     }

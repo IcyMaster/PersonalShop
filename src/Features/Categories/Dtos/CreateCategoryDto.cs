@@ -1,21 +1,21 @@
 ﻿using PersonalShop.Resources.Validations.Category;
 using System.ComponentModel.DataAnnotations;
 
-namespace PersonalShop.Features.Categorys.Dtos;
+namespace PersonalShop.Features.Categories.Dtos;
 
-public class UpdateCategoryDto
+public class CreateCategoryDto
 {
+    public int ParentId { get; set; } = 0;
+
     [MaxLength(20, ErrorMessageResourceType = typeof(CategoryMessages)
-        , ErrorMessageResourceName = nameof(CategoryMessages.NameLengthError))]
+    , ErrorMessageResourceName = nameof(CategoryMessages.NameLengthError))]
     [Required(ErrorMessageResourceType = typeof(CategoryMessages)
-        , ErrorMessageResourceName = nameof(CategoryMessages.NameRequired))]
+    , ErrorMessageResourceName = nameof(CategoryMessages.NameRequired))]
     public string Name { get; set; } = string.Empty;
 
     [MaxLength(50, ErrorMessageResourceType = typeof(CategoryMessages)
-        , ErrorMessageResourceName = nameof(CategoryMessages.DescriptionLengthError))]
+    , ErrorMessageResourceName = nameof(CategoryMessages.DescriptionLengthError))]
     [Required(ErrorMessageResourceType = typeof(CategoryMessages)
-        , ErrorMessageResourceName = nameof(CategoryMessages.DescriptionRequired))]
+    , ErrorMessageResourceName = nameof(CategoryMessages.DescriptionRequired))]
     public string Description { get; set; } = string.Empty;
-
-    public int ParentId { get; private set; } = 0;
 }

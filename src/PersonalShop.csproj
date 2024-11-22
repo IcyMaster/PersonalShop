@@ -55,6 +55,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>OrderServiceSuccess.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Services\TagService\TagServiceErrors.Designer.cs">
+      <DependentUpon>TagServiceErrors.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Services\TagService\TagServiceSuccess.Designer.cs">
+      <DependentUpon>TagServiceSuccess.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Resources\Validations\CartItem\CartItemMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -130,6 +140,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>UserServiceSuccess.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Validations\Tag\TagMessages.Designer.cs">
+      <DependentUpon>TagMessages.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -152,6 +167,14 @@
     <EmbeddedResource Update="Resources\Services\OrderService\OrderServiceSuccess.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>OrderServiceSuccess.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Services\TagService\TagServiceErrors.resx">
+      <LastGenOutput>TagServiceErrors.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Services\TagService\TagServiceSuccess.resx">
+      <LastGenOutput>TagServiceSuccess.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Validations\CartItem\CartItemMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -213,6 +236,10 @@
     <EmbeddedResource Update="Resources\Services\UserServices\UserServiceSuccess.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>UserServiceSuccess.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Validations\Tag\TagMessages.resx">
+      <LastGenOutput>TagMessages.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
 

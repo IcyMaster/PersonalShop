@@ -25,5 +25,6 @@ public class CreateProductDto
     [DisplayFormat(DataFormatString = "{0:G29}", ApplyFormatInEditMode = true)]
     public decimal Price { get; set; } = decimal.Zero;
 
-    public List<int>? Categories { get; set; } = [];
+    public List<int>? Categories { get; set; }
+    public List<int>? Tags { get; set; }
 }

@@ -8,32 +8,17 @@ using PersonalShop.Data;
 
 #nullable disable
 
-namespace PersonalShop.Data.Migrations
+namespace PersonalShop.Data.migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241122101344_ChangeCategorySectionFour")]
-    partial class ChangeCategorySectionFour
+    [Migration("20241122173231_First")]
+    partial class First
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
-
-            modelBuilder.Entity("CategoryProduct", b =>
-                {
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("CategoriesId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("CategoryProduct");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
@@ -213,6 +198,21 @@ namespace PersonalShop.Data.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("PersonalShop.Domain.Categorys.ProductCategory", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CategoryId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductCategory");
+                });
+
             modelBuilder.Entity("PersonalShop.Domain.Orders.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -319,6 +319,42 @@ namespace PersonalShop.Data.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
+            modelBuilder.Entity("PersonalShop.Domain.Tags.ProductTag", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ProductId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("ProductTag");
+                });
+
+            modelBuilder.Entity("PersonalShop.Domain.Tags.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Tags");
+                });
+
             modelBuilder.Entity("PersonalShop.Domain.Users.User", b =>
                 {
                     b.Property<string>("Id")
@@ -389,21 +425,6 @@ namespace PersonalShop.Data.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("CategoryProduct", b =>
-                {
-                    b.HasOne("PersonalShop.Domain.Categorys.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PersonalShop.Domain.Products.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -485,6 +506,21 @@ namespace PersonalShop.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("PersonalShop.Domain.Categorys.ProductCategory", b =>
+                {
+                    b.HasOne("PersonalShop.Domain.Categorys.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PersonalShop.Domain.Products.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PersonalShop.Domain.Orders.Order", b =>
                 {
                     b.HasOne("PersonalShop.Domain.Users.User", "User")
@@ -506,6 +542,32 @@ namespace PersonalShop.Data.Migrations
                 });
 
             modelBuilder.Entity("PersonalShop.Domain.Products.Product", b =>
+                {
+                    b.HasOne("PersonalShop.Domain.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PersonalShop.Domain.Tags.ProductTag", b =>
+                {
+                    b.HasOne("PersonalShop.Domain.Products.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PersonalShop.Domain.Tags.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PersonalShop.Domain.Tags.Tag", b =>
                 {
                     b.HasOne("PersonalShop.Domain.Users.User", "User")
                         .WithMany()

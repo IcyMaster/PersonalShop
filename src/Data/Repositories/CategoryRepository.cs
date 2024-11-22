@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonalShop.Domain.Categorys;
-using PersonalShop.Features.Categorys.Dtos;
+using PersonalShop.Features.Categories.Dtos;
 using PersonalShop.Interfaces.Repositories;
 
 namespace PersonalShop.Data.Repositories;
@@ -21,7 +21,7 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository, ICa
 
         return data;
     }
-    public async Task<List<SingleCategoryDto>> GetAllCategorysWithUserAsync()
+    public async Task<List<SingleCategoryDto>> GetAllCategoriesWithUserAsync()
     {
         return await _dbSet
             .Include(x => x.User)

@@ -4,12 +4,13 @@ using PersonalShop.Data.Contracts;
 using PersonalShop.Data.Repositories;
 using PersonalShop.Data.Seeders;
 using PersonalShop.Features.Carts;
-using PersonalShop.Features.Categorys;
+using PersonalShop.Features.Categories;
 using PersonalShop.Features.Identitys.Authentications;
 using PersonalShop.Features.Identitys.Roles;
 using PersonalShop.Features.Identitys.Users;
 using PersonalShop.Features.Orders;
 using PersonalShop.Features.Products;
+using PersonalShop.Features.Tags;
 using PersonalShop.Generator;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Generator;
@@ -41,6 +42,9 @@ internal static class ServicesConfig
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<ICategoryQueryRepository, CategoryRepository>();
 
+        services.AddScoped<ITagRepository, TagRepository>();
+        services.AddScoped<ITagQueryRepository, TagRepository>();
+
         //services
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICartService, CartService>();
@@ -49,6 +53,7 @@ internal static class ServicesConfig
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<ITagService, TagService>();
 
         //Generators
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();

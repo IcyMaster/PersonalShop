@@ -117,16 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DescriptionLengthError" xml:space="preserve">
-    <value>مقدار فیلد توضیحات از 50 کاراکتر بیشتر است</value>
+  <data name="SuccessfulCreateTag" xml:space="preserve">
+    <value>تگ مورد نظر با موفقیت ساخته شد</value>
   </data>
-  <data name="DescriptionRequired" xml:space="preserve">
-    <value>لطفا فیلد توضیحات را تکمیل نمایید</value>
+  <data name="SuccessfulDeleteTag" xml:space="preserve">
+    <value>تگ مورد نظر با موفقیت حذف شد</value>
   </data>
-  <data name="NameLengthError" xml:space="preserve">
-    <value>مقدار فیلد نام از 20 کاراکتر بیشتر است</value>
-  </data>
-  <data name="NameRequired" xml:space="preserve">
-    <value>لطفا فیلد نام را تکمیل نمایید</value>
+  <data name="SuccessfulUpdateTag" xml:space="preserve">
+    <value>تگ مورد نظر با موفقیت بروزرسانی شد</value>
   </data>
 </root>

@@ -1,8 +1,8 @@
-﻿using PersonalShop.Features.Categorys.Dtos;
+﻿using PersonalShop.Features.Categories.Dtos;
 
 namespace PersonalShop.Interfaces.Repositories;
 
 public interface ICategoryQueryRepository
 {
-    Task<List<SingleCategoryDto>> GetAllCategorysWithUserAsync();
+    Task<List<SingleCategoryDto>> GetAllCategoriesWithUserAsync();
 }

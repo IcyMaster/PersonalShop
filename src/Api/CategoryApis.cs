@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Responses;
 using PersonalShop.Extension;
-using PersonalShop.Features.Categorys.Dtos;
+using PersonalShop.Features.Categories.Dtos;
 using PersonalShop.Interfaces.Features;
 
 namespace PersonalShop.Api;
@@ -12,9 +12,9 @@ public static class CategoryApis
 {
     public static void RegisterCategoryApis(this WebApplication app)
     {
-        app.MapGet("api/categorys", [AllowAnonymous] async (ICategoryService categoryService) =>
+        app.MapGet("api/categories", [AllowAnonymous] async (ICategoryService categoryService) =>
         {
-            var serviceResult = await categoryService.GetAllCategorysWithUserAsync();
+            var serviceResult = await categoryService.GetAllCategoriesWithUserAsync();
 
             if (serviceResult.IsSuccess)
             {
@@ -24,7 +24,7 @@ public static class CategoryApis
             return Results.BadRequest(ApiResult<List<SingleCategoryDto>>.Failed(serviceResult.Errors));
         });
 
-        app.MapPost("api/categorys", [Authorize(Roles = RolesContract.Admin)] async ([FromBody] CreateCategoryDto createCategoryDto, ICategoryService categoryService, HttpContext context) =>
+        app.MapPost("api/categories", [Authorize(Roles = RolesContract.Admin)] async ([FromBody] CreateCategoryDto createCategoryDto, ICategoryService categoryService, HttpContext context) =>
         {
             var validateObject = ObjectValidatorExtension.Validate(createCategoryDto);
             if (!validateObject.IsValid)
@@ -44,7 +44,7 @@ public static class CategoryApis
             return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
-        app.MapPut("api/categorys/{categoryId:int}", [Authorize(Roles = RolesContract.Admin)] async ([FromBody] UpdateCategoryDto updateCategoryDto, ICategoryService categoryService, HttpContext context, int categoryId) =>
+        app.MapPut("api/categories/{categoryId:int}", [Authorize(Roles = RolesContract.Admin)] async ([FromBody] UpdateCategoryDto updateCategoryDto, ICategoryService categoryService, HttpContext context, int categoryId) =>
         {
             var validateObject = ObjectValidatorExtension.Validate(updateCategoryDto);
             if (!validateObject.IsValid)
@@ -64,7 +64,7 @@ public static class CategoryApis
             return Results.BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
         });
 
-        app.MapDelete("api/categorys/{categoryId:int}", [Authorize(Roles = RolesContract.Admin)] async (ICategoryService categoryService, HttpContext context, int categoryId) =>
+        app.MapDelete("api/categories/{categoryId:int}", [Authorize(Roles = RolesContract.Admin)] async (ICategoryService categoryService, HttpContext context, int categoryId) =>
         {
             var userId = context.GetUserId();
 

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PersonalShop.Resources.Validations.Category {
+namespace PersonalShop.Resources.Validations.Tag {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace PersonalShop.Resources.Validations.Category {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class CategoryMessages {
+    public class TagMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CategoryMessages() {
+        internal TagMessages() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace PersonalShop.Resources.Validations.Category {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validations.Category.CategoryMessages", typeof(CategoryMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Resources.Validations.Tag.TagMessages", typeof(TagMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,25 +61,7 @@ namespace PersonalShop.Resources.Validations.Category {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to مقدار فیلد توضیحات از 50 کاراکتر بیشتر است.
-        /// </summary>
-        public static string DescriptionLengthError {
-            get {
-                return ResourceManager.GetString("DescriptionLengthError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد توضیحات را تکمیل نمایید.
-        /// </summary>
-        public static string DescriptionRequired {
-            get {
-                return ResourceManager.GetString("DescriptionRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to مقدار فیلد نام از 20 کاراکتر بیشتر است.
+        ///   Looks up a localized string similar to مقدار فیلد نام از 10 کاراکتر بیشتر است.
         /// </summary>
         public static string NameLengthError {
             get {

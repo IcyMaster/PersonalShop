@@ -23,4 +23,7 @@ public class UpdateProductDto
     [Required(ErrorMessageResourceType = typeof(ProductMessages)
         , ErrorMessageResourceName = nameof(ProductMessages.PriceRequired))]
     public decimal Price { get; set; } = decimal.Zero;
+
+    public List<int>? Categories { get; set; }
+    public List<int>? Tags { get; set; }
 }

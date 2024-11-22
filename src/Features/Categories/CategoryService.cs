@@ -1,23 +1,26 @@
-﻿using PersonalShop.Data.Contracts;
+﻿using EasyCaching.Core;
+using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Categorys;
 using PersonalShop.Domain.Responses;
-using PersonalShop.Features.Categorys.Dtos;
+using PersonalShop.Features.Categories.Dtos;
 using PersonalShop.Interfaces.Features;
 using PersonalShop.Interfaces.Repositories;
 using PersonalShop.Resources.Services.CategoryService;
 
-namespace PersonalShop.Features.Categorys;
+namespace PersonalShop.Features.Categories;
 
 public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly ICategoryQueryRepository _categoryQueryRepository;
+    private readonly IEasyCachingProvider _cachingProvider;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CategoryService(ICategoryRepository categoryRepository, ICategoryQueryRepository categoryQueryRepository, IUnitOfWork unitOfWork)
+    public CategoryService(ICategoryRepository categoryRepository, ICategoryQueryRepository categoryQueryRepository, IEasyCachingProvider cachingProvider, IUnitOfWork unitOfWork)
     {
         _categoryRepository = categoryRepository;
         _categoryQueryRepository = categoryQueryRepository;
+        _cachingProvider = cachingProvider;
         _unitOfWork = unitOfWork;
     }
 
@@ -29,7 +32,7 @@ public class CategoryService : ICategoryService
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
-            //await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
+            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Category);
             return ServiceResult<string>.Success(CategoryServiceSuccess.SuccessfulCreateCategory);
         }
 
@@ -54,11 +57,12 @@ public class CategoryService : ICategoryService
 
         if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
-            //await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
-            return ServiceResult<string>.Success(CategoryServiceSuccess.SuccessfulCreateCategory);
+            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Category);
+            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
+            return ServiceResult<string>.Success(CategoryServiceSuccess.SuccessfulUpdateCategory);
         }
 
-        return ServiceResult<string>.Failed(CategoryServiceErrors.CreateCategoryProblem);
+        return ServiceResult<string>.Failed(CategoryServiceErrors.UpdateCategoryProblem);
     }
     public async Task<ServiceResult<string>> DeleteCategoryAndValidateOwnerAsync(string userId, int categoryId)
     {
@@ -75,24 +79,43 @@ public class CategoryService : ICategoryService
 
         _categoryRepository.Delete(category);
 
-        if (await _unitOfWork.SaveChangesAsync(true) > 1)
+        if (await _unitOfWork.SaveChangesAsync(true) > 0)
         {
-            return ServiceResult<string>.Success(CategoryServiceSuccess.SuccessfulUpdateCategory);
+            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Category);
+            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
+
+            return ServiceResult<string>.Success(CategoryServiceSuccess.SuccessfulDeleteCategory);
         }
 
-        return ServiceResult<string>.Failed(CategoryServiceErrors.UpdateCategoryProblem);
+        return ServiceResult<string>.Failed(CategoryServiceErrors.DeleteCategoryProblem);
     }
-    public async Task<ServiceResult<List<SingleCategoryDto>>> GetAllCategorysWithUserAsync()
+    public async Task<ServiceResult<List<SingleCategoryDto>>> GetAllCategoriesWithUserAsync()
     {
-        var categorys = await _categoryQueryRepository.GetAllCategorysWithUserAsync();
+        var cache = await _cachingProvider.GetAsync<List<SingleCategoryDto>>(CacheKeysContract.Category);
 
-        return ServiceResult<List<SingleCategoryDto>>.Success(categorys);
+        if (cache.HasValue)
+        {
+            return ServiceResult<List<SingleCategoryDto>>.Success(cache.Value);
+        }
+
+        var categories = await _categoryQueryRepository.GetAllCategoriesWithUserAsync();
+
+        await _cachingProvider.TrySetAsync(CacheKeysContract.Category, categories, TimeSpan.FromHours(1));
+
+        return ServiceResult<List<SingleCategoryDto>>.Success(categories);
     }
-    public async Task<ServiceResult<List<SingleCategoryDto>>> GetAllCategorysWithUserAndValidateOwnerAsync(string userId)
+    public async Task<ServiceResult<List<SingleCategoryDto>>> GetAllCategoriesWithUserAndValidateOwnerAsync(string userId)
     {
-        var categorys = await _categoryQueryRepository.GetAllCategorysWithUserAsync();
+        var cache = await _cachingProvider.GetAsync<List<SingleCategoryDto>>(CacheKeysContract.Category);
 
-        foreach (var category in categorys)
+        if (cache.HasValue)
+        {
+            return ServiceResult<List<SingleCategoryDto>>.Success(cache.Value);
+        }
+
+        var categories = await _categoryQueryRepository.GetAllCategoriesWithUserAsync();
+
+        foreach (var category in categories)
         {
             if (category.User.UserId.Equals(userId))
             {
@@ -100,6 +123,8 @@ public class CategoryService : ICategoryService
             }
         }
 
-        return ServiceResult<List<SingleCategoryDto>>.Success(categorys);
+        await _cachingProvider.TrySetAsync(CacheKeysContract.Category, categories, TimeSpan.FromHours(1));
+
+        return ServiceResult<List<SingleCategoryDto>>.Success(categories);
     }
 }
