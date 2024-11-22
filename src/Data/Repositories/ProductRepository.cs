@@ -14,7 +14,9 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
     public async Task<SingleProductDto?> GetProductDetailsWithUserAsync(int productId)
     {
         return await
-            _dbSet.Include(x => x.User)
+            _dbSet
+            .Include(x => x.User)
+            .Include(x => x.Categories)
             .AsNoTracking()
             .Where(x => x.Id == productId)
             .Select(x => new SingleProductDto
@@ -29,7 +31,14 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
                     FirstName = x.User.FirstName,
                     LastName = x.User.LastName,
                     IsOwner = false
-                }
+                },
+                Categories = x.Categories.Select(e => new ProductCategoryDto
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Description = e.Description,
+
+                }).ToList(),
             })
             .FirstOrDefaultAsync();
     }
@@ -37,6 +46,7 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
     {
         return await
             _dbSet
+            .Include(x => x.Categories)
             .AsNoTracking()
             .Where(x => x.Id == productId)
             .Select(x => new SingleProductDto
@@ -51,7 +61,14 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
                     FirstName = x.User.FirstName,
                     LastName = x.User.LastName,
                     IsOwner = false
-                }
+                },
+                Categories = x.Categories.Select(e => new ProductCategoryDto
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Description = e.Description,
+
+                }).ToList(),
             })
             .FirstOrDefaultAsync();
     }
@@ -61,24 +78,32 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
 
         var data = await
             _dbSet
+            .Include(x => x.Categories)
             .AsNoTracking()
             .OrderBy(x => x.Id)
             .Skip((resultOffset.PageNumber - 1) * resultOffset.PageSize)
             .Take(resultOffset.PageSize)
-            .Select(ob => new SingleProductDto
+            .Select(x => new SingleProductDto
             {
-                Id = ob.Id,
-                Name = ob.Name,
-                Description = ob.Description,
-                Price = ob.Price,
-
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                Price = x.Price,
                 User = new ProductUserDto
                 {
-                    UserId = ob.User.Id,
-                    FirstName = ob.User.FirstName,
-                    LastName = ob.User.LastName,
+                    UserId = x.User.Id,
+                    FirstName = x.User.FirstName,
+                    LastName = x.User.LastName,
                     IsOwner = false,
-                }
+                },
+                Categories = x.Categories.Select(e => new ProductCategoryDto
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Description = e.Description,
+
+                }).ToList(),
+
             }).ToListAsync();
 
         return PagedResult<SingleProductDto>.CreateNew(data, resultOffset, totalRecord);
@@ -97,7 +122,7 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
     }
     public async Task<Product?> GetProductDetailsWithoutUserAsync(int productId, bool track = true)
     {
-        var data = await _dbSet.FirstOrDefaultAsync(x => x.Id.Equals(productId));
+        var data = await _dbSet.FirstOrDefaultAsync(x => x.Id == productId);
 
         if (!track && data is not null)
         {

@@ -1,8 +1,11 @@
-﻿namespace PersonalShop.Domain.Categorys;
+﻿using PersonalShop.Domain.Products;
+using PersonalShop.Domain.Users;
+
+namespace PersonalShop.Domain.Categorys;
 
 public class Category
 {
-    public Category()
+    private Category()
     {
         //for ef ...
     }
@@ -14,7 +17,7 @@ public class Category
         Description = description;
     }
 
-    public Category(string userId,string name, string description, int parentId)
+    public Category(string userId, string name, string description, int parentId)
     {
         UserId = userId;
         Name = name;
@@ -23,8 +26,25 @@ public class Category
     }
 
     public int Id { get; set; }
-    public string UserId { get; set; } = string.Empty;
     public int ParentId { get; private set; } = 0;
     public string Name { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
+    public string UserId { get; private set; } = string.Empty;
+    public User User { get; set; } = null!;
+    public List<Product> Products { get; set; } = [];
+
+    public void ChangeParentId(int parentId)
+    {
+        ParentId = parentId;
+    }
+
+    public void ChangeName(string name)
+    {
+        Name = name;
+    }
+
+    public void ChangeDescription(string description)
+    {
+        Description = description;
+    }
 }

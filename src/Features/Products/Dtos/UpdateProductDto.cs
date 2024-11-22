@@ -5,8 +5,6 @@ namespace PersonalShop.Features.Products.Dtos;
 
 public class UpdateProductDto
 {
-    public long Id { get; set; }
-
     [MaxLength(20, ErrorMessageResourceType = typeof(ProductMessages)
         , ErrorMessageResourceName = nameof(ProductMessages.NameLengthError))]
     [Required(ErrorMessageResourceType = typeof(ProductMessages)

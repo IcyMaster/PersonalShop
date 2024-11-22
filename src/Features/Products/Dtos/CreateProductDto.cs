@@ -24,4 +24,6 @@ public class CreateProductDto
         , ErrorMessageResourceName = nameof(ProductMessages.PriceRequired))]
     [DisplayFormat(DataFormatString = "{0:G29}", ApplyFormatInEditMode = true)]
     public decimal Price { get; set; } = decimal.Zero;
+
+    public List<int>? Categories { get; set; } = [];
 }

@@ -2,6 +2,7 @@
 using MassTransit;
 using PersonalShop.Builders.Caches;
 using PersonalShop.Data.Contracts;
+using PersonalShop.Domain.Categorys;
 using PersonalShop.Domain.Products;
 using PersonalShop.Domain.Responses;
 using PersonalShop.Features.Carts.Commands;
@@ -16,33 +17,55 @@ public class ProductService : IProductService
 {
     private readonly IProductRepository _productRepository;
     private readonly IProductQueryRepository _productQueryRepository;
+    private readonly ICategoryRepository _categoryRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEasyCachingProvider _cachingProvider;
     private readonly IBus _bus;
 
     public ProductService(IProductRepository productRepository, IProductQueryRepository productQueryRepository,
-        IUnitOfWork unitOfWork, IEasyCachingProvider cachingProvider, IBus bus)
+        IUnitOfWork unitOfWork, IEasyCachingProvider cachingProvider, IBus bus, ICategoryRepository categoryRepository)
     {
         _productRepository = productRepository;
         _productQueryRepository = productQueryRepository;
         _unitOfWork = unitOfWork;
         _cachingProvider = cachingProvider;
         _bus = bus;
+        _categoryRepository = categoryRepository;
     }
 
     public async Task<ServiceResult<string>> CreateProductAsync(CreateProductDto createProductDto, string userId)
     {
-        var newProduct = new Product(userId,createProductDto.Name,
-            createProductDto.Description, createProductDto.Price);
-
-        await _productRepository.AddAsync(newProduct);
-
-        if (await _unitOfWork.SaveChangesAsync(true) > 0)
+        try
         {
-            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
-            return ServiceResult<string>.Success(ProductServiceSuccess.SuccessfulCreateProduct);
-        }
+            var newProduct = new Product(userId, createProductDto.Name,
+                createProductDto.Description, createProductDto.Price);
 
+            if (createProductDto.Categories is not null)
+            {
+                List<Category> categories = new List<Category>();
+
+                foreach (int categoryId in createProductDto.Categories)
+                {
+                    var category = await _categoryRepository.GetCategoryDetailsWithoutUserAsync(categoryId);
+                    if (category is not null)
+                    {
+                        newProduct.AddCategory(category);
+                    }
+                }
+            }
+
+            await _productRepository.AddAsync(newProduct);
+
+            if (await _unitOfWork.SaveChangesAsync(true) > 0)
+            {
+                await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
+                return ServiceResult<string>.Success(ProductServiceSuccess.SuccessfulCreateProduct);
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
         return ServiceResult<string>.Failed(ProductServiceErrors.CreateProductProblem);
     }
     public async Task<ServiceResult<string>> DeleteProductAndValidateOwnerAsync(int productId, string userId)
