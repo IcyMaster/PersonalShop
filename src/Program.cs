@@ -14,7 +14,7 @@ public class Program
         builder.Services.AddControllersWithViews();
 
         // Register MassTransit and RabitMQ services
-        builder.Services.RegisterMassTransit();
+        builder.RegisterMassTransit();
 
         // Use Configuration Services
         builder.Services.RegisterExternalServices();

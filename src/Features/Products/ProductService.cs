@@ -236,7 +236,7 @@ public class ProductService : IProductService
 
         return ServiceResult<PagedResult<SingleProductDto>>.Success(products);
     }
-    public async Task<ServiceResult<PagedResult<SingleProductDto>>> GetAllProductsWithUserAndValidateOwnerAsync(string userId, PagedResultOffset resultOffset)
+    public async Task<ServiceResult<PagedResult<SingleProductDto>>> GetAllProductsWithUserAndValidateOwnerAsync(PagedResultOffset resultOffset, string userId)
     {
         string cacheKey = ProductCacheKeyBuilder.ProductPaginationCacheKeyWithUserId(userId, resultOffset);
 

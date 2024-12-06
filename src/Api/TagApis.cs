@@ -12,13 +12,19 @@ public static class TagApis
 {
     public static void RegisterTagApis(this WebApplication app)
     {
-        app.MapGet("api/tags", [AllowAnonymous] async (ITagService tagService) =>
+        app.MapGet("api/tags", [AllowAnonymous] async (PagedResultOffset resultOffset, ITagService tagService) =>
         {
-            var serviceResult = await tagService.GetAllTagsWithUserAsync();
+            var validateObject = ObjectValidatorExtension.Validate(resultOffset);
+            if (!validateObject.IsValid)
+            {
+                return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
+            }
+
+            var serviceResult = await tagService.GetAllTagsWithUserAsync(resultOffset);
 
             if (serviceResult.IsSuccess)
             {
-                return Results.Ok(ApiResult<List<SingleTagDto>>.Success(serviceResult.Result!));
+                return Results.Ok(ApiResult<PagedResult<SingleTagDto>>.Success(serviceResult.Result!));
             }
 
             return Results.BadRequest(ApiResult<List<SingleTagDto>>.Failed(serviceResult.Errors));

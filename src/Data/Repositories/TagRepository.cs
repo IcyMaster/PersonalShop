@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PersonalShop.Data.Contracts;
+using PersonalShop.Domain.Responses;
 using PersonalShop.Domain.Tags;
+using PersonalShop.Features.Categories.Dtos;
 using PersonalShop.Features.Tags.Dtos;
 using PersonalShop.Interfaces.Repositories;
 
@@ -22,9 +25,11 @@ public class TagRepository : Repository<Tag>, ITagRepository, ITagQueryRepositor
         return data;
     }
 
-    public async Task<List<SingleTagDto>> GetAllTagsWithUserAsync()
+    public async Task<PagedResult<SingleTagDto>> GetAllTagsWithUserAsync(PagedResultOffset resultOffset)
     {
-        return await _dbSet
+        var totalRecord = await _dbSet.CountAsync();
+
+        var data = await _dbSet
             .Include(x => x.User)
             .AsNoTracking()
             .Select(x => new SingleTagDto
@@ -40,7 +45,10 @@ public class TagRepository : Repository<Tag>, ITagRepository, ITagQueryRepositor
                 },
             })
             .ToListAsync();
+
+        return PagedResult<SingleTagDto>.CreateNew(data, resultOffset, totalRecord);
     }
+
     public async Task<SingleTagDto?> FindTagWithNameAsync(string name)
     {
         return await _dbSet

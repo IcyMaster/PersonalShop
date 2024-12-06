@@ -1,4 +1,5 @@
-﻿using PersonalShop.Domain.Responses;
+﻿using PersonalShop.Data.Contracts;
+using PersonalShop.Domain.Responses;
 using PersonalShop.Features.Tags.Dtos;
 
 namespace PersonalShop.Interfaces.Features
@@ -7,8 +8,8 @@ namespace PersonalShop.Interfaces.Features
     {
         Task<ServiceResult<string>> CreateTagAsync(string userId, CreateTagDto createTagDto);
         Task<ServiceResult<string>> DeleteTagAndValidateOwnerAsync(string userId, int tagId);
-        Task<ServiceResult<List<SingleTagDto>>> GetAllTagsWithUserAndValidateOwnerAsync(string userId);
-        Task<ServiceResult<List<SingleTagDto>>> GetAllTagsWithUserAsync();
         Task<ServiceResult<string>> UpdateTagAndValidateOwnerAsync(string userId, int tagId, UpdateTagDto updateTagDto);
+        Task<ServiceResult<PagedResult<SingleTagDto>>> GetAllTagsWithUserAsync(PagedResultOffset resultOffset);
+        Task<ServiceResult<PagedResult<SingleTagDto>>> GetAllTagsWithUserAndValidateOwnerAsync(PagedResultOffset resultOffset, string userId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using EasyCaching.Core;
+using PersonalShop.Builders.Caches;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Categorys;
 using PersonalShop.Domain.Responses;
@@ -104,18 +105,37 @@ public class CategoryService : ICategoryService
 
         return ServiceResult<List<SingleCategoryDto>>.Success(categories);
     }
-    public async Task<ServiceResult<List<SingleCategoryDto>>> GetAllCategoriesWithUserAndValidateOwnerAsync(string userId)
+    public async Task<ServiceResult<PagedResult<SingleCategoryDto>>> GetAllCategoriesWithUserAsync(PagedResultOffset resultOffset)
     {
-        var cache = await _cachingProvider.GetAsync<List<SingleCategoryDto>>(CacheKeysContract.Category);
+        string cacheKey = CategoryCacheKeyBuilder.CategoryPaginationCacheKey(resultOffset);
+
+        var cache = await _cachingProvider.GetAsync<PagedResult<SingleCategoryDto>>(cacheKey);
 
         if (cache.HasValue)
         {
-            return ServiceResult<List<SingleCategoryDto>>.Success(cache.Value);
+            return ServiceResult<PagedResult<SingleCategoryDto>>.Success(cache.Value);
         }
 
-        var categories = await _categoryQueryRepository.GetAllCategoriesWithUserAsync();
+        var categories = await _categoryQueryRepository.GetAllCategoriesWithUserAsync(resultOffset);
 
-        foreach (var category in categories)
+        await _cachingProvider.TrySetAsync(cacheKey, categories, TimeSpan.FromHours(1));
+
+        return ServiceResult<PagedResult<SingleCategoryDto>>.Success(categories);
+    }
+    public async Task<ServiceResult<PagedResult<SingleCategoryDto>>> GetAllCategoriesWithUserAndValidateOwnerAsync(PagedResultOffset resultOffset, string userId)
+    {
+        var cacheKey = CategoryCacheKeyBuilder.CategoryPaginationCacheKeyWithUserId(userId, resultOffset);
+
+        var cache = await _cachingProvider.GetAsync<PagedResult<SingleCategoryDto>>(cacheKey);
+
+        if (cache.HasValue)
+        {
+            return ServiceResult<PagedResult<SingleCategoryDto>>.Success(cache.Value);
+        }
+
+        var categories = await _categoryQueryRepository.GetAllCategoriesWithUserAsync(resultOffset);
+
+        foreach (var category in categories.Data)
         {
             if (category.User.UserId.Equals(userId))
             {
@@ -123,8 +143,8 @@ public class CategoryService : ICategoryService
             }
         }
 
-        await _cachingProvider.TrySetAsync(CacheKeysContract.Category, categories, TimeSpan.FromHours(1));
+        await _cachingProvider.TrySetAsync(cacheKey, categories, TimeSpan.FromHours(1));
 
-        return ServiceResult<List<SingleCategoryDto>>.Success(categories);
+        return ServiceResult<PagedResult<SingleCategoryDto>>.Success(categories);
     }
 }

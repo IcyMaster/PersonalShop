@@ -13,5 +13,5 @@ public interface IProductService
     Task<ServiceResult<SingleProductDto>> GetProductDetailsWithUserAndValidateOwnerAsync(int productId, string userId);
     Task<ServiceResult<SingleProductDto>> GetProductDetailsWithUserAsync(int productId);
     Task<ServiceResult<PagedResult<SingleProductDto>>> GetAllProductsWithUserAsync(PagedResultOffset resultOffset);
-    Task<ServiceResult<PagedResult<SingleProductDto>>> GetAllProductsWithUserAndValidateOwnerAsync(string userId, PagedResultOffset resultOffset);
+    Task<ServiceResult<PagedResult<SingleProductDto>>> GetAllProductsWithUserAndValidateOwnerAsync(PagedResultOffset resultOffset, string userId);
 }

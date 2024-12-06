@@ -5,19 +5,19 @@ namespace PersonalShop.Configuration;
 
 public static class MassTransitConfig
 {
-    public static void RegisterMassTransit(this IServiceCollection services)
+    public static void RegisterMassTransit(this WebApplicationBuilder builder)
     {
-        services.AddMassTransit(option =>
+        builder.Services.AddMassTransit(option =>
         {
             option.AddConsumer<DeleteProductFromCarts>();
             option.AddConsumer<UpdateProductInCarts>();
 
             option.UsingRabbitMq((context, cfg) =>
             {
-                cfg.Host("localhost", "/", h =>
+                cfg.Host(builder.Configuration.GetSection("RabitMq:Host").Value, "/", h =>
                 {
-                    h.Username("guest");
-                    h.Password("guest");
+                    h.Username(builder.Configuration.GetSection("RabitMq:UserName").Value!);
+                    h.Password(builder.Configuration.GetSection("RabitMq:Password").Value!);
                 });
 
                 cfg.ConfigureEndpoints(context);

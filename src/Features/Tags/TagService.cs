@@ -1,4 +1,5 @@
 ﻿using EasyCaching.Core;
+using PersonalShop.Builders.Caches;
 using PersonalShop.Data.Contracts;
 using PersonalShop.Domain.Responses;
 using PersonalShop.Domain.Tags;
@@ -88,33 +89,37 @@ public class TagService : ITagService
 
         return ServiceResult<string>.Failed(TagServiceErrors.DeleteTagProblem);
     }
-    public async Task<ServiceResult<List<SingleTagDto>>> GetAllTagsWithUserAsync()
+    public async Task<ServiceResult<PagedResult<SingleTagDto>>> GetAllTagsWithUserAsync(PagedResultOffset resultOffset)
     {
-        var cache = await _cachingProvider.GetAsync<List<SingleTagDto>>(CacheKeysContract.Tag);
+        var cacheKey = TagCacheKeyBuilder.TagPaginationCacheKey(resultOffset);
+
+        var cache = await _cachingProvider.GetAsync<PagedResult<SingleTagDto>>(cacheKey);
 
         if (cache.HasValue)
         {
-            return ServiceResult<List<SingleTagDto>>.Success(cache.Value);
+            return ServiceResult<PagedResult<SingleTagDto>>.Success(cache.Value);
         }
 
-        var tags = await _tagQueryRepository.GetAllTagsWithUserAsync();
+        var tags = await _tagQueryRepository.GetAllTagsWithUserAsync(resultOffset);
 
-        await _cachingProvider.TrySetAsync(CacheKeysContract.Tag, tags, TimeSpan.FromHours(1));
+        await _cachingProvider.TrySetAsync(cacheKey, tags, TimeSpan.FromHours(1));
 
-        return ServiceResult<List<SingleTagDto>>.Success(tags);
+        return ServiceResult<PagedResult<SingleTagDto>>.Success(tags);
     }
-    public async Task<ServiceResult<List<SingleTagDto>>> GetAllTagsWithUserAndValidateOwnerAsync(string userId)
+    public async Task<ServiceResult<PagedResult<SingleTagDto>>> GetAllTagsWithUserAndValidateOwnerAsync(PagedResultOffset resultOffset, string userId)
     {
-        var cache = await _cachingProvider.GetAsync<List<SingleTagDto>>(CacheKeysContract.Tag);
+        var cacheKey = TagCacheKeyBuilder.TagPaginationCacheKeyWithUserId(userId, resultOffset);
+
+        var cache = await _cachingProvider.GetAsync<PagedResult<SingleTagDto>>(cacheKey);
 
         if (cache.HasValue)
         {
-            return ServiceResult<List<SingleTagDto>>.Success(cache.Value);
+            return ServiceResult<PagedResult<SingleTagDto>>.Success(cache.Value);
         }
 
-        var tags = await _tagQueryRepository.GetAllTagsWithUserAsync();
+        var tags = await _tagQueryRepository.GetAllTagsWithUserAsync(resultOffset);
 
-        foreach (var tag in tags)
+        foreach (var tag in tags.Data)
         {
             if (tag.User.UserId.Equals(userId))
             {
@@ -122,8 +127,8 @@ public class TagService : ITagService
             }
         }
 
-        await _cachingProvider.TrySetAsync(CacheKeysContract.Tag, tags, TimeSpan.FromHours(1));
+        await _cachingProvider.TrySetAsync(cacheKey, tags, TimeSpan.FromHours(1));
 
-        return ServiceResult<List<SingleTagDto>>.Success(tags);
+        return ServiceResult<PagedResult<SingleTagDto>>.Success(tags);
     }
 }

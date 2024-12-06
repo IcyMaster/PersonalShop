@@ -24,7 +24,7 @@ public static class UserApis
 
             var userId = context.GetUserId();
 
-            var serviceResult = await productService.GetAllProductsWithUserAndValidateOwnerAsync(userId!, resultOffset);
+            var serviceResult = await productService.GetAllProductsWithUserAndValidateOwnerAsync(resultOffset,userId!);
 
             if (serviceResult.IsSuccess)
             {
@@ -34,32 +34,44 @@ public static class UserApis
             return Results.BadRequest(ApiResult<PagedResult<SingleProductDto>>.Failed(serviceResult.Errors));
         });
 
-        app.MapGet("api/user/tags", [Authorize(Roles = RolesContract.Admin)] async (ITagService tagService, HttpContext context) =>
+        app.MapGet("api/user/tags", [Authorize(Roles = RolesContract.Admin)] async (PagedResultOffset resultOffset, ITagService tagService, HttpContext context) =>
         {
+            var validateObject = ObjectValidatorExtension.Validate(resultOffset);
+            if (!validateObject.IsValid)
+            {
+                return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
+            }
+
             var userId = context.GetUserId();
 
-            var serviceResult = await tagService.GetAllTagsWithUserAndValidateOwnerAsync(userId!);
+            var serviceResult = await tagService.GetAllTagsWithUserAndValidateOwnerAsync(resultOffset,userId!);
 
             if (serviceResult.IsSuccess)
             {
-                return Results.Ok(ApiResult<List<SingleTagDto>>.Success(serviceResult.Result!));
+                return Results.Ok(ApiResult<PagedResult<SingleTagDto>>.Success(serviceResult.Result!));
             }
 
-            return Results.BadRequest(ApiResult<List<SingleTagDto>>.Failed(serviceResult.Errors));
+            return Results.BadRequest(ApiResult<PagedResult<SingleTagDto>>.Failed(serviceResult.Errors));
         });
 
-        app.MapGet("api/user/categories", [Authorize(Roles = RolesContract.Admin)] async (ICategoryService categoryService, HttpContext context) =>
+        app.MapGet("api/user/categories", [Authorize(Roles = RolesContract.Admin)] async (PagedResultOffset resultOffset, ICategoryService categoryService, HttpContext context) =>
         {
+            var validateObject = ObjectValidatorExtension.Validate(resultOffset);
+            if (!validateObject.IsValid)
+            {
+                return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
+            }
+
             var userId = context.GetUserId();
 
-            var serviceResult = await categoryService.GetAllCategoriesWithUserAndValidateOwnerAsync(userId!);
+            var serviceResult = await categoryService.GetAllCategoriesWithUserAndValidateOwnerAsync(resultOffset, userId!);
 
             if (serviceResult.IsSuccess)
             {
-                return Results.Ok(ApiResult<List<SingleCategoryDto>>.Success(serviceResult.Result!));
+                return Results.Ok(ApiResult<PagedResult<SingleCategoryDto>>.Success(serviceResult.Result!));
             }
 
-            return Results.BadRequest(ApiResult<List<SingleCategoryDto>>.Failed(serviceResult.Errors));
+            return Results.BadRequest(ApiResult<PagedResult<SingleCategoryDto>>.Failed(serviceResult.Errors));
         });
 
         app.MapGet("api/user/orders", [Authorize(Roles = RolesContract.Customer)] async (PagedResultOffset resultOffset, IOrderService orderService, HttpContext context) =>
