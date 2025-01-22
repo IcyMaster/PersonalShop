@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PersonalShop.Data;
+using PersonalShop.DataAccessLayer;
 
 namespace PersonalShop.Tests.Application.Fixture
 {

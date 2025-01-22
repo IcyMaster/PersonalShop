@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="EasyCaching.InMemory" Version="1.9.2" />
+		<PackageReference Include="MassTransit" Version="8.2.5" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="8.2.5" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+	</ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\PersonalShop.Domain\PersonalShop.Domain.csproj" />
+    <ProjectReference Include="..\PersonalShop.Shared\PersonalShop.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
