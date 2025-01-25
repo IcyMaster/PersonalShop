@@ -1,0 +1,49 @@
+﻿@using PersonalShop.BusinessLayer.Services.Identitys.Users.Dtos
+@using PersonalShop.BusinessLayer.Services.Identitys.Roles.Dtos
+@using PersonalShop.Shared.Contracts;
+@model SingleUserDto
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">تغییر نقش کاربر</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>نام نقش</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.UserRoles)
+            {
+                <tr>
+                    <td>@item</td>
+                    <td>
+                        <form asp-controller="Account" asp-action="RemoveRole" method="post" class="d-inline">
+                            <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                <input type="hidden" name="UserEmail" value="@Model.Email" />
+                                <input type="hidden" name="RoleName" value="@item" />
+                                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger no-outline">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <form asp-controller="Account" asp-action="AssignRole" method="post" class="d-inline">
+        <input type="hidden" name="UserEmail" value="@Model.Email" />
+        <select name="RoleName" class="form-control form-control-sm no-outline">
+            @foreach (var role in RolesContract.Roles)
+            {
+                <option value="@role">@role</option>
+            }
+        </select>
+        <br />
+        <button type="submit" class="btn btn-primary no-outline">افزودن نقش</button>
+    </form>
+</div>

@@ -79,11 +79,29 @@ namespace PersonalShop.Shared.Resources.Services.UserServices {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to شما نمیتوانید همه نقش های این کاربر را حذف کنید.
+        /// </summary>
+        public static string RemoveAllRolesProblem {
+            get {
+                return ResourceManager.GetString("RemoveAllRolesProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مشکل در حذف کردن این نقش از نقش های کاربر مورد نظر.
         /// </summary>
         public static string RemoveRoleFromUserProblem {
             get {
                 return ResourceManager.GetString("RemoveRoleFromUserProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نقش مورد نظر برای کاربر انتخابی موجود است.
+        /// </summary>
+        public static string RoleAlreadyAssigned {
+            get {
+                return ResourceManager.GetString("RoleAlreadyAssigned", resourceCulture);
             }
         }
         

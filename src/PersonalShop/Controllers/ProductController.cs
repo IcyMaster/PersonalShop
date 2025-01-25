@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PersonalShop.BusinessLayer.Services.Interfaces;
+using PersonalShop.BusinessLayer.Services.Products;
 using PersonalShop.BusinessLayer.Services.Products.Dtos;
 using PersonalShop.Domain.Contracts;
 using PersonalShop.Domain.Entities.Responses;
@@ -32,6 +33,21 @@ public class ProductController : Controller
         }
 
         var serviceResult = await _productService.GetAllProductsWithUserAsync(resultOffset);
+
+        if (serviceResult.IsSuccess)
+        {
+            return View(serviceResult.Result);
+        }
+
+        return BadRequest(ApiResult<string>.Failed(serviceResult.Errors));
+    }
+
+    [AllowAnonymous]
+    [HttpGet]
+    [Route("ProductDetail/{productId:int}", Name = "GetProduct")]
+    public async Task<ActionResult<PagedResult<SingleProductDto>>> GetProduct(int productId)
+    {
+        var serviceResult = await _productService.GetProductDetailsWithUserAsync(productId);
 
         if (serviceResult.IsSuccess)
         {

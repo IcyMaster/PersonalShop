@@ -1,4 +1,5 @@
 ﻿using PersonalShop.Shared.Resources.Validations.Role;
+using PersonalShop.Shared.Validations;
 using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.BusinessLayer.Services.Identitys.Roles.Dtos;

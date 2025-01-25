@@ -1,7 +1,9 @@
 ﻿using MassTransit.Initializers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using PersonalShop.BusinessLayer.Services.Identitys.Users.Dtos;
 using PersonalShop.BusinessLayer.Services.Interfaces;
+using PersonalShop.Domain.Contracts;
 using PersonalShop.Domain.Entities.Responses;
 using PersonalShop.Domain.Entities.Users;
 using PersonalShop.Shared.Contracts;
@@ -46,16 +48,34 @@ public class UserService : IUserService
 
         return ServiceResult<string>.Success(UserServiceSuccess.SuccessfulRegisterAccount);
     }
-    public async Task<bool> CheckUserExistAsync(string userEmail)
+    public async Task<ServiceResult<PagedResult<SingleUserDto>>> GetAllUsersAsync(PagedResultOffset resultOffset)
     {
-        var user = await _userManager.FindByEmailAsync(userEmail);
+        var totalRecord = await _userManager.Users.CountAsync();
 
-        if (user is not null)
+        var data = await _userManager.Users
+            .AsNoTracking()
+            .Skip((resultOffset.PageNumber - 1) * resultOffset.PageSize)
+            .Take(resultOffset.PageSize)
+            .Select(x => new SingleUserDto
+            {
+                UserId = x.Id,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                UserName = x.UserName,
+                Email = x.Email,
+                PhoneNumber = x.PhoneNumber,
+                User = x
+            }).ToListAsync();
+
+        foreach (var item in data)
         {
-            return true;
+            var roles = await _userManager.GetRolesAsync(item.User);
+            item.UserRoles = roles.ToList();
         }
 
-        return false;
+        var result = PagedResult<SingleUserDto>.CreateNew(data, resultOffset, totalRecord);
+
+        return ServiceResult<PagedResult<SingleUserDto>>.Success(result);
     }
     public async Task<ServiceResult<string>> AssignUserRoleByEmailAsync(string userEmail, string roleName)
     {
@@ -63,6 +83,12 @@ public class UserService : IUserService
         if (user is null)
         {
             return ServiceResult<string>.Failed(UserServiceErrors.UserNotFound);
+        }
+
+        var roles = await _userManager.GetRolesAsync(user);
+        if (roles.Contains(roleName))
+        {
+            return ServiceResult<string>.Failed(UserServiceErrors.RoleAlreadyAssigned);
         }
 
         var result = await _userManager.AddToRoleAsync(user, roleName);
@@ -81,10 +107,19 @@ public class UserService : IUserService
             return ServiceResult<string>.Failed(UserServiceErrors.UserNotFound);
         }
 
+        var roles = await _userManager.GetRolesAsync(user);
+        if(roles.Count is 1)
+        {
+            if (roles[0].Equals(roleName))
+            {
+                return ServiceResult<string>.Failed(UserServiceErrors.RemoveAllRolesProblem);
+            }
+        }
+
         var result = await _userManager.RemoveFromRoleAsync(user, roleName);
         if (result.Succeeded)
         {
-            return ServiceResult<string>.Success(UserServiceSuccess.SuccessfulAssineRoleToUser);
+            return ServiceResult<string>.Success(UserServiceSuccess.SuccessfulRemoveRoleFromUser);
         }
 
         return ServiceResult<string>.Failed(UserServiceErrors.RemoveRoleFromUserProblem);
@@ -104,5 +139,44 @@ public class UserService : IUserService
 
         return ServiceResult<List<string>>.Success(result);
     }
-}
+    public async Task<ServiceResult<List<string>>> GetUserRolesByEmailAsync(string userEmail)
+    {
+        var user = await _userManager.FindByEmailAsync(userEmail);
 
+        if (user is null)
+        {
+            return ServiceResult<List<string>>.Failed(UserServiceErrors.UserNotFound);
+        }
+
+        var userRoles = await _userManager.GetRolesAsync(user);
+
+        var result = userRoles.Select(x => x.ToString()).ToList();
+
+        return ServiceResult<List<string>>.Success(result);
+    }
+    public async Task<ServiceResult<SingleUserDto>> GetUserByEmailAsync(string userEmail)
+    {
+        var user = await _userManager.FindByEmailAsync(userEmail);
+
+        if (user is null)
+        {
+            return ServiceResult<SingleUserDto>.Failed(UserServiceErrors.UserNotFound);
+        }
+
+        var roles = await _userManager.GetRolesAsync(user);
+
+        var singleUserDto = new SingleUserDto
+        {
+            Email = user.Email,
+            UserName = user.UserName,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            PhoneNumber = user.PhoneNumber,
+            UserId = user.Id,
+            User = user,
+            UserRoles = roles.ToList(),
+        };
+
+        return ServiceResult<SingleUserDto>.Success(singleUserDto);
+    }
+}

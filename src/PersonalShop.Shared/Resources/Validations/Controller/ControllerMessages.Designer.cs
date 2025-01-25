@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PersonalShop.Shared.Resources.Validations.Role {
+namespace PersonalShop.Shared.Resources.Validations.Controller {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace PersonalShop.Shared.Resources.Validations.Role {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class RoleMessages {
+    public class ControllerMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal RoleMessages() {
+        internal ControllerMessages() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace PersonalShop.Shared.Resources.Validations.Role {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Shared.Resources.Validations.Role.RoleMessages", typeof(RoleMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PersonalShop.Shared.Resources.Validations.Controller.ControllerMessages", typeof(ControllerMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,11 @@ namespace PersonalShop.Shared.Resources.Validations.Role {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد نام نقش را کامل کنید.
+        ///   Looks up a localized string similar to مدل ارسال شده معتبر نیست.
         /// </summary>
-        public static string RoleNameRequired {
+        public static string ModelInvalid {
             get {
-                return ResourceManager.GetString("RoleNameRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to لطفا فیلد ایمیل کاربر را تکمیل کنید.
-        /// </summary>
-        public static string UserEmailRequired {
-            get {
-                return ResourceManager.GetString("UserEmailRequired", resourceCulture);
+                return ResourceManager.GetString("ModelInvalid", resourceCulture);
             }
         }
     }

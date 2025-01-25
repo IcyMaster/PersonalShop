@@ -117,25 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AssineRoleToUserProblem" xml:space="preserve">
-    <value>مشکل در اضافه کردن نقش به کاربر</value>
-  </data>
-  <data name="RegisterAccountProblem" xml:space="preserve">
-    <value>مشکل در ساختن حساب کاربری</value>
-  </data>
-  <data name="RemoveRoleFromUserProblem" xml:space="preserve">
-    <value>مشکل در حذف کردن این نقش از نقش های کاربر مورد نظر</value>
-  </data>
-  <data name="UserEmailExist" xml:space="preserve">
-    <value>این ایمیل توسط کاربر دیگری  استفاده شده است</value>
-  </data>
-  <data name="UserNotFound" xml:space="preserve">
-    <value>کاربر مورد نظر یافت نشد</value>
-  </data>
-  <data name="RemoveAllRolesProblem" xml:space="preserve">
-    <value>شما نمیتوانید همه نقش های این کاربر را حذف کنید</value>
-  </data>
-  <data name="RoleAlreadyAssigned" xml:space="preserve">
-    <value>نقش مورد نظر برای کاربر انتخابی موجود است</value>
+  <data name="ModelInvalid" xml:space="preserve">
+    <value>مدل ارسال شده معتبر نیست</value>
   </data>
 </root>
