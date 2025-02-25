@@ -123,6 +123,12 @@
   <data name="DeleteProductProblem" xml:space="preserve">
     <value>مشکل در حذف کردن محصول مورد نظر</value>
   </data>
+  <data name="ProductImageExtensionProblem" xml:space="preserve">
+    <value>فرمت فایل اپلود شده نامعتبر است</value>
+  </data>
+  <data name="ProductImageSizeProblem" xml:space="preserve">
+    <value>سایز فایل آپلود شده بیشتر از 2 مگابایت می باشد</value>
+  </data>
   <data name="ProductNotFound" xml:space="preserve">
     <value>محصول مورد نظر یافت نشد</value>
   </data>

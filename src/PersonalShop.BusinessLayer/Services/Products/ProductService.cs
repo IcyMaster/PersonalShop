@@ -10,6 +10,8 @@ using PersonalShop.Domain.Contracts;
 using PersonalShop.Domain.Entities.Products;
 using PersonalShop.Domain.Entities.Responses;
 using PersonalShop.Shared.Contracts;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace PersonalShop.BusinessLayer.Services.Products;
 
@@ -21,12 +23,13 @@ public class ProductService : IProductService
     private readonly ITagRepository _tagRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEasyCachingProvider _cachingProvider;
+    private readonly IConfiguration _config;
     private readonly IBus _bus;
 
     public ProductService(IProductRepository productRepository,
         IProductQueryRepository productQueryRepository,
         IUnitOfWork unitOfWork, IEasyCachingProvider cachingProvider,
-        IBus bus, ICategoryRepository categoryRepository, ITagRepository tagRepository)
+        IBus bus, ICategoryRepository categoryRepository, ITagRepository tagRepository, IConfiguration config)
     {
         _productRepository = productRepository;
         _productQueryRepository = productQueryRepository;
@@ -35,12 +38,42 @@ public class ProductService : IProductService
         _bus = bus;
         _categoryRepository = categoryRepository;
         _tagRepository = tagRepository;
+        _config = config;
     }
 
     public async Task<ServiceResult<string>> CreateProductAsync(CreateProductDto createProductDto, string userId)
     {
+        string? fileExtension = Path.GetExtension(createProductDto.Image.FileName);
+
+        if (fileExtension is null || !FileExtensionContracts.SafeExtensions.Contains(fileExtension))
+        {
+            return ServiceResult<string>.Failed(ProductServiceErrors.ProductImageExtensionProblem);
+        }
+
+        // Upload the file if less than 2 MB
+        if (createProductDto.Image.Length > 2097152)
+        {
+            return ServiceResult<string>.Failed(ProductServiceErrors.ProductImageSizeProblem);
+        }
+
+        if (!Directory.Exists("wwwroot/" + _config[AppSettingContracts.StoredFilesPath]!))
+        {
+            Directory.CreateDirectory("wwwroot/" + _config[AppSettingContracts.StoredFilesPath]!);
+        }
+
+        var fileName = Path.ChangeExtension(Path.GetRandomFileName(), fileExtension);
+
+        var filePath = Path.Combine("wwwroot/" + _config[AppSettingContracts.StoredFilesPath]!, fileName);
+
+        using (var stream = File.Create(filePath))
+        {
+            await createProductDto.Image.CopyToAsync(stream);
+        }
+
+        var imagePath = $"/{_config[AppSettingContracts.StoredFilesPath]}/{fileName}";
+
         var newProduct = new Product(userId, createProductDto.Name,
-            createProductDto.Description, createProductDto.Price);
+            createProductDto.Description, createProductDto.Price, imagePath);
 
         if (createProductDto.Categories is not null)
         {
@@ -109,71 +142,114 @@ public class ProductService : IProductService
     }
     public async Task<ServiceResult<string>> UpdateProductAndValidateOwnerAsync(int productId, UpdateProductDto updateProductDto, string userId)
     {
-            var product = await _productRepository.GetProductDetailsWithoutUserAsync(productId);
-            if (product is null)
+        var product = await _productRepository.GetProductDetailsWithoutUserAsync(productId);
+        if (product is null)
+        {
+            return ServiceResult<string>.Failed(ProductServiceErrors.ProductNotFound);
+        }
+
+        if (!product.UserId.Equals(userId))
+        {
+            return ServiceResult<string>.Failed(ProductServiceErrors.ProductOwnerMatchProblem);
+        }
+
+        if (updateProductDto.Image is not null)
+        {
+            string? fileExtension = Path.GetExtension(updateProductDto.Image.FileName);
+
+            if (fileExtension is null || !FileExtensionContracts.SafeExtensions.Contains(fileExtension))
             {
-                return ServiceResult<string>.Failed(ProductServiceErrors.ProductNotFound);
+                return ServiceResult<string>.Failed(ProductServiceErrors.ProductImageExtensionProblem);
             }
 
-            if (!product.UserId.Equals(userId))
+            // Upload the file if less than 2 MB
+            if (updateProductDto.Image.Length > 2097152)
             {
-                return ServiceResult<string>.Failed(ProductServiceErrors.ProductOwnerMatchProblem);
+                return ServiceResult<string>.Failed(ProductServiceErrors.ProductImageSizeProblem);
             }
 
-            product.ChangeName(updateProductDto.Name);
-            product.ChangeDescription(updateProductDto.Description);
-            product.ChangePrice(updateProductDto.Price);
-
-            if (updateProductDto.Categories is not null)
+            if (!Directory.Exists("wwwroot/" + _config[AppSettingContracts.StoredFilesPath]!))
             {
-                foreach (int categoryId in updateProductDto.Categories)
+                Directory.CreateDirectory("wwwroot/" + _config[AppSettingContracts.StoredFilesPath]!);
+            }
+
+            var fileName = Path.ChangeExtension(Path.GetRandomFileName(), fileExtension);
+
+            var filePath = Path.Combine("wwwroot/" + _config[AppSettingContracts.StoredFilesPath]!, fileName);
+
+            using (var stream = File.Create(filePath))
+            {
+                await updateProductDto.Image.CopyToAsync(stream);
+            }
+
+            var imagePath = $"/{_config[AppSettingContracts.StoredFilesPath]}/{fileName}";
+
+            var deletePath = $"wwwroot{product.ImagePath}";
+
+            if (File.Exists(deletePath))
+            {
+                File.Delete(deletePath);
+            }
+
+            product.ChangeImage(imagePath);
+        }
+
+        product.ChangeName(updateProductDto.Name);
+        product.ChangeDescription(updateProductDto.Description);
+        product.ChangePrice(updateProductDto.Price);
+
+        if (updateProductDto.Categories is not null)
+        {
+            product.Categories.Clear();
+            foreach (int categoryId in updateProductDto.Categories)
+            {
+                if (!product.Categories.Where(x => x.Id == categoryId).Any())
                 {
-                    if (!product.Categories.Where(x => x.Id == categoryId).Any())
+                    var category = await _categoryRepository.GetCategoryDetailsWithoutUserAsync(categoryId);
+                    if (category is not null)
                     {
-                        var category = await _categoryRepository.GetCategoryDetailsWithoutUserAsync(categoryId);
-                        if (category is not null)
-                        {
-                            product.Categories.Add(category);
-                        }
+                        product.Categories.Add(category);
                     }
                 }
             }
-            else
-            {
-                product.Categories.Clear();
-            }
+        }
+        else
+        {
+            product.Categories.Clear();
+        }
 
-            if (updateProductDto.Tags is not null)
+        if (updateProductDto.Tags is not null)
+        {
+            product.Tags.Clear();
+            foreach (int tagId in updateProductDto.Tags)
             {
-                foreach (int tagId in updateProductDto.Tags)
+                if (!product.Tags.Where(x => x.Id == tagId).Any())
                 {
-                    if (!product.Tags.Where(x => x.Id == tagId).Any())
+                    var tag = await _tagRepository.GetTagDetailsWithoutUserAsync(tagId);
+                    if (tag is not null)
                     {
-                        var tag = await _tagRepository.GetTagDetailsWithoutUserAsync(tagId);
-                        if (tag is not null)
-                        {
-                            product.Tags.Add(tag);
-                        }
+                        product.Tags.Add(tag);
                     }
                 }
             }
-            else
+        }
+        else
+        {
+            product.Tags.Clear();
+        }
+
+        if (await _unitOfWork.SaveChangesAsync(true) > 0)
+        {
+            await _bus.Publish(new UpdateProductInCartsCommand
             {
-                product.Tags.Clear();
-            }
+                ProductId = productId,
+                Price = updateProductDto.Price
+            });
 
-            if (await _unitOfWork.SaveChangesAsync(true) > 0)
-            {
-                await _bus.Publish(new UpdateProductInCartsCommand
-                {
-                    ProductId = productId,
-                    Price = updateProductDto.Price
-                });
+            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
 
-                await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
-
-                return ServiceResult<string>.Success(ProductServiceSuccess.SuccessfulUpdateProduct);
-            }
+            return ServiceResult<string>.Success(ProductServiceSuccess.SuccessfulUpdateProduct);
+        }
 
         return ServiceResult<string>.Failed(ProductServiceErrors.UpdateProductProblem);
     }

@@ -25,7 +25,7 @@ namespace PersonalShop.Tests.Application.Services.ProductService
         }
 
         [Fact]
-        public async void AddProduct_Should_Return_True_When_ProductAdded()
+        public void AddProduct_Should_Return_True_When_ProductAdded()
         {
             //Arrange
             var mockBus = new Mock<IBus>();

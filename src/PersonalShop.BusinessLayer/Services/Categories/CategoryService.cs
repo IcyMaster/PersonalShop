@@ -3,11 +3,14 @@ using PersonalShop.BusinessLayer.Builders.Caches;
 using PersonalShop.BusinessLayer.Common.Interfaces;
 using PersonalShop.BusinessLayer.Services.Categories.Dtos;
 using PersonalShop.BusinessLayer.Services.Interfaces;
+using PersonalShop.BusinessLayer.Services.Products.Dtos;
 using PersonalShop.Domain.Contracts;
 using PersonalShop.Domain.Entities.Categorys;
+using PersonalShop.Domain.Entities.Products;
 using PersonalShop.Domain.Entities.Responses;
 using PersonalShop.Shared.Contracts;
 using PersonalShop.Shared.Resources.Services.CategoryService;
+using PersonalShop.Shared.Resources.Services.ProductService;
 
 namespace PersonalShop.BusinessLayer.Services.Categories;
 
@@ -68,28 +71,60 @@ public class CategoryService : ICategoryService
     }
     public async Task<ServiceResult<string>> DeleteCategoryAndValidateOwnerAsync(string userId, int categoryId)
     {
-        var category = await _categoryRepository.GetCategoryDetailsWithoutUserAsync(categoryId);
+        try
+        {
+            var category = await _categoryRepository.GetCategoryDetailsWithoutUserAsync(categoryId);
+            if (category is null)
+            {
+                return ServiceResult<string>.Failed(CategoryServiceErrors.CategoryNotFound);
+            }
+
+            if (!category.UserId.Equals(userId))
+            {
+                return ServiceResult<string>.Failed(CategoryServiceErrors.CategoryOwnerMatchProblem);
+            }
+
+            var subCategories = await _categoryQueryRepository.GetAllSubCategoryDetailsWithoutUserAsync(categoryId);
+
+            if (subCategories is not null)
+            {
+                foreach (var subCategory in subCategories)
+                {
+                    _categoryRepository.Delete(subCategory);
+                }
+            }
+
+            _categoryRepository.Delete(category);
+
+            if (await _unitOfWork.SaveChangesAsync(true) > 0)
+            {
+                await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Category);
+                await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
+
+                return ServiceResult<string>.Success(CategoryServiceSuccess.SuccessfulDeleteCategory);
+            }
+        }
+        catch(Exception ex)
+        {
+
+        }
+        return ServiceResult<string>.Failed(CategoryServiceErrors.DeleteCategoryProblem);
+    }
+    public async Task<ServiceResult<SingleCategoryDto>> GetCategoryDetailsWithUserAndValidateOwnerAsync(int categoryId, string userId)
+    {
+        var category = await _categoryQueryRepository.GetCategoryDetailsWithUserAsync(categoryId);
+
         if (category is null)
         {
-            return ServiceResult<string>.Failed(CategoryServiceErrors.CategoryNotFound);
+            return ServiceResult<SingleCategoryDto>.Failed(CategoryServiceErrors.CategoryNotFound);
         }
 
-        if (!category.UserId.Equals(userId))
+        if (category.User.UserId.Equals(userId))
         {
-            return ServiceResult<string>.Failed(CategoryServiceErrors.CategoryOwnerMatchProblem);
+            category.User.IsOwner = true;
         }
 
-        _categoryRepository.Delete(category);
-
-        if (await _unitOfWork.SaveChangesAsync(true) > 0)
-        {
-            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Category);
-            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
-
-            return ServiceResult<string>.Success(CategoryServiceSuccess.SuccessfulDeleteCategory);
-        }
-
-        return ServiceResult<string>.Failed(CategoryServiceErrors.DeleteCategoryProblem);
+        return ServiceResult<SingleCategoryDto>.Success(category);
     }
     public async Task<ServiceResult<List<SingleCategoryDto>>> GetAllCategoriesWithUserAsync()
     {

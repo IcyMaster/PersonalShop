@@ -63,6 +63,11 @@
                                                         <button type="submit" class="dropdown-item">مدیریت محصولات</button>
                                                     </form>
                                                 </li>
+                                                <li>
+                                                    <form asp-controller="User" asp-action="UserCategories" method="get" class="m-0">
+                                                        <button type="submit" class="dropdown-item">مدیریت دسته بندی ها</button>
+                                                    </form>
+                                                </li>
                                             }
 
                                             @if (User.IsInRole(RolesContract.Customer))

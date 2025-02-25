@@ -1,0 +1,118 @@
+﻿@using PersonalShop.Domain.Entities.Responses
+@using PersonalShop.BusinessLayer.Services.Categories.Dtos
+@model PagedResult<SingleCategoryDto>
+
+@{
+    ViewData["Title"] = "List of Categories";
+}
+
+<h2>List of Categories</h2>
+
+<div class="mb-4 mt-4">
+    <form asp-controller="Category" asp-action="addCategory" method="get" class="d-inline">
+        <button type="submit" class="btn btn-primary">افزودن دسته مادر</button>
+    </form>
+</div>
+
+<ul class="list-group">
+    @foreach (var category in Model.Data.Where(c => c.ParentId == 0))
+    {
+        <li class="list-group-item">
+            <a style="text-decoration:none;" href="#" class="toggle" data-target="#sub-@category.Id">
+                <i class="bi bi-caret-down-square-fill"></i>
+            </a>
+            <a>@category.Description - @category.Name</a>
+
+            <form asp-controller="Category" asp-action="DeleteCategory" asp-route-categoryId="@category.Id" method="post" class="d-inline">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('آیا از حذف این دسته مطمئن هستید؟')"><i class="bi bi-trash"></i></button>
+            </form>
+            <form asp-controller="Category" asp-action="UpdateCategory" asp-route-categoryId="@category.Id" method="get" class="d-inline">
+                <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></button>
+            </form>
+
+            <ul class="list-group mt-2 collapse" id="sub-@category.Id">
+                @if (Model.Data.Any(c => c.ParentId == category.Id))
+                {
+                    @foreach (var subCategory in Model.Data.Where(c => c.ParentId == category.Id))
+                    {
+                        <li class="list-group-item">
+                            🔹 @subCategory.Description - @subCategory.Name
+                            <form asp-controller="Category" asp-action="DeleteCategory" asp-route-categoryId="@subCategory.Id" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('حذف این زیر دسته؟')"><i class="bi bi-trash"></i></button>
+                            </form>
+                            <form asp-controller="Category" asp-action="UpdateCategory" asp-route-categoryId="@subCategory.Id" method="get" class="d-inline">
+                                <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></button>
+                            </form>
+                        </li>
+                    }
+                }
+                <li class="list-group-item">
+                    <form asp-controller="Category" asp-action="addSubCategory" asp-route-categoryId="@category.Id" method="get" class="d-inline">
+                        <button type="submit" class="btn btn-success btn-sm">افزودن زیر مجموعه</button>
+                    </form>
+                </li>
+            </ul>
+
+        </li>
+    }
+</ul>
+
+<script>
+    document.querySelectorAll('.toggle').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            let target = document.querySelector(this.getAttribute('data-target'));
+            if (target) {
+                target.classList.toggle('show');
+            }
+        });
+    });
+</script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<br />
+<nav aria-label="Category Pagination">
+    <ul class="pagination justify-content-end">
+        @if (Model.PageNumber > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" href="?pageNumber=@(Model.PageNumber - 1)">صفحه قبل</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link">صفحه قبل</span>
+            </li>
+        }
+
+        @for (int number = 1; number <= Model.TotalPages; number++)
+        {
+            if (number == Model.PageNumber)
+            {
+                <li class="page-item active">
+                    <span class="page-link">
+                        @number
+                    </span>
+                </li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-link" href="?pageNumber=@number">@number</a></li>
+            }
+        }
+
+        @if (Model.PageNumber < Model.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" href="?pageNumber=@(Model.PageNumber + 1)">صفحه بعد</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <a class="page-link">صفحه بعد</a>
+            </li>
+        }
+    </ul>
+</nav>

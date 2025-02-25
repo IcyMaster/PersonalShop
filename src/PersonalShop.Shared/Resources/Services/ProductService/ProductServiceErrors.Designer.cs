@@ -79,6 +79,24 @@ namespace PersonalShop.Shared.Resources.Services.ProductService {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to فرمت فایل اپلود شده نامعتبر است.
+        /// </summary>
+        public static string ProductImageExtensionProblem {
+            get {
+                return ResourceManager.GetString("ProductImageExtensionProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to سایز فایل آپلود شده بیشتر از 2 مگابایت می باشد.
+        /// </summary>
+        public static string ProductImageSizeProblem {
+            get {
+                return ResourceManager.GetString("ProductImageSizeProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to محصول مورد نظر یافت نشد.
         /// </summary>
         public static string ProductNotFound {

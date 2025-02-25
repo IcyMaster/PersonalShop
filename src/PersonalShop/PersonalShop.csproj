@@ -158,6 +158,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Category\AddCategory.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="Resources\Contracts\PagedResultOffsetMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>PagedResultOffsetMessages.Designer.cs</LastGenOutput>

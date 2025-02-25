@@ -2,16 +2,16 @@
 @model SingleProductDto
 
 @{
-    ViewData["Title"] = "UpdateProduct";
+    ViewData["Title"] = "Update Product";
 }
 
-<h1>UpdateProduct</h1>
+<h1>Update Product</h1>
 
-<h4>Product</h4>
+<h4>Product Details</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="UpdateProduct">
+<form asp-action="UpdateProduct" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-4">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
@@ -34,15 +34,39 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <label class="control-label">Image</label>
+                <input name="Image" class="form-control" type="file">
             </div>
-        </form>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div id="categoryContainer" class="border p-3">Loading...</div>
+        </div>
     </div>
-</div>
+</form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="user" asp-action="Products">Back to List</a>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $("#categoryContainer").load("/Categories/GetCategoriesPartial", function() {
+        var selectedCategories = @Html.Raw(Json.Serialize(Model.Categories))
+
+        var categoryIds = selectedCategories.map(function(category)
+        {
+            return category.id;
+        });
+
+    categoryIds.forEach(function(id) {
+            $("input[type=checkbox][value='" + id + "']").prop("checked", true);
+        });
+    });
+</script>
 
 @section Scripts {
     @{

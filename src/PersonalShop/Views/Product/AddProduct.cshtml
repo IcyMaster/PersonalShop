@@ -2,16 +2,15 @@
 @model CreateProductDto
 
 @{
-    ViewData["Title"] = "AddProduct";
+    ViewData["Title"] = "Add Product";
 }
+<h1>Add Product</h1>
 
-<h1>AddProduct</h1>
-
-<h4>Product</h4>
+<h4>Product Details</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="AddProduct">
+<form asp-action="AddProduct" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-4">
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -28,16 +27,31 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label class="control-label">Image</label>
+                <input name="Image" class="form-control" type="file" required>
+            </div>
+            <br/>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-        </form>
+        </div>
+        <div class="col-md-6">
+            <div id="categoryContainer" class="border p-3">Loading...</div>
+        </div>
     </div>
-</div>
+</form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="user" asp-action="Products">Back to List</a>
 </div>
 
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $("#categoryContainer").load("/Categories/GetCategoriesPartial");
+</script>
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

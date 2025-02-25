@@ -1,0 +1,24 @@
+﻿@using PersonalShop.BusinessLayer.Services.Categories.Dtos;
+@model List<SingleCategoryDto>
+
+<h4>Select Categories</h4>
+<ul id="categoryList" class="list-group">
+    @foreach (var category in Model.Where(c => c.ParentId == 0))
+    {
+        <li class="list-group-item">
+            <input type="checkbox" name="Categories" value="@category.Id"> @category.Name
+
+            @if (Model.Any(c => c.ParentId == category.Id))
+            {
+                <ul class="list-group mt-2 ms-4">
+                    @foreach (var subCategory in Model.Where(c => c.ParentId == category.Id))
+                    {
+                        <li class="list-group-item">
+                            <input type="checkbox" name="Categories" value="@subCategory.Id"> @subCategory.Name
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
+    }
+</ul>

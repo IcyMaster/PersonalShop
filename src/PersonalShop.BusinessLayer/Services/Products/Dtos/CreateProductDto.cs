@@ -1,4 +1,5 @@
-﻿using PersonalShop.Shared.Resources.Validations.Product;
+﻿using Microsoft.AspNetCore.Http;
+using PersonalShop.Shared.Resources.Validations.Product;
 using System.ComponentModel.DataAnnotations;
 
 namespace PersonalShop.BusinessLayer.Services.Products.Dtos;
@@ -24,6 +25,9 @@ public class CreateProductDto
         , ErrorMessageResourceName = nameof(ProductMessages.PriceRequired))]
     [DisplayFormat(DataFormatString = "{0:G29}", ApplyFormatInEditMode = true)]
     public decimal Price { get; set; } = decimal.Zero;
+
+    [Required]
+    public IFormFile Image { get; set; } = null!;
 
     public List<int>? Categories { get; set; }
     public List<int>? Tags { get; set; }

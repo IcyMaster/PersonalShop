@@ -19,9 +19,9 @@ public class ProductEntityTypeConfiguration : IEntityTypeConfiguration<Product>
             .WithMany(e => e.Products)
             .UsingEntity<ProductCategory>(
             j => j.HasOne<Category>().WithMany()
-            .OnDelete(DeleteBehavior.NoAction).HasForeignKey(e => e.CategoryId),
+            .OnDelete(DeleteBehavior.Restrict).HasForeignKey(e => e.CategoryId),
             j => j.HasOne<Product>().WithMany()
-            .OnDelete(DeleteBehavior.NoAction).HasForeignKey(e => e.ProductId));
+            .OnDelete(DeleteBehavior.Restrict).HasForeignKey(e => e.ProductId));
 
         //for tag many-to-many
         builder

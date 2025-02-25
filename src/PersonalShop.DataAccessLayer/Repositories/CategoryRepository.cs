@@ -23,6 +23,18 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository, ICa
 
         return data;
     }
+    public async Task<List<Category>?> GetAllSubCategoryDetailsWithoutUserAsync(int parentId, bool track = true)
+    {
+        var query = _dbSet.Where(x => x.ParentId == parentId);
+
+        if (!track)
+        {
+            query = query.AsNoTracking();
+        }
+
+        return await query.ToListAsync();
+    }
+
     public async Task<List<SingleCategoryDto>> GetAllCategoriesWithUserAsync()
     {
         return await _dbSet
@@ -72,5 +84,27 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository, ICa
             .ToListAsync();
 
         return PagedResult<SingleCategoryDto>.CreateNew(data, resultOffset, totalRecord);
+    }
+    public async Task<SingleCategoryDto?> GetCategoryDetailsWithUserAsync(int categoryId)
+    {
+        return await _dbSet
+            .Include(x => x.User)
+            .AsNoTracking()
+            .Where(x => x.Id == categoryId)
+            .Select(x => new SingleCategoryDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                ParentId = x.ParentId,
+                User = new CategoryUserDto
+                {
+                    UserId = x.UserId,
+                    FirstName = x.User.FirstName,
+                    LastName = x.User.LastName,
+                    IsOwner = false
+                },
+            })
+            .FirstOrDefaultAsync();
     }
 }

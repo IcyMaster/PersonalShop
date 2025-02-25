@@ -12,7 +12,7 @@ using PersonalShop.DataAccessLayer;
 namespace PersonalShop.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250122204130_First")]
+    [Migration("20250225181629_First")]
     partial class First
     {
         /// <inheritdoc />
@@ -294,6 +294,10 @@ namespace PersonalShop.DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -534,13 +538,13 @@ namespace PersonalShop.DataAccessLayer.Migrations
                     b.HasOne("PersonalShop.Domain.Entities.Categorys.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("PersonalShop.Domain.Entities.Products.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

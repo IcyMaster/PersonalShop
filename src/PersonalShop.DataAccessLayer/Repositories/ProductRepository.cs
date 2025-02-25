@@ -26,6 +26,7 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
                 Name = x.Name,
                 Description = x.Description,
                 Price = x.Price,
+                ImagePath = x.ImagePath,
                 User = new ProductUserDto
                 {
                     UserId = x.UserId,
@@ -63,13 +64,7 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
                 Name = x.Name,
                 Description = x.Description,
                 Price = x.Price,
-                User = new ProductUserDto
-                {
-                    UserId = x.UserId,
-                    FirstName = x.User.FirstName,
-                    LastName = x.User.LastName,
-                    IsOwner = false
-                },
+                ImagePath = x.ImagePath,
                 Categories = x.Categories.Select(e => new ProductCategoryDto
                 {
                     Id = e.Id,
@@ -104,6 +99,7 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
                 Name = x.Name,
                 Description = x.Description,
                 Price = x.Price,
+                ImagePath = x.ImagePath,
                 User = new ProductUserDto
                 {
                     UserId = x.User.Id,

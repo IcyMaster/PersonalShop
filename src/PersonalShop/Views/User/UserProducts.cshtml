@@ -3,19 +3,15 @@
 @model PagedResult<SingleProductDto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "List of Products";
 }
 
-<h2>Index</h2>
-
-@if (User.Identity!.IsAuthenticated)
-{
-    <p>
+<h2>List of Products</h2>
+<div class="mb-4 mt-4">
         <form asp-controller="Product" asp-action="addProduct" method="get" class="d-inline">
             <button type="submit" class="btn btn-primary">افزودن محصول</button>
         </form>
-    </p>
-}
+    </div>
 
 <table class="table">
     <thead>
@@ -58,10 +54,10 @@
         }
     </tbody>
 </table>
-<br/>
+<br />
 <nav aria-label="Product Pagination">
     <ul class="pagination justify-content-end">
-        @if(Model.PageNumber > 1)
+        @if (Model.PageNumber > 1)
         {
             <li class="page-item">
                 <a class="page-link" href="?pageNumber=@(Model.PageNumber - 1)">صفحه قبل</a>

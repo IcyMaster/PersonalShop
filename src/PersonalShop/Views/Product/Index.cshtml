@@ -6,49 +6,46 @@
     ViewData["Title"] = "Products";
 }
 
-<h1>Products</h1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>شماره محصول</th>
-            <th>نام محصول</th>
-            <th>توضیحات محصول</th>
-            <th>قیمت محصول</th>
-            <th>عملیات</th>
-        </tr>
-    </thead>
-    <tbody>
+<h2>Products</h2>
+
+<link href="~/css/ProductIndex.css" rel="stylesheet">
+<div class="container py-4">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <!-- Product Card -->
         @foreach (var item in Model.Data)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @item.Price.ToString("00")
-                </td>
-                <td>
-                    <form asp-controller="Cart" asp-action="AddItem" method="post" class="d-inline">
-                        <input type="hidden" name="ProductId" value="@item.Id" />
-                        <input type="hidden" name="Quantity" value="1" />
-
-                        <button type="submit" class="btn btn-primary no-outline">افزودن به سبد خرید</button>
-                    </form>
-                </td>
-            </tr>
+            <div class="col">
+                <div class="card product-card">
+                    <img src="@item.ImagePath" class="product-image" alt="Product">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="product-price">@item.Price.ToString("#,0") تومان</span>
+                            <div>
+                                <form asp-controller="Cart" asp-action="AddItem" method="post" class="d-inline">
+                                    <input type="hidden" name="ProductId" value="@item.Id" />
+                                    <input type="hidden" name="Quantity" value="1" />
+                                    <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-success px-2 me-1 no-outline">
+                                        <i class="bi bi-cart"></i>
+                                    </button>
+                                </form>
+                                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary px-2 me-1 no-outline">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+</div>
+
 <br />
 <nav aria-label="Product Pagination">
     <ul class="pagination justify-content-end">
-        @if(Model.PageNumber > 1)
+        @if (Model.PageNumber > 1)
         {
             <li class="page-item">
                 <a class="page-link" href="?pageNumber=@(Model.PageNumber - 1)">صفحه قبل</a>
