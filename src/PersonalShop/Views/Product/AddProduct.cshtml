@@ -18,8 +18,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShortDescription" class="control-label"></label>
+                <input asp-for="ShortDescription" class="form-control" />
+                <span asp-validation-for="ShortDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
@@ -37,6 +42,8 @@
         </div>
         <div class="col-md-6">
             <div id="categoryContainer" class="border p-3">Loading...</div>
+            <br/>
+            <div id="tagContainer" class="border p-3">Loading...</div>
         </div>
     </div>
 </form>
@@ -47,7 +54,10 @@
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
-    $("#categoryContainer").load("/Categories/GetCategoriesPartial");
+    $(document).ready(function () {
+        $("#categoryContainer").load("/Categories/GetCategoriesPartial");
+        $("#tagContainer").load("/Tags/GetTagsPartial");
+    });
 </script>
 
 @section Scripts {

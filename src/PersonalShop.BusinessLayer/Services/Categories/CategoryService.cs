@@ -71,43 +71,37 @@ public class CategoryService : ICategoryService
     }
     public async Task<ServiceResult<string>> DeleteCategoryAndValidateOwnerAsync(string userId, int categoryId)
     {
-        try
+        var category = await _categoryRepository.GetCategoryDetailsWithoutUserAsync(categoryId);
+        if (category is null)
         {
-            var category = await _categoryRepository.GetCategoryDetailsWithoutUserAsync(categoryId);
-            if (category is null)
+            return ServiceResult<string>.Failed(CategoryServiceErrors.CategoryNotFound);
+        }
+
+        if (!category.UserId.Equals(userId))
+        {
+            return ServiceResult<string>.Failed(CategoryServiceErrors.CategoryOwnerMatchProblem);
+        }
+
+        var subCategories = await _categoryQueryRepository.GetAllSubCategoryDetailsWithoutUserAsync(categoryId);
+
+        if (subCategories is not null)
+        {
+            foreach (var subCategory in subCategories)
             {
-                return ServiceResult<string>.Failed(CategoryServiceErrors.CategoryNotFound);
-            }
-
-            if (!category.UserId.Equals(userId))
-            {
-                return ServiceResult<string>.Failed(CategoryServiceErrors.CategoryOwnerMatchProblem);
-            }
-
-            var subCategories = await _categoryQueryRepository.GetAllSubCategoryDetailsWithoutUserAsync(categoryId);
-
-            if (subCategories is not null)
-            {
-                foreach (var subCategory in subCategories)
-                {
-                    _categoryRepository.Delete(subCategory);
-                }
-            }
-
-            _categoryRepository.Delete(category);
-
-            if (await _unitOfWork.SaveChangesAsync(true) > 0)
-            {
-                await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Category);
-                await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
-
-                return ServiceResult<string>.Success(CategoryServiceSuccess.SuccessfulDeleteCategory);
+                _categoryRepository.Delete(subCategory);
             }
         }
-        catch(Exception ex)
-        {
 
+        _categoryRepository.Delete(category);
+
+        if (await _unitOfWork.SaveChangesAsync(true) > 0)
+        {
+            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Category);
+            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
+
+            return ServiceResult<string>.Success(CategoryServiceSuccess.SuccessfulDeleteCategory);
         }
+
         return ServiceResult<string>.Failed(CategoryServiceErrors.DeleteCategoryProblem);
     }
     public async Task<ServiceResult<SingleCategoryDto>> GetCategoryDetailsWithUserAndValidateOwnerAsync(int categoryId, string userId)

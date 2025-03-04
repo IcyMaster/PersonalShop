@@ -73,7 +73,7 @@ public class ProductService : IProductService
         var imagePath = $"/{_config[AppSettingContracts.StoredFilesPath]}/{fileName}";
 
         var newProduct = new Product(userId, createProductDto.Name,
-            createProductDto.Description, createProductDto.Price, imagePath);
+            createProductDto.Description,createProductDto.ShortDescription, createProductDto.Price, imagePath);
 
         if (createProductDto.Categories is not null)
         {
@@ -196,6 +196,7 @@ public class ProductService : IProductService
 
         product.ChangeName(updateProductDto.Name);
         product.ChangeDescription(updateProductDto.Description);
+        product.ChangeShortDescription(updateProductDto.ShortDescription);
         product.ChangePrice(updateProductDto.Price);
 
         if (updateProductDto.Categories is not null)

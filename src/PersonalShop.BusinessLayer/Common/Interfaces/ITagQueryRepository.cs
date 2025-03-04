@@ -8,5 +8,6 @@ namespace PersonalShop.BusinessLayer.Common.Interfaces;
 public interface ITagQueryRepository : IRepository<Tag>
 {
     Task<SingleTagDto?> FindTagWithNameAsync(string name);
+    Task<List<SingleTagDto>> GetAllTagsWithUserAsync();
     Task<PagedResult<SingleTagDto>> GetAllTagsWithUserAsync(PagedResultOffset resultOffset);
 }

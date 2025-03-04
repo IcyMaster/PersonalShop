@@ -12,11 +12,17 @@ public class CreateProductDto
         , ErrorMessageResourceName = nameof(ProductMessages.NameRequired))]
     public string Name { get; set; } = string.Empty;
 
-    [MaxLength(50, ErrorMessageResourceType = typeof(ProductMessages)
+    [MaxLength(1000, ErrorMessageResourceType = typeof(ProductMessages)
         , ErrorMessageResourceName = nameof(ProductMessages.DescriptionLengthError))]
     [Required(ErrorMessageResourceType = typeof(ProductMessages)
         , ErrorMessageResourceName = nameof(ProductMessages.DescriptionRequired))]
     public string Description { get; set; } = string.Empty;
+
+    [MaxLength(150, ErrorMessageResourceType = typeof(ProductMessages)
+    , ErrorMessageResourceName = nameof(ProductMessages.ShortDescriptionLengthError))]
+    [Required(ErrorMessageResourceType = typeof(ProductMessages)
+    , ErrorMessageResourceName = nameof(ProductMessages.ShortDescriptionRequired))]
+    public string ShortDescription { get; set; } = string.Empty;
 
     [Range(0.0, (double)decimal.MaxValue
         , ErrorMessageResourceType = typeof(ProductMessages)

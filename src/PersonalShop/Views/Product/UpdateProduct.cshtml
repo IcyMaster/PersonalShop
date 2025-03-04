@@ -25,8 +25,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShortDescription" class="control-label"></label>
+                <input asp-for="ShortDescription" class="form-control" />
+                <span asp-validation-for="ShortDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
@@ -39,11 +44,13 @@
             </div>
             <br />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Update" class="btn btn-primary" />
             </div>
         </div>
         <div class="col-md-6">
             <div id="categoryContainer" class="border p-3">Loading...</div>
+            <br/>
+            <div id="tagContainer" class="border p-3">Loading...</div>
         </div>
     </div>
 </form>
@@ -54,7 +61,8 @@
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
-    $("#categoryContainer").load("/Categories/GetCategoriesPartial", function() {
+    $(document).ready(function () {
+        $("#categoryContainer").load("/Categories/GetCategoriesPartial",function() {
         var selectedCategories = @Html.Raw(Json.Serialize(Model.Categories))
 
         var categoryIds = selectedCategories.map(function(category)
@@ -63,9 +71,23 @@
         });
 
     categoryIds.forEach(function(id) {
-            $("input[type=checkbox][value='" + id + "']").prop("checked", true);
+            $("#categoryContainer input[type=checkbox][value='" + id + "']").prop("checked", true);
         });
     });
+        $("#tagContainer").load("/Tags/GetTagsPartial",function() {
+            var selectedTags = @Html.Raw(Json.Serialize(Model.Tags))
+
+            var tagIds = selectedTags.map(function(tag)
+            {
+                return tag.id;
+            });
+
+        tagIds.forEach(function(id) {
+            $("#tagContainer input[type=checkbox][value='" + id + "']").prop("checked", true);
+        });
+    });
+    });
+
 </script>
 
 @section Scripts {

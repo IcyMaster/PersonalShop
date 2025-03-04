@@ -118,10 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DescriptionLengthError" xml:space="preserve">
-    <value>مقدار فیلد توضیحات از 50 کاراکتر بیشتر است</value>
+    <value>مقدار فیلد توضیحات از 1000 کاراکتر بیشتر است</value>
+  </data>
+  <data name="ShortDescriptionLengthError" xml:space="preserve">
+    <value>مقدار فیلد توضیحات کوتاه از 150 کاراکتر بیشتر است</value>
   </data>
   <data name="DescriptionRequired" xml:space="preserve">
     <value>لطفا فیلد توضیحات را تکمیل نمایید</value>
+  </data>
+  <data name="ShortDescriptionRequired" xml:space="preserve">
+    <value>لطفا فیلد توضیحات کوتاه را تکمیل نمایید</value>
   </data>
   <data name="NameLengthError" xml:space="preserve">
     <value>مقدار فیلد نام از 20 کاراکتر بیشتر است</value>

@@ -61,7 +61,7 @@ namespace PersonalShop.Shared.Resources.Validations.Product {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to مقدار فیلد توضیحات از 50 کاراکتر بیشتر است.
+        ///   Looks up a localized string similar to مقدار فیلد توضیحات از 1000 کاراکتر بیشتر است.
         /// </summary>
         public static string DescriptionLengthError {
             get {
@@ -111,6 +111,24 @@ namespace PersonalShop.Shared.Resources.Validations.Product {
         public static string PriceRequired {
             get {
                 return ResourceManager.GetString("PriceRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مقدار فیلد توضیحات کوتاه از 150 کاراکتر بیشتر است.
+        /// </summary>
+        public static string ShortDescriptionLengthError {
+            get {
+                return ResourceManager.GetString("ShortDescriptionLengthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لطفا فیلد توضیحات کوتاه را تکمیل نمایید.
+        /// </summary>
+        public static string ShortDescriptionRequired {
+            get {
+                return ResourceManager.GetString("ShortDescriptionRequired", resourceCulture);
             }
         }
     }

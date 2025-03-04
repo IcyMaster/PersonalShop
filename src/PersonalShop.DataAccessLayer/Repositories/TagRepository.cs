@@ -47,7 +47,25 @@ public class TagRepository : Repository<Tag>, ITagRepository, ITagQueryRepositor
 
         return PagedResult<SingleTagDto>.CreateNew(data, resultOffset, totalRecord);
     }
-
+    public async Task<List<SingleTagDto>> GetAllTagsWithUserAsync()
+    {
+        return await _dbSet
+            .Include(x => x.User)
+            .AsNoTracking()
+            .Select(x => new SingleTagDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                User = new TagUserDto
+                {
+                    UserId = x.UserId,
+                    FirstName = x.User.FirstName,
+                    LastName = x.User.LastName,
+                    IsOwner = false
+                },
+            })
+            .ToListAsync();
+    }
     public async Task<SingleTagDto?> FindTagWithNameAsync(string name)
     {
         return await _dbSet

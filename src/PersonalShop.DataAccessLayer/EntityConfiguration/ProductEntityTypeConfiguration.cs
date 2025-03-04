@@ -19,16 +19,18 @@ public class ProductEntityTypeConfiguration : IEntityTypeConfiguration<Product>
             .WithMany(e => e.Products)
             .UsingEntity<ProductCategory>(
             j => j.HasOne<Category>().WithMany()
-            .OnDelete(DeleteBehavior.Restrict).HasForeignKey(e => e.CategoryId),
+            .OnDelete(DeleteBehavior.Cascade).HasForeignKey(e => e.CategoryId),
             j => j.HasOne<Product>().WithMany()
-            .OnDelete(DeleteBehavior.Restrict).HasForeignKey(e => e.ProductId));
+            .OnDelete(DeleteBehavior.ClientCascade).HasForeignKey(e => e.ProductId));
 
         //for tag many-to-many
         builder
             .HasMany(e => e.Tags)
             .WithMany(e => e.Products)
             .UsingEntity<ProductTag>(
-            j => j.HasOne<Tag>().WithMany().OnDelete(DeleteBehavior.NoAction).HasForeignKey(e => e.TagId),
-            j => j.HasOne<Product>().WithMany().OnDelete(DeleteBehavior.Cascade).HasForeignKey(e => e.ProductId));
+            j => j.HasOne<Tag>().WithMany()
+            .OnDelete(DeleteBehavior.Cascade).HasForeignKey(e => e.TagId),
+            j => j.HasOne<Product>().WithMany()
+            .OnDelete(DeleteBehavior.ClientCascade).HasForeignKey(e => e.ProductId));
     }
 }

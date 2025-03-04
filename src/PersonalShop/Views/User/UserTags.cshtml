@@ -1,25 +1,23 @@
 ﻿@using PersonalShop.Domain.Entities.Responses
-@using PersonalShop.BusinessLayer.Services.Products.Dtos
-@model PagedResult<SingleProductDto>
+@using PersonalShop.BusinessLayer.Services.Tags.Dtos
+@model PagedResult<SingleTagDto>
 
 @{
-    ViewData["Title"] = "List of Products";
+    ViewData["Title"] = "List of Tags";
 }
 
-<h2>List of Products</h2>
+<h2>List of Tags</h2>
 <div class="mb-4 mt-4">
-        <form asp-controller="Product" asp-action="addProduct" method="get" class="d-inline">
-            <button type="submit" class="btn btn-primary">افزودن محصول</button>
+        <form asp-controller="Tag" asp-action="addTag" method="get" class="d-inline">
+            <button type="submit" class="btn btn-primary">افزودن تگ</button>
         </form>
     </div>
 
 <table class="table">
     <thead>
         <tr>
-            <th>شماره محصول</th>
-            <th>نام محصول</th>
-            <th>توضیحات محصول</th>
-            <th>قیمت محصول</th>
+            <th>شماره تگ</th>
+            <th>نام تگ</th>
             <th>عملیات</th>
         </tr>
     </thead>
@@ -34,19 +32,10 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ShortDescription)
-                </td>
-                <td>
-                    @item.Price.ToString("00")
-                </td>
-                <td>
                     @if (item.User.IsOwner)
                     {
-                        <form asp-controller="Product" asp-action="DeleteProduct" asp-route-productId="@item.Id" method="post" class="d-inline">
+                        <form asp-controller="Tag" asp-action="DeleteTag" asp-route-tagId="@item.Id" method="post" class="d-inline">
                             <button type="submit" class="btn btn-danger" onclick="return confirm('آیا از حذف این محصول مطمئن هستید؟')">حذف</button>
-                        </form>
-                        <form asp-controller="Product" asp-action="UpdateProduct" asp-route-productId="@item.Id" method="get" class="d-inline">
-                            <button type="submit" class="btn btn-success">ویرایش</button>
                         </form>
                     }
                 </td>
@@ -55,7 +44,7 @@
     </tbody>
 </table>
 <br />
-<nav aria-label="Product Pagination">
+<nav aria-label="Tag Pagination">
     <ul class="pagination justify-content-end">
         @if (Model.PageNumber > 1)
         {

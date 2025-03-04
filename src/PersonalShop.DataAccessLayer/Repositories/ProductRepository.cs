@@ -25,6 +25,7 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
+                ShortDescription = x.ShortDescription,
                 Price = x.Price,
                 ImagePath = x.ImagePath,
                 User = new ProductUserDto
@@ -45,7 +46,6 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
                 {
                     Id = e.Id,
                     Name = e.Name,
-
                 }).ToList(),
             })
             .FirstOrDefaultAsync();
@@ -63,6 +63,7 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
+                ShortDescription = x.ShortDescription,
                 Price = x.Price,
                 ImagePath = x.ImagePath,
                 Categories = x.Categories.Select(e => new ProductCategoryDto
@@ -98,6 +99,7 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
+                ShortDescription = x.ShortDescription,
                 Price = x.Price,
                 ImagePath = x.ImagePath,
                 User = new ProductUserDto

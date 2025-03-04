@@ -1,0 +1,13 @@
+﻿@using PersonalShop.BusinessLayer.Services.Tags.Dtos;
+@using PersonalShop.Domain.Entities.Responses
+@model List<SingleTagDto>
+
+<h4>Select Tags :</h4>
+<ul class="list-group">
+    @foreach (var tag in Model)
+    {
+        <li class="list-group-item">
+            <input type="checkbox" name="Tags" value="@tag.Id"> @tag.Name
+        </li>
+    }
+</ul>

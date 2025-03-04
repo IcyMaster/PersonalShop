@@ -13,10 +13,11 @@ namespace PersonalShop.Domain.Entities.Products
         {
             //for ef ...
         }
-        public Product(string userId, string name, string description, decimal price,string imagePath)
+        public Product(string userId, string name, string description, string shortDescription, decimal price,string imagePath)
         {
             UserId = userId;
             Name = name;
+            ShortDescription = shortDescription;
             Description = description;
             Price = price;
             ImagePath = imagePath;
@@ -26,6 +27,7 @@ namespace PersonalShop.Domain.Entities.Products
         public string UserId { get; set; } = string.Empty;
         public string Name { get; private set; } = string.Empty;
         public string Description { get; private set; } = string.Empty;
+        public string ShortDescription { get; private set; } = string.Empty;
         public decimal Price { get; private set; } = decimal.Zero;
         public string ImagePath { get;private set; } = string.Empty;
         public User User { get; set; } = null!;
@@ -39,6 +41,10 @@ namespace PersonalShop.Domain.Entities.Products
         public void ChangeDescription(string description)
         {
             Description = description;
+        }
+        public void ChangeShortDescription(string shortDescription)
+        {
+            ShortDescription = shortDescription;
         }
         public void ChangePrice(decimal price)
         {

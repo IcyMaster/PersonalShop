@@ -1,6 +1,7 @@
 ﻿using EasyCaching.Core;
 using PersonalShop.BusinessLayer.Builders.Caches;
 using PersonalShop.BusinessLayer.Common.Interfaces;
+using PersonalShop.BusinessLayer.Services.Categories.Dtos;
 using PersonalShop.BusinessLayer.Services.Interfaces;
 using PersonalShop.BusinessLayer.Services.Tags.Dtos;
 using PersonalShop.Domain.Contracts;
@@ -89,6 +90,21 @@ public class TagService : ITagService
         }
 
         return ServiceResult<string>.Failed(TagServiceErrors.DeleteTagProblem);
+    }
+    public async Task<ServiceResult<List<SingleTagDto>>> GetAllTagsWithUserAsync()
+    {
+        var cache = await _cachingProvider.GetAsync<List<SingleTagDto>>(CacheKeysContract.Tag);
+
+        if (cache.HasValue)
+        {
+            return ServiceResult<List<SingleTagDto>>.Success(cache.Value);
+        }
+
+        var tags = await _tagQueryRepository.GetAllTagsWithUserAsync();
+
+        await _cachingProvider.TrySetAsync(CacheKeysContract.Tag, tags, TimeSpan.FromHours(1));
+
+        return ServiceResult<List<SingleTagDto>>.Success(tags);
     }
     public async Task<ServiceResult<PagedResult<SingleTagDto>>> GetAllTagsWithUserAsync(PagedResultOffset resultOffset)
     {
