@@ -93,7 +93,7 @@ public static class AccountApis
                 return Results.BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
             }
 
-            var serviceResult = await userService.AssignUserRoleByEmailAsync(assignRoleDto.UserEmail,assignRoleDto.RoleName);
+            var serviceResult = await userService.AssignUserRoleByEmailAsync(assignRoleDto.UserEmail, assignRoleDto.RoleName);
 
             if (serviceResult.IsSuccess)
             {

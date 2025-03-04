@@ -1,6 +1,6 @@
 ﻿using PersonalShop.BusinessLayer.Services.Orders.Dtos;
-using PersonalShop.Domain.Entities.Responses;
 using PersonalShop.Domain.Contracts;
+using PersonalShop.Domain.Entities.Responses;
 
 namespace PersonalShop.BusinessLayer.Common.Interfaces;
 public interface IOrderQueryRepository

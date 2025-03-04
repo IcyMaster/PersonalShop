@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PersonalShop.BusinessLayer.Services.Categories;
-using PersonalShop.BusinessLayer.Services.Categories.Dtos;
 using PersonalShop.BusinessLayer.Services.Interfaces;
-using PersonalShop.BusinessLayer.Services.Tags;
 using PersonalShop.BusinessLayer.Services.Tags.Dtos;
 using PersonalShop.Domain.Entities.Responses;
 using PersonalShop.Extension;
@@ -69,7 +66,7 @@ public class TagController : Controller
     [Route("DeleteTag/{tagId:int}", Name = "DeleteTag")]
     public async Task<ActionResult> DeleteTag(int tagId)
     {
-        var serviceResult = await _tagService.DeleteTagAndValidateOwnerAsync(User.Identity!.GetUserId(),tagId);
+        var serviceResult = await _tagService.DeleteTagAndValidateOwnerAsync(User.Identity!.GetUserId(), tagId);
 
         if (serviceResult.IsSuccess)
         {

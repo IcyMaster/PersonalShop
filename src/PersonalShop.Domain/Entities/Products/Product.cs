@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
-using PersonalShop.Domain.Entities.Categorys;
+﻿using PersonalShop.Domain.Entities.Categorys;
 using PersonalShop.Domain.Entities.Tags;
 using PersonalShop.Domain.Entities.Users;
-using PersonalShop.Shared.Contracts;
 
 namespace PersonalShop.Domain.Entities.Products
 {
@@ -13,7 +10,7 @@ namespace PersonalShop.Domain.Entities.Products
         {
             //for ef ...
         }
-        public Product(string userId, string name, string description, string shortDescription, decimal price,string imagePath)
+        public Product(string userId, string name, string description, string shortDescription, decimal price, string imagePath)
         {
             UserId = userId;
             Name = name;
@@ -29,7 +26,7 @@ namespace PersonalShop.Domain.Entities.Products
         public string Description { get; private set; } = string.Empty;
         public string ShortDescription { get; private set; } = string.Empty;
         public decimal Price { get; private set; } = decimal.Zero;
-        public string ImagePath { get;private set; } = string.Empty;
+        public string ImagePath { get; private set; } = string.Empty;
         public User User { get; set; } = null!;
         public List<Category> Categories { get; set; } = [];
         public List<Tag> Tags { get; set; } = [];

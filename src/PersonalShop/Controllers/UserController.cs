@@ -38,7 +38,7 @@ public class UserController : Controller
             return BadRequest(ApiResult<string>.Failed(validateObject.Errors!));
         }
 
-        var serviceResult = await _productService.GetAllProductsWithUserAndValidateOwnerAsync(resultOffset,User.Identity!.GetUserId());
+        var serviceResult = await _productService.GetAllProductsWithUserAndValidateOwnerAsync(resultOffset, User.Identity!.GetUserId());
 
         if (serviceResult.IsSuccess)
         {

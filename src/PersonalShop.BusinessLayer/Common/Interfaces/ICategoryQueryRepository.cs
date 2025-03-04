@@ -1,5 +1,4 @@
 ﻿using PersonalShop.BusinessLayer.Services.Categories.Dtos;
-using PersonalShop.BusinessLayer.Services.Products.Dtos;
 using PersonalShop.Domain.Contracts;
 using PersonalShop.Domain.Entities.Categorys;
 using PersonalShop.Domain.Entities.Responses;

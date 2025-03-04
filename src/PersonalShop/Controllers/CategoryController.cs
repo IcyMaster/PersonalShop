@@ -2,9 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PersonalShop.BusinessLayer.Services.Categories.Dtos;
 using PersonalShop.BusinessLayer.Services.Interfaces;
-using PersonalShop.BusinessLayer.Services.Products;
-using PersonalShop.BusinessLayer.Services.Products.Dtos;
-using PersonalShop.Domain.Contracts;
 using PersonalShop.Domain.Entities.Responses;
 using PersonalShop.Extension;
 using PersonalShop.Shared.Contracts;
@@ -67,7 +64,7 @@ public class CategoryController : Controller
 
     [HttpGet]
     [Authorize(Roles = RolesContract.Admin)]
-    [Route("AddSubCategory/{categoryId:int}",Name= "AddSubCategory")]
+    [Route("AddSubCategory/{categoryId:int}", Name = "AddSubCategory")]
     public ActionResult AddSubCategory(int categoryId)
     {
         var subCategory = new CreateCategoryDto() { ParentId = categoryId };

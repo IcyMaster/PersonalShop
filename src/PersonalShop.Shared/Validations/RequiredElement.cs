@@ -7,11 +7,11 @@ public class RequiredElement : ValidationAttribute
 {
     public override bool IsValid(object? value)
     {
-        if(value is not null)
+        if (value is not null)
         {
             var list = value as IList;
 
-            if(list is not null)
+            if (list is not null)
             {
                 if (list.Count > 0)
                 {

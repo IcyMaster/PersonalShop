@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PersonalShop.BusinessLayer.Services.Identitys.Roles.Dtos;
-using PersonalShop.BusinessLayer.Services.Identitys.Users;
 using PersonalShop.BusinessLayer.Services.Identitys.Users.Dtos;
 using PersonalShop.BusinessLayer.Services.Interfaces;
 using PersonalShop.Domain.Contracts;

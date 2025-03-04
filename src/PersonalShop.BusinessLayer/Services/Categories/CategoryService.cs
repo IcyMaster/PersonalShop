@@ -3,14 +3,11 @@ using PersonalShop.BusinessLayer.Builders.Caches;
 using PersonalShop.BusinessLayer.Common.Interfaces;
 using PersonalShop.BusinessLayer.Services.Categories.Dtos;
 using PersonalShop.BusinessLayer.Services.Interfaces;
-using PersonalShop.BusinessLayer.Services.Products.Dtos;
 using PersonalShop.Domain.Contracts;
 using PersonalShop.Domain.Entities.Categorys;
-using PersonalShop.Domain.Entities.Products;
 using PersonalShop.Domain.Entities.Responses;
 using PersonalShop.Shared.Contracts;
 using PersonalShop.Shared.Resources.Services.CategoryService;
-using PersonalShop.Shared.Resources.Services.ProductService;
 
 namespace PersonalShop.BusinessLayer.Services.Categories;
 

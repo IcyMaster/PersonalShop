@@ -1,7 +1,6 @@
 ﻿using EasyCaching.Core;
 using PersonalShop.BusinessLayer.Builders.Caches;
 using PersonalShop.BusinessLayer.Common.Interfaces;
-using PersonalShop.BusinessLayer.Services.Categories.Dtos;
 using PersonalShop.BusinessLayer.Services.Interfaces;
 using PersonalShop.BusinessLayer.Services.Tags.Dtos;
 using PersonalShop.Domain.Contracts;

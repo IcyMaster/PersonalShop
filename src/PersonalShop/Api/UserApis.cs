@@ -25,7 +25,7 @@ public static class UserApis
 
             var userId = context.GetUserId();
 
-            var serviceResult = await productService.GetAllProductsWithUserAndValidateOwnerAsync(resultOffset,userId!);
+            var serviceResult = await productService.GetAllProductsWithUserAndValidateOwnerAsync(resultOffset, userId!);
 
             if (serviceResult.IsSuccess)
             {
@@ -45,7 +45,7 @@ public static class UserApis
 
             var userId = context.GetUserId();
 
-            var serviceResult = await tagService.GetAllTagsWithUserAndValidateOwnerAsync(resultOffset,userId!);
+            var serviceResult = await tagService.GetAllTagsWithUserAndValidateOwnerAsync(resultOffset, userId!);
 
             if (serviceResult.IsSuccess)
             {

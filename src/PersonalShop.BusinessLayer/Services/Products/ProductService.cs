@@ -1,17 +1,16 @@
 ﻿using EasyCaching.Core;
 using MassTransit;
+using Microsoft.Extensions.Configuration;
 using PersonalShop.BusinessLayer.Builders.Caches;
 using PersonalShop.BusinessLayer.Common.Interfaces;
 using PersonalShop.BusinessLayer.Services.Carts.Commands;
 using PersonalShop.BusinessLayer.Services.Interfaces;
 using PersonalShop.BusinessLayer.Services.Products.Dtos;
-using PersonalShop.Shared.Resources.Services.ProductService;
 using PersonalShop.Domain.Contracts;
 using PersonalShop.Domain.Entities.Products;
 using PersonalShop.Domain.Entities.Responses;
 using PersonalShop.Shared.Contracts;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
+using PersonalShop.Shared.Resources.Services.ProductService;
 
 namespace PersonalShop.BusinessLayer.Services.Products;
 
@@ -73,7 +72,7 @@ public class ProductService : IProductService
         var imagePath = $"/{_config[AppSettingContracts.StoredFilesPath]}/{fileName}";
 
         var newProduct = new Product(userId, createProductDto.Name,
-            createProductDto.Description,createProductDto.ShortDescription, createProductDto.Price, imagePath);
+            createProductDto.Description, createProductDto.ShortDescription, createProductDto.Price, imagePath);
 
         if (createProductDto.Categories is not null)
         {

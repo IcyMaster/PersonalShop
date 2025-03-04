@@ -108,7 +108,7 @@ public class UserService : IUserService
         }
 
         var roles = await _userManager.GetRolesAsync(user);
-        if(roles.Count is 1)
+        if (roles.Count is 1)
         {
             if (roles[0].Equals(roleName))
             {
