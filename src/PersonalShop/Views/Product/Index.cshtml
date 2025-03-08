@@ -30,9 +30,11 @@
                                         <i class="bi bi-cart"></i>
                                     </button>
                                 </form>
-                                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary px-2 me-1 no-outline">
-                                    <i class="bi bi-search"></i>
-                                </button>
+                                <form asp-controller="Product" asp-action="GetProduct" asp-route-ProductId="@item.Id" method="get" class="d-inline">
+                                    <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary px-2 me-1 no-outline">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

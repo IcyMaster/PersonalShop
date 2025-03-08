@@ -6,4 +6,5 @@ namespace PersonalShop.BusinessLayer.Common.Interfaces;
 public interface IOrderQueryRepository
 {
     Task<PagedResult<SingleOrderDto>> GetAllOrdersAsync(string userId, PagedResultOffset resultOffset);
+    Task<PagedResult<SingleOrderDto>> GetAllOrdersAsync(PagedResultOffset resultOffset);
 }

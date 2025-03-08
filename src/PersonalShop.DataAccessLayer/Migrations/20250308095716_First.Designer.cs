@@ -12,7 +12,7 @@ using PersonalShop.DataAccessLayer;
 namespace PersonalShop.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250304091139_First")]
+    [Migration("20250308095716_First")]
     partial class First
     {
         /// <inheritdoc />
@@ -236,6 +236,9 @@ namespace PersonalShop.DataAccessLayer.Migrations
 
                     b.Property<DateTimeOffset>("OrderDate")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");

@@ -42,7 +42,7 @@ public class OrderService : IOrderService
             return ServiceResult<string>.Failed(CartServiceErrors.CartNotFound);
         }
 
-        var order = new Order(cart.UserId, cart.TotalPrice);
+        var order = new Order(cart.UserId, cart.TotalPrice,OrderStatus.NoStatus);
 
         foreach (var item in cart.CartItems)
         {

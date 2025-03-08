@@ -1,9 +1,15 @@
-﻿namespace PersonalShop.Shared.Contracts;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public static class OrderStatus
+namespace PersonalShop.Domain.Entities.Orders;
+
+public enum OrderStatus
 {
-    public const string Processing = "Processing";
-    public const string Completed = "Completed";
-    public const string Returned = "Returned";
-    public const string AwaitingApproval = "AwaitingApproval";
+    Completed,
+    InProgress,
+    Cancelled,
+    NoStatus,
 }
