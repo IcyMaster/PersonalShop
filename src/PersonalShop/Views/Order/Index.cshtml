@@ -27,19 +27,19 @@
                     <td>
                         @if(item.OrderStatus is OrderStatus.NoStatus)
                         {
-                            <a>بدون وضعیت</a>
+                            <a style="background-color:dimgray; color:white;">بدون وضعیت</a>
                         }
                         else if (item.OrderStatus is OrderStatus.Completed)
                         {
-                            <a>تکمیل شده</a>
+                            <a style="background-color:seagreen; color:white;">تکمیل شده</a>
                         }
                         else if (item.OrderStatus is OrderStatus.InProgress)
                         {
-                            <a>درحال پردازش</a>
+                            <a style="background-color:mediumslateblue; color:white;">درحال پردازش</a>
                         }
                         else if (item.OrderStatus is OrderStatus.Cancelled)
                         {
-                            <a>لفو شده</a>
+                            <a style="background-color:darkred; color:white;">لغو شده</a>
                         }
                     </td>
                     <td>
@@ -69,6 +69,20 @@
                                             <td>@orderItem.ProductPrice.ToString("00")</td>
                                         </tr>
                                     }
+
+                                    <form asp-controller="Order" asp-action="ChangeStatus" asp-route-orderId="@item.Id" method="post" class="d-inline">
+                                        <a>وضعیت سفارش :</a>
+                                        <input type="hidden" name="OrderId" value="@item.Id" />
+                                        <select class="ms-2 no-outline" name="OrderStatus">
+                                            <option value="Completed">تکمیل شده</option>
+                                            <option value="InProgress">درحال پردازش</option>
+                                            <option value="Cancelled">لغو شده</option>
+                                            <option value="NoStatus">بدون وضعیت</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-warning btn-sm mb-1 ms-2 no-outline">
+                                            <i class="bi bi-check-lg"></i> اعمال
+                                        </button>
+                                    </form>
                                 </tbody>
                             </table>
                         </div>

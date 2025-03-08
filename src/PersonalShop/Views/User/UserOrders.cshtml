@@ -25,21 +25,21 @@
                     <td>@item.OrderDate.DateTime.ToShortDateString()</td>
                     <td>@item.TotalPrice.ToString("00")</td>
                     <td>
-                        @if(item.OrderStatus is OrderStatus.NoStatus)
+                        @if (item.OrderStatus is OrderStatus.NoStatus)
                         {
-                            <a>بدون وضعیت</a>
+                            <a style="background-color:dimgray; color:white;">بدون وضعیت</a>
                         }
                         else if (item.OrderStatus is OrderStatus.Completed)
                         {
-                            <a>تکمیل شده</a>
+                            <a style="background-color:seagreen; color:white;">تکمیل شده</a>
                         }
                         else if (item.OrderStatus is OrderStatus.InProgress)
                         {
-                            <a>درحال پردازش</a>
+                            <a style="background-color:mediumslateblue; color:white;">درحال پردازش</a>
                         }
                         else if (item.OrderStatus is OrderStatus.Cancelled)
                         {
-                            <a>لفو شده</a>
+                            <a style="background-color:darkred; color:white;">لغو شده</a>
                         }
                     </td>
                     <td>

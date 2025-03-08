@@ -47,6 +47,7 @@ public class Program
         app.RegisterProductApis();
         app.RegisterUserApis();
         app.RegisterCardApis();
+        app.RegisterOrderApis();
 
         //important lines to active auth system
         app.UseAuthentication();

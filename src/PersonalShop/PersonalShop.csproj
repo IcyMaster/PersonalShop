@@ -16,14 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\OrderController.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Controllers\OrderController.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="EasyCaching.InMemory" Version="1.9.2" />
     <PackageReference Include="MassTransit" Version="8.2.5" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.5" />

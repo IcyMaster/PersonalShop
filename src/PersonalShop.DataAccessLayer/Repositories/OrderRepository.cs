@@ -11,9 +11,9 @@ public class OrderRepository : Repository<Order>, IOrderRepository, IOrderQueryR
 {
     public OrderRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-    public async Task<Order?> GetOrderDetailsAsync(string userId, bool track = true)
+    public async Task<Order?> GetOrderDetailsAsync(int orderId, bool track = true)
     {
-        var data = await _dbSet.Where(e => e.UserId == userId)
+        var data = await _dbSet.Where(e => e.Id == orderId)
             .Include(e => e.OrderItems)
             .FirstOrDefaultAsync();
 

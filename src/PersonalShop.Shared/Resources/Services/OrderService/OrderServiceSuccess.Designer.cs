@@ -61,6 +61,15 @@ namespace PersonalShop.Shared.Resources.Services.OrderService {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to وضعیت سفارش با موفقیت عوض شد.
+        /// </summary>
+        public static string SuccessfulChangeOrderStatus {
+            get {
+                return ResourceManager.GetString("SuccessfulChangeOrderStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to پرداخت سبد خرید شما با موفقیت انجام شد.
         /// </summary>
         public static string SuccessfulCreateOrder {

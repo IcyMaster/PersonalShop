@@ -9,4 +9,8 @@ public class OrderCacheKeyBuilder
     {
         return $"{CacheKeysContract.Order}:userId:{userId}:pageNumber:{resultOffset.PageNumber}:pageSize:{resultOffset.PageSize}";
     }
+    public static string OrderPaginationCacheKey(PagedResultOffset resultOffset)
+    {
+        return $"{CacheKeysContract.Order}:pageNumber:{resultOffset.PageNumber}:pageSize:{resultOffset.PageSize}";
+    }
 }

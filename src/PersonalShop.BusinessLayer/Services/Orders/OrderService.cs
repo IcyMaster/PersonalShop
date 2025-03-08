@@ -42,7 +42,7 @@ public class OrderService : IOrderService
             return ServiceResult<string>.Failed(CartServiceErrors.CartNotFound);
         }
 
-        var order = new Order(cart.UserId, cart.TotalPrice,OrderStatus.NoStatus);
+        var order = new Order(cart.UserId, cart.TotalPrice, OrderStatus.NoStatus);
 
         foreach (var item in cart.CartItems)
         {
@@ -62,12 +62,36 @@ public class OrderService : IOrderService
             string cardCacheKey = CartCacheKeyBuilder.CartCacheKeyWithUserId(cart.UserId);
 
             await _cachingProvider.RemoveAsync(cardCacheKey);
-            await _cachingProvider.RemoveByPrefixAsync($"{CacheKeysContract.Order}:userId:{userId}");
+            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Order);
 
             return ServiceResult<string>.Success(OrderServiceSuccess.SuccessfulCreateOrder);
         }
 
         return ServiceResult<string>.Failed(OrderServiceErrors.CreateOrderProblem);
+    }
+    public async Task<ServiceResult<string>> ChangeOrderStatusAsync(int orderId, ChangeOrderStatusDto changeOrderStatusDto)
+    {
+        var order = await _orderRepository.GetOrderDetailsAsync(orderId, track: true);
+
+        if (order is null)
+        {
+            return ServiceResult<string>.Failed(OrderServiceErrors.OrderNotFound);
+        }
+
+        if (!order.ChangeOrderStatus(changeOrderStatusDto.OrderStatus))
+        {
+            return ServiceResult<string>.Failed(OrderServiceErrors.OrderStatusInvalid);
+        }
+
+        if (await _unitOfWork.SaveChangesAsync(true) > 0)
+        {
+            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Order);
+
+            return ServiceResult<string>.Success(OrderServiceSuccess.SuccessfulChangeOrderStatus);
+        }
+
+        return ServiceResult<string>.Failed(OrderServiceErrors.ChangeOrderStatusProblem);
+
     }
     public async Task<ServiceResult<PagedResult<SingleOrderDto>>> GetAllOrderAsync(string userId, PagedResultOffset resultOffset)
     {
@@ -81,6 +105,23 @@ public class OrderService : IOrderService
         }
 
         var listOfOrders = await _orderQueryRepository.GetAllOrdersAsync(userId, resultOffset);
+
+        await _cachingProvider.TrySetAsync(cacheKey, listOfOrders, TimeSpan.FromHours(1));
+
+        return ServiceResult<PagedResult<SingleOrderDto>>.Success(listOfOrders);
+    }
+    public async Task<ServiceResult<PagedResult<SingleOrderDto>>> GetAllOrderAsync(PagedResultOffset resultOffset)
+    {
+        string cacheKey = OrderCacheKeyBuilder.OrderPaginationCacheKey(resultOffset);
+
+        var cache = await _cachingProvider.GetAsync<PagedResult<SingleOrderDto>>(cacheKey);
+
+        if (cache.HasValue)
+        {
+            return ServiceResult<PagedResult<SingleOrderDto>>.Success(cache.Value);
+        }
+
+        var listOfOrders = await _orderQueryRepository.GetAllOrdersAsync(resultOffset);
 
         await _cachingProvider.TrySetAsync(cacheKey, listOfOrders, TimeSpan.FromHours(1));
 

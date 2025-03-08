@@ -46,35 +46,50 @@
                                         <button type="button" class="btn btn-success dropdown-toggle no-outline" data-bs-toggle="dropdown" aria-expanded="false">
                                             Hi @User.Identity.Name
                                         </button>
+
                                         <ul class="dropdown-menu">
+
                                             @if (User.IsInRole(RolesContract.Owner))
                                             {
-                                                <li>
-                                                    <form asp-controller="Account" asp-action="Index" method="get" class="m-0">
-                                                        <button type="submit" class="dropdown-item">مدیریت اعضا</button>
-                                                    </form>
+                                                <li class="dropdown-submenu">
+                                                    <a style="color:black;" class="dropdown-item" href="#">گزینه های ادمین</a>
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <form asp-controller="Account" asp-action="Index" method="get" class="m-0">
+                                                                <button type="submit" class="dropdown-item">مدیریت اعضا</button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
                                                 </li>
                                             }
-
                                             @if (User.IsInRole(RolesContract.Admin))
                                             {
-                                                <li>
-                                                    <form asp-controller="User" asp-action="UserProducts" method="get" class="m-0">
-                                                        <button type="submit" class="dropdown-item">مدیریت محصولات</button>
-                                                    </form>
-                                                </li>
-                                                <li>
-                                                    <form asp-controller="User" asp-action="UserCategories" method="get" class="m-0">
-                                                        <button type="submit" class="dropdown-item">مدیریت دسته بندی ها</button>
-                                                    </form>
-                                                </li>
-                                                <li>
-                                                    <form asp-controller="User" asp-action="UserTags" method="get" class="m-0">
-                                                        <button type="submit" class="dropdown-item">مدیریت تگ ها</button>
-                                                    </form>
+                                                <li class="dropdown-submenu">
+                                                    <a style="color:black;" class="dropdown-item" href="#">گزینه های ادمین</a>
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <form asp-controller="User" asp-action="UserProducts" method="get" class="m-0">
+                                                                <button type="submit" class="dropdown-item">مدیریت محصولات</button>
+                                                            </form>
+                                                        </li>
+                                                        <li>
+                                                            <form asp-controller="User" asp-action="UserCategories" method="get" class="m-0">
+                                                                <button type="submit" class="dropdown-item">مدیریت دسته‌بندی‌ها</button>
+                                                            </form>
+                                                        </li>
+                                                        <li>
+                                                            <form asp-controller="User" asp-action="UserTags" method="get" class="m-0">
+                                                                <button type="submit" class="dropdown-item">مدیریت تگ‌ها</button>
+                                                            </form>
+                                                        </li>
+                                                        <li>
+                                                            <form asp-controller="Order" asp-action="Index" method="get" class="m-0">
+                                                                <button type="submit" class="dropdown-item">مدیریت سفارش های مشتریان</button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
                                                 </li>
                                             }
-
                                             @if (User.IsInRole(RolesContract.Customer))
                                             {
                                                 <li>

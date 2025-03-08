@@ -61,11 +61,38 @@ namespace PersonalShop.Shared.Resources.Services.OrderService {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مشکل در تغییر وضعیت محصول موردنظر.
+        /// </summary>
+        public static string ChangeOrderStatusProblem {
+            get {
+                return ResourceManager.GetString("ChangeOrderStatusProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مشکل در پرداخت سبد خرید شما.
         /// </summary>
         public static string CreateOrderProblem {
             get {
                 return ResourceManager.GetString("CreateOrderProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to سفارش مورد نظر یافت نشد.
+        /// </summary>
+        public static string OrderNotFound {
+            get {
+                return ResourceManager.GetString("OrderNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to وضعیت محصول وارد شده نا معتبر است.
+        /// </summary>
+        public static string OrderStatusInvalid {
+            get {
+                return ResourceManager.GetString("OrderStatusInvalid", resourceCulture);
             }
         }
     }
