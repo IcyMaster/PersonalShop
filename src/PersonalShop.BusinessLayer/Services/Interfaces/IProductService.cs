@@ -1,4 +1,5 @@
-﻿using PersonalShop.BusinessLayer.Services.Products.Dtos;
+﻿using PersonalShop.BusinessLayer.Services.Products.Commands;
+using PersonalShop.BusinessLayer.Services.Products.Dtos;
 using PersonalShop.Domain.Contracts;
 using PersonalShop.Domain.Entities.Responses;
 
@@ -14,4 +15,5 @@ public interface IProductService
     Task<ServiceResult<SingleProductDto>> GetProductDetailsWithUserAsync(int productId);
     Task<ServiceResult<PagedResult<SingleProductDto>>> GetAllProductsWithUserAsync(PagedResultOffset resultOffset);
     Task<ServiceResult<PagedResult<SingleProductDto>>> GetAllProductsWithUserAndValidateOwnerAsync(PagedResultOffset resultOffset, string userId);
+    Task<ServiceResult<bool>> UpdateProductStockAsync(UpdateProductStockCommand command);
 }

@@ -20,3 +20,22 @@
     color: #000;
     direction: rtl;
 }
+
+.stock-label {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.available {
+    background-color: #28a745;
+    color: white;
+}
+
+.unavailable {
+    background-color: #dc3545;
+    color: white;
+}

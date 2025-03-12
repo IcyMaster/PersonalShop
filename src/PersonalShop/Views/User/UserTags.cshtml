@@ -35,7 +35,7 @@
                     @if (item.User.IsOwner)
                     {
                         <form asp-controller="Tag" asp-action="DeleteTag" asp-route-tagId="@item.Id" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('آیا از حذف این محصول مطمئن هستید؟')">حذف</button>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('آیا از حذف این تگ مطمئن هستید؟')">حذف</button>
                         </form>
                     }
                 </td>

@@ -28,6 +28,7 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
                 ShortDescription = x.ShortDescription,
                 Price = x.Price,
                 ImagePath = x.ImagePath,
+                Stock = x.Stock,
                 User = new ProductUserDto
                 {
                     UserId = x.UserId,
@@ -66,6 +67,7 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
                 ShortDescription = x.ShortDescription,
                 Price = x.Price,
                 ImagePath = x.ImagePath,
+                Stock = x.Stock,
                 Categories = x.Categories.Select(e => new ProductCategoryDto
                 {
                     Id = e.Id,
@@ -102,6 +104,7 @@ public class ProductRepository : Repository<Product>, IProductRepository, IProdu
                 ShortDescription = x.ShortDescription,
                 Price = x.Price,
                 ImagePath = x.ImagePath,
+                Stock = x.Stock,
                 User = new ProductUserDto
                 {
                     UserId = x.User.Id,

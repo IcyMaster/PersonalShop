@@ -18,7 +18,9 @@ public class CartService : ICartService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEasyCachingProvider _cachingProvider;
 
-    public CartService(ICartRepository cartRepository, ICartQueryRepository cartQueryRepository, IProductQueryRepository productQueryRepository,
+    public CartService(ICartRepository cartRepository,
+        ICartQueryRepository cartQueryRepository,
+        IProductQueryRepository productQueryRepository,
         IUnitOfWork unitOfWork, IEasyCachingProvider cachingProvider)
     {
         _cartRepository = cartRepository;
@@ -56,6 +58,11 @@ public class CartService : ICartService
         if (product is null)
         {
             return ServiceResult<string>.Failed(CartServiceErrors.CartNotFound);
+        }
+
+        if (product.Stock < createCartItemDto.Quantity)
+        {
+            return ServiceResult<string>.Failed(CartServiceErrors.ProductStockNotEnough);
         }
 
         var cartitem = new CartItem(createCartItemDto.ProductId, createCartItemDto.Quantity, product.Price);
@@ -99,6 +106,18 @@ public class CartService : ICartService
         if (cart is null)
         {
             return ServiceResult<string>.Failed(CartServiceErrors.CartNotFound);
+        }
+
+        var product = await _productQueryRepository.GetProductDetailsWithUserAsync(productId);
+
+        if (product is null)
+        {
+            return ServiceResult<string>.Failed(CartServiceErrors.CartNotFound);
+        }
+
+        if (product.Stock < updateCartItemDto.Quantity)
+        {
+            return ServiceResult<string>.Failed(CartServiceErrors.ProductStockNotEnough);
         }
 
         var cartItem = cart.CartItems.FirstOrDefault(e => e.ProductId == productId);
@@ -166,6 +185,8 @@ public class CartService : ICartService
 
         return ServiceResult<string>.Failed(CartServiceErrors.DeleteCartItemProblem);
     }
+
+    //Consume Events Section
     public async Task<ServiceResult<bool>> DeleteProductFromAllCartsAsync(DeleteProductFromCartCommand command)
     {
         var carts = await _cartRepository.GetAllCartsWithoutProductAsync();

@@ -5,6 +5,7 @@ using PersonalShop.BusinessLayer.Builders.Caches;
 using PersonalShop.BusinessLayer.Common.Interfaces;
 using PersonalShop.BusinessLayer.Services.Carts.Commands;
 using PersonalShop.BusinessLayer.Services.Interfaces;
+using PersonalShop.BusinessLayer.Services.Products.Commands;
 using PersonalShop.BusinessLayer.Services.Products.Dtos;
 using PersonalShop.Domain.Contracts;
 using PersonalShop.Domain.Entities.Products;
@@ -71,8 +72,10 @@ public class ProductService : IProductService
 
         var imagePath = $"/{_config[AppSettingContracts.StoredFilesPath]}/{fileName}";
 
-        var newProduct = new Product(userId, createProductDto.Name,
-            createProductDto.Description, createProductDto.ShortDescription, createProductDto.Price, imagePath);
+        var newProduct = new Product(
+            userId, createProductDto.Name,
+            createProductDto.Description, createProductDto.ShortDescription,
+            createProductDto.Price, imagePath,createProductDto.Stock);
 
         if (createProductDto.Categories is not null)
         {
@@ -197,6 +200,7 @@ public class ProductService : IProductService
         product.ChangeDescription(updateProductDto.Description);
         product.ChangeShortDescription(updateProductDto.ShortDescription);
         product.ChangePrice(updateProductDto.Price);
+        product.ChangeStock(updateProductDto.Stock);
 
         if (updateProductDto.Categories is not null)
         {
@@ -331,5 +335,25 @@ public class ProductService : IProductService
         await _cachingProvider.TrySetAsync(cacheKey, products, TimeSpan.FromHours(1));
 
         return ServiceResult<PagedResult<SingleProductDto>>.Success(products);
+    }
+
+    //Consume Events Section
+    public async Task<ServiceResult<bool>> UpdateProductStockAsync(UpdateProductStockCommand command)
+    {
+        var product = await _productRepository.GetProductDetailsWithoutUserAsync(command.ProductId);
+        if(product is null)
+        {
+            return ServiceResult<bool>.Failed(ProductServiceErrors.ProductNotFound);
+        }
+
+        product.ChangeStock(command.Stock);
+
+        if (await _unitOfWork.SaveChangesAsync(true) > 0)
+        {
+            await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
+            return ServiceResult<bool>.Success(true);
+        }
+
+        return ServiceResult<bool>.Failed(ProductServiceErrors.UpdateProductStockCommandProblem);
     }
 }

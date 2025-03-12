@@ -1,0 +1,13 @@
+﻿.stock-label {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.unavailable {
+    background-color: #dc3545;
+    color: white;
+}

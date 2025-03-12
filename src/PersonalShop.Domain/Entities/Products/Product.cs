@@ -10,7 +10,7 @@ namespace PersonalShop.Domain.Entities.Products
         {
             //for ef ...
         }
-        public Product(string userId, string name, string description, string shortDescription, decimal price, string imagePath)
+        public Product(string userId, string name, string description, string shortDescription, decimal price, string imagePath,int stock)
         {
             UserId = userId;
             Name = name;
@@ -18,6 +18,7 @@ namespace PersonalShop.Domain.Entities.Products
             Description = description;
             Price = price;
             ImagePath = imagePath;
+            Stock = stock;
         }
 
         public int Id { get; set; }
@@ -30,6 +31,7 @@ namespace PersonalShop.Domain.Entities.Products
         public User User { get; set; } = null!;
         public List<Category> Categories { get; set; } = [];
         public List<Tag> Tags { get; set; } = [];
+        public int Stock { get; private set; } = 0;
 
         public void ChangeName(string name)
         {
@@ -50,6 +52,10 @@ namespace PersonalShop.Domain.Entities.Products
         public void ChangeImage(string imagePath)
         {
             ImagePath = imagePath;
+        }
+        public void ChangeStock(int stock)
+        {
+            Stock = stock;
         }
     }
 }

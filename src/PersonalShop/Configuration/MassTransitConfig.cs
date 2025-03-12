@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using PersonalShop.BusinessLayer.Services.Carts.Consumers;
+using PersonalShop.BusinessLayer.Services.Products.Consumers;
 
 namespace PersonalShop.Configuration;
 
@@ -11,6 +12,7 @@ public static class MassTransitConfig
         {
             option.AddConsumer<DeleteProductFromCarts>();
             option.AddConsumer<UpdateProductInCarts>();
+            option.AddConsumer<UpdateProductStock>();
 
             option.UsingRabbitMq((context, cfg) =>
             {

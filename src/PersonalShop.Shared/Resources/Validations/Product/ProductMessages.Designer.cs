@@ -131,5 +131,23 @@ namespace PersonalShop.Shared.Resources.Validations.Product {
                 return ResourceManager.GetString("ShortDescriptionRequired", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مقدار فیلد موجودی نباید منفی باشد.
+        /// </summary>
+        public static string StockRangeError {
+            get {
+                return ResourceManager.GetString("StockRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لطفا فیلد موجودی را تکمیل نمایید.
+        /// </summary>
+        public static string StockRequired {
+            get {
+                return ResourceManager.GetString("StockRequired", resourceCulture);
+            }
+        }
     }
 }

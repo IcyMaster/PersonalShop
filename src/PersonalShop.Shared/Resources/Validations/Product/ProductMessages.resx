@@ -141,4 +141,10 @@
   <data name="PriceRequired" xml:space="preserve">
     <value>لطفا فیلد قیمت را تکمیل نمایید</value>
   </data>
+  <data name="StockRequired" xml:space="preserve">
+    <value>لطفا فیلد موجودی را تکمیل نمایید</value>
+  </data>
+  <data name="StockRangeError" xml:space="preserve">
+    <value>مقدار فیلد موجودی نباید منفی باشد</value>
+  </data>
 </root>

@@ -115,6 +115,15 @@ namespace PersonalShop.Shared.Resources.Services.CartService {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to موجودی محصول مورد نظر کافی نمی باشد.
+        /// </summary>
+        public static string ProductStockNotEnough {
+            get {
+                return ResourceManager.GetString("ProductStockNotEnough", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مشکل در بروزرسانی آیتم در سبد خرید.
         /// </summary>
         public static string UpdateCartItemProblem {

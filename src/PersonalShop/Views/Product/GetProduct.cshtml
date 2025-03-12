@@ -1,6 +1,8 @@
 ﻿@using PersonalShop.BusinessLayer.Services.Products.Dtos;
 @model SingleProductDto
 
+<link href="~/css/GetProduct.css" rel="stylesheet">
+
 <div class="container mt-5">
     <div class="row">
         <!-- Product Images -->
@@ -12,9 +14,12 @@
         <div class="col-md-6">
             <h2 class="mb-3">@Model.Name</h2>
             <p class="text-muted mb-4">SKU: @Model.Id</p>
-            <div class="mb-3">
-                <span class="h4 me-2">@Model.Price.ToString("#,0") تومان</span>
-            </div>
+            @if (Model.Stock > 0)
+            {
+                <div class="mb-3">
+                    <span class="h4 me-2">@Model.Price.ToString("#,0") تومان</span>
+                </div>
+            }
             <div class="mb-3">
                 <i class="bi bi-star-fill text-warning"></i>
                 <i class="bi bi-star-fill text-warning"></i>
@@ -26,16 +31,26 @@
             <p class="mb-4">
                 @Model.Description
             </p>
-            <form asp-controller="Cart" asp-action="AddItem" method="post" class="d-inline">
-                <div class="mb-4">
-                    <label for="quantity" class="form-label no-outline">تعداد:</label>
-                    <input type="number" name="Quantity" class="form-control no-outline" id="quantity" value="1" min="1" style="width: 80px;">
-                </div>
-                <input type="hidden" name="ProductId" value="@Model.Id" />
-                <button type="submit" class="btn btn-primary btn-lg mb-3 me-2">
-                    <i class="bi bi-cart-plus"></i> افزودن به سبد خرید
-                </button>
-            </form>
+            @if (Model.Stock > 0)
+            {
+                <p class="mb-4">
+                    موجودی این محصول : @Model.Stock
+                </p>
+                <form asp-controller="Cart" asp-action="AddItem" method="post" class="d-inline">
+                    <div class="mb-4">
+                        <label for="quantity" class="form-label no-outline">تعداد:</label>
+                        <input type="number" name="Quantity" class="form-control no-outline" id="quantity" value="1" min="1" style="width: 80px;">
+                    </div>
+                    <input type="hidden" name="ProductId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-primary btn-lg mb-3 me-2">
+                        <i class="bi bi-cart-plus"></i> افزودن به سبد خرید
+                    </button>
+                </form>
+            }
+            else
+            {
+                <p class="stock-label unavailable">ناموجود در انبار</p>
+            }
             <div class="mt-4">
                 <h5>ویژگی های فروشگاه :</h5>
                 <ul>

@@ -11,4 +11,5 @@ public class SingleProductDto
     public ProductUserDto User { get; set; } = null!;
     public List<ProductCategoryDto> Categories { get; set; } = [];
     public List<ProductTagDto> Tags { get; set; } = [];
+    public int Stock { get; set; } = 0;
 }

@@ -122,5 +122,14 @@ namespace PersonalShop.Shared.Resources.Services.ProductService {
                 return ResourceManager.GetString("UpdateProductProblem", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مشکل در بروزرسانی موجودی محصول.
+        /// </summary>
+        public static string UpdateProductStockCommandProblem {
+            get {
+                return ResourceManager.GetString("UpdateProductStockCommandProblem", resourceCulture);
+            }
+        }
     }
 }

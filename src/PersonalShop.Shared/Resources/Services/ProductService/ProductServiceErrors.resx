@@ -120,6 +120,9 @@
   <data name="CreateProductProblem" xml:space="preserve">
     <value>مشکل در اضافه کردن محصول مورد نظر</value>
   </data>
+  <data name="UpdateProductStockCommandProblem" xml:space="preserve">
+    <value>مشکل در بروزرسانی موجودی محصول</value>
+  </data>
   <data name="DeleteProductProblem" xml:space="preserve">
     <value>مشکل در حذف کردن محصول مورد نظر</value>
   </data>

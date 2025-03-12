@@ -135,6 +135,9 @@
   <data name="ProductNotFound" xml:space="preserve">
     <value>محصول مورد نظر یافت نشد</value>
   </data>
+  <data name="ProductStockNotEnough" xml:space="preserve">
+    <value>موجودی محصول مورد نظر کافی نمی باشد</value>
+  </data>
   <data name="UpdateCartItemProblem" xml:space="preserve">
     <value>مشکل در بروزرسانی آیتم در سبد خرید</value>
   </data>

@@ -12,7 +12,7 @@ using PersonalShop.DataAccessLayer;
 namespace PersonalShop.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250308095716_First")]
+    [Migration("20250312083126_First")]
     partial class First
     {
         /// <inheritdoc />
@@ -311,6 +311,9 @@ namespace PersonalShop.DataAccessLayer.Migrations
                     b.Property<string>("ShortDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Stock")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()

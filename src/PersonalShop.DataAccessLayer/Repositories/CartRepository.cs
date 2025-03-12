@@ -31,6 +31,7 @@ public class CartRepository : Repository<Cart>, ICartRepository, ICartQueryRepos
                         Name = e.Product.Name,
                         Description = e.Product.Description,
                         Price = e.Product.Price,
+                        Stock = e.Product.Stock
                     }
                 }).ToList(),
             })
