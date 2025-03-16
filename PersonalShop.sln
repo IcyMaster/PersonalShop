@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalShop.Web", "src\PersonalShop\PersonalShop.csproj", "{97A2FD06-C67D-4147-ACAB-D81907F98916}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalShop", "src\PersonalShop\PersonalShop.csproj", "{97A2FD06-C67D-4147-ACAB-D81907F98916}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalShop.Tests", "tests\PersonalShop.Tests.csproj", "{E7BC1C65-1597-4118-8D0F-3CD322ED59E6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{24420CEB-E933-4B33-97EC-1079493666B4} = {24420CEB-E933-4B33-97EC-1079493666B4}
+		{85118C93-82A6-41B3-B275-C917233C8147} = {85118C93-82A6-41B3-B275-C917233C8147}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalShop.Shared", "src\PersonalShop.Shared\PersonalShop.Shared.csproj", "{C87D20C8-98CD-47E0-8F62-2D01257C96BA}"
 EndProject
