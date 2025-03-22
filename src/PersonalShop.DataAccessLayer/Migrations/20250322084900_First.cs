@@ -404,8 +404,7 @@ namespace PersonalShop.DataAccessLayer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_CartItems_ProductId",
                 table: "CartItems",
-                column: "ProductId",
-                unique: true);
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Carts_UserId",

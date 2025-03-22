@@ -12,8 +12,8 @@ namespace PersonalShop.DataAccessLayer.EntityConfiguration
             builder.HasIndex(x => x.CartId);
 
             builder.HasOne(x => x.Product)
-                .WithOne()
-                .HasForeignKey<CartItem>(x => x.ProductId).IsRequired();
+                .WithMany()
+                .HasForeignKey(x => x.ProductId).IsRequired();
         }
     }
 }

@@ -1,0 +1,25 @@
+﻿using MassTransit;
+using PersonalShop.BusinessLayer.Services.Carts.Commands;
+using PersonalShop.BusinessLayer.Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PersonalShop.BusinessLayer.Services.Carts.Consumers;
+
+public class UpdateCartItemStockInCarts : IConsumer<UpdateCartItemStockInCartsCommand>
+{
+    private readonly ICartService _cartService;
+
+    public UpdateCartItemStockInCarts(ICartService cartService)
+    {
+        _cartService = cartService;
+    }
+
+    public async Task Consume(ConsumeContext<UpdateCartItemStockInCartsCommand> context)
+    {
+        await _cartService.UpdateCartItemStockInCartsAsync(context.Message);
+    }
+}

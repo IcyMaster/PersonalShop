@@ -60,8 +60,12 @@ public class Program
             pattern: "{controller=Home}/{action=Index}/{id?}"
         );
 
-        app.ApplyMigrations();
-        app.MigrateApplicationSeeder();
+        Task.Run(async () =>
+        {
+            await app.ApplyMigrations();
+            await app.MigrateApplicationSeeder();
+
+        }).GetAwaiter().GetResult();
 
         app.Run();
     }

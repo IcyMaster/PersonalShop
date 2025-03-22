@@ -172,8 +172,7 @@ namespace PersonalShop.DataAccessLayer.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
 
                     b.ToTable("CartItems");
                 });
@@ -521,8 +520,8 @@ namespace PersonalShop.DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.HasOne("PersonalShop.Domain.Entities.Products.Product", "Product")
-                        .WithOne()
-                        .HasForeignKey("PersonalShop.Domain.Entities.Carts.CartItem", "ProductId")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

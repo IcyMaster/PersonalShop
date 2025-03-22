@@ -1,12 +1,6 @@
 ﻿using MassTransit;
-using PersonalShop.BusinessLayer.Services.Carts.Commands;
 using PersonalShop.BusinessLayer.Services.Interfaces;
 using PersonalShop.BusinessLayer.Services.Products.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PersonalShop.BusinessLayer.Services.Products.Consumers
 {

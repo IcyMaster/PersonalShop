@@ -32,9 +32,9 @@ public class UpdateProductDto
     public decimal Price { get; set; } = decimal.Zero;
 
     [Range(0, int.MaxValue, ErrorMessageResourceType = typeof(ProductMessages)
-        ,ErrorMessageResourceName = nameof(ProductMessages.StockRangeError))]
+        , ErrorMessageResourceName = nameof(ProductMessages.StockRangeError))]
     [Required(ErrorMessageResourceType = typeof(ProductMessages)
-        ,ErrorMessageResourceName = nameof(ProductMessages.StockRequired))]
+        , ErrorMessageResourceName = nameof(ProductMessages.StockRequired))]
     public int Stock { get; set; } = 0;
 
     public IFormFile? Image { get; set; } = null!;

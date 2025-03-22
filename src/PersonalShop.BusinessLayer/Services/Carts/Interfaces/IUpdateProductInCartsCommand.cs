@@ -1,8 +1,8 @@
-﻿namespace PersonalShop.BusinessLayer.Services.Carts.Interfaces
+﻿namespace PersonalShop.BusinessLayer.Services.Carts.Interfaces;
+
+public interface IUpdateProductInCartsCommand
 {
-    public interface IUpdateProductInCartsCommand
-    {
-        decimal Price { get; set; }
-        int ProductId { get; set; }
-    }
+    decimal Price { get; set; }
+    int ProductId { get; set; }
+    int Stock { get; set; }
 }

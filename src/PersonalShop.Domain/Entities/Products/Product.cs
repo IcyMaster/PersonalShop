@@ -10,7 +10,7 @@ namespace PersonalShop.Domain.Entities.Products
         {
             //for ef ...
         }
-        public Product(string userId, string name, string description, string shortDescription, decimal price, string imagePath,int stock)
+        public Product(string userId, string name, string description, string shortDescription, decimal price, string imagePath, int stock)
         {
             UserId = userId;
             Name = name;

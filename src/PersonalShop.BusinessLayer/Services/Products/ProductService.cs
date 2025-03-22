@@ -75,7 +75,7 @@ public class ProductService : IProductService
         var newProduct = new Product(
             userId, createProductDto.Name,
             createProductDto.Description, createProductDto.ShortDescription,
-            createProductDto.Price, imagePath,createProductDto.Stock);
+            createProductDto.Price, imagePath, createProductDto.Stock);
 
         if (createProductDto.Categories is not null)
         {
@@ -247,7 +247,8 @@ public class ProductService : IProductService
             await _bus.Publish(new UpdateProductInCartsCommand
             {
                 ProductId = productId,
-                Price = updateProductDto.Price
+                Price = updateProductDto.Price,
+                Stock = updateProductDto.Stock
             });
 
             await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Product);
@@ -341,7 +342,7 @@ public class ProductService : IProductService
     public async Task<ServiceResult<bool>> UpdateProductStockAsync(UpdateProductStockCommand command)
     {
         var product = await _productRepository.GetProductDetailsWithoutUserAsync(command.ProductId);
-        if(product is null)
+        if (product is null)
         {
             return ServiceResult<bool>.Failed(ProductServiceErrors.ProductNotFound);
         }

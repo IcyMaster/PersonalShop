@@ -2,6 +2,8 @@
 using MassTransit;
 using PersonalShop.BusinessLayer.Builders.Caches;
 using PersonalShop.BusinessLayer.Common.Interfaces;
+using PersonalShop.BusinessLayer.Services.Carts.Commands;
+using PersonalShop.BusinessLayer.Services.Carts.Consumers;
 using PersonalShop.BusinessLayer.Services.Interfaces;
 using PersonalShop.BusinessLayer.Services.Orders.Dtos;
 using PersonalShop.BusinessLayer.Services.Products.Commands;
@@ -53,6 +55,7 @@ public class OrderService : IOrderService
         var order = new Order(cart.UserId, cart.TotalPrice, OrderStatus.NoStatus);
 
         var updateStockEvents = new List<UpdateProductStockCommand>();
+        var updateCartItemStockEvents = new List<UpdateCartItemStockInCartsCommand>();
 
         foreach (var item in cart.CartItems)
         {
@@ -60,7 +63,14 @@ public class OrderService : IOrderService
             if (product is not null)
             {
                 order.OrderItems.Add(new OrderItem(item.ProductId, product.Name, product.Price, item.Quantity));
+
                 updateStockEvents.Add(new UpdateProductStockCommand
+                {
+                    ProductId = item.ProductId,
+                    Stock = product.Stock - item.Quantity,
+                });
+
+                updateCartItemStockEvents.Add(new UpdateCartItemStockInCartsCommand
                 {
                     ProductId = item.ProductId,
                     Stock = product.Stock - item.Quantity,
@@ -79,7 +89,12 @@ public class OrderService : IOrderService
             await _cachingProvider.RemoveAsync(cardCacheKey);
             await _cachingProvider.RemoveByPrefixAsync(CacheKeysContract.Order);
 
-            foreach(var item in updateStockEvents)
+            foreach (var item in updateStockEvents)
+            {
+                await _bus.Publish(item);
+            }
+
+            foreach (var item in updateCartItemStockEvents)
             {
                 await _bus.Publish(item);
             }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PersonalShop.BusinessLayer.Services.Identitys.Users.Dtos;
 using PersonalShop.DataAccessLayer.Contracts;
@@ -12,11 +13,13 @@ public sealed class OwnerSeeder : IDataBaseSeeder
 {
     private readonly UserManager<User> _userManager;
     private readonly ILogger<OwnerSeeder> _logger;
+    private readonly IConfiguration _config;
 
-    public OwnerSeeder(UserManager<User> userManager, ILogger<OwnerSeeder> logger)
+    public OwnerSeeder(UserManager<User> userManager, ILogger<OwnerSeeder> logger, IConfiguration config)
     {
         _userManager = userManager;
         _logger = logger;
+        _config = config;
     }
 
     public async Task<bool> MigrateAsync()
@@ -53,16 +56,16 @@ public sealed class OwnerSeeder : IDataBaseSeeder
         return true;
     }
 
-    private static RegisterDto UserRegisterDto()
+    private RegisterDto UserRegisterDto()
     {
         return new RegisterDto
         {
-            Email = "icymaster2020@gmail.com",
-            FirstName = "Mohammad",
-            LastName = "Taheri",
-            UserName = "icyMaster",
-            Password = "123@456#Pass",
-            PhoneNumber = "09902264112"
+            Email = _config.GetSection("OwnerAccountInfo:Email").Value!,
+            FirstName = _config.GetSection("OwnerAccountInfo:FirstName").Value!,
+            LastName = _config.GetSection("OwnerAccountInfo:LastName").Value!,
+            UserName = _config.GetSection("OwnerAccountInfo:UserName").Value!,
+            Password = _config.GetSection("OwnerAccountInfo:Password").Value!,
+            PhoneNumber = _config.GetSection("OwnerAccountInfo:PhoneNumber").Value!,
         };
     }
 }

@@ -12,5 +12,6 @@ namespace PersonalShop.BusinessLayer.Services.Interfaces
         Task<ServiceResult<string>> UpdateCartItemQuantityAsync(string userId, int productId, UpdateCartItemDto updateCartItemDto);
         Task<ServiceResult<bool>> DeleteProductFromAllCartsAsync(DeleteProductFromCartCommand command);
         Task<ServiceResult<bool>> UpdateProductInAllCartsAsync(UpdateProductInCartsCommand command);
+        Task<ServiceResult<bool>> UpdateCartItemStockInCartsAsync(UpdateCartItemStockInCartsCommand command);
     }
 }

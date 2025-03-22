@@ -6,7 +6,7 @@ namespace PersonalShop.Configuration;
 
 public static class Migrations
 {
-    public static async void MigrateApplicationSeeder(this WebApplication app)
+    public static async Task MigrateApplicationSeeder(this WebApplication app)
     {
         await using var serviceScope = app.Services.CreateAsyncScope();
 
@@ -25,8 +25,7 @@ public static class Migrations
 
         Console.WriteLine("Seeding database done !");
     }
-
-    public static async void ApplyMigrations(this WebApplication app)
+    public static async Task ApplyMigrations(this WebApplication app)
     {
         await using var serviceScope = app.Services.CreateAsyncScope();
 
@@ -36,7 +35,7 @@ public static class Migrations
 
         var checkMigration = await dbContext.Database.GetPendingMigrationsAsync();
 
-        if (checkMigration.Any())
+        if (!checkMigration.Any())
         {
             Console.WriteLine("Migration database done !");
             return;

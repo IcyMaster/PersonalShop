@@ -13,6 +13,7 @@ public static class MassTransitConfig
             option.AddConsumer<DeleteProductFromCarts>();
             option.AddConsumer<UpdateProductInCarts>();
             option.AddConsumer<UpdateProductStock>();
+            option.AddConsumer<UpdateCartItemStockInCarts>();
 
             option.UsingRabbitMq((context, cfg) =>
             {

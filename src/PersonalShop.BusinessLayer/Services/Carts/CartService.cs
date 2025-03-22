@@ -199,7 +199,7 @@ public class CartService : ICartService
             {
                 cart.CartItems.Remove(cartItem);
 
-                if (cart.CartItems.Count() == 0)
+                if (cart.CartItems.Count() is 0)
                 {
                     _cartRepository.Delete(cart);
                 }
@@ -231,13 +231,61 @@ public class CartService : ICartService
 
             if (cartItem is not null)
             {
-                cartItem.SetItemPrice(command.Price);
-
-                cart.ProcessTotalPrice();
+                if (cartItem.Quantity > command.Stock)
+                {
+                    cart.CartItems.Remove(cartItem);
+                    if (cart.CartItems.Count() is 0)
+                    {
+                        _cartRepository.Delete(cart);
+                    }
+                    else
+                    {
+                        cart.ProcessTotalPrice();
+                    }
+                }
+                else
+                {
+                    cartItem.SetItemPrice(command.Price);
+                    cart.ProcessTotalPrice();
+                }
 
                 string cacheKey = CartCacheKeyBuilder.CartCacheKeyWithUserId(cart.UserId);
-
                 await _cachingProvider.RemoveAsync(cacheKey);
+            }
+        }
+
+        if (await _unitOfWork.SaveChangesAsync(true) > 0)
+        {
+            return ServiceResult<bool>.Success(true);
+        }
+
+        return ServiceResult<bool>.Failed(CartServiceErrors.UpdateProductInCartsCommandProblem);
+    }
+    public async Task<ServiceResult<bool>> UpdateCartItemStockInCartsAsync(UpdateCartItemStockInCartsCommand command)
+    {
+        var carts = await _cartRepository.GetAllCartsWithoutProductAsync();
+
+        foreach (var cart in carts)
+        {
+            var cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == command.ProductId);
+
+            if (cartItem is not null)
+            {
+                if (cartItem.Quantity > command.Stock)
+                {
+                    cart.CartItems.Remove(cartItem);
+                    if (cart.CartItems.Count() is 0)
+                    {
+                        _cartRepository.Delete(cart);
+                    }
+                    else
+                    {
+                        cart.ProcessTotalPrice();
+                    }
+
+                    string cacheKey = CartCacheKeyBuilder.CartCacheKeyWithUserId(cart.UserId);
+                    await _cachingProvider.RemoveAsync(cacheKey);
+                }
             }
         }
 

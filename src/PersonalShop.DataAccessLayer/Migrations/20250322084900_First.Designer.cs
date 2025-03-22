@@ -12,7 +12,7 @@ using PersonalShop.DataAccessLayer;
 namespace PersonalShop.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250312083126_First")]
+    [Migration("20250322084900_First")]
     partial class First
     {
         /// <inheritdoc />
@@ -175,8 +175,7 @@ namespace PersonalShop.DataAccessLayer.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
 
                     b.ToTable("CartItems");
                 });
@@ -524,8 +523,8 @@ namespace PersonalShop.DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.HasOne("PersonalShop.Domain.Entities.Products.Product", "Product")
-                        .WithOne()
-                        .HasForeignKey("PersonalShop.Domain.Entities.Carts.CartItem", "ProductId")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

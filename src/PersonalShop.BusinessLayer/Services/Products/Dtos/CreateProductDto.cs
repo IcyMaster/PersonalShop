@@ -35,10 +35,10 @@ public class CreateProductDto
     [Required]
     public IFormFile Image { get; set; } = null!;
 
-    [Range(0,int.MaxValue,ErrorMessageResourceType = typeof(ProductMessages)
-        ,ErrorMessageResourceName = nameof(ProductMessages.StockRangeError))]
+    [Range(0, int.MaxValue, ErrorMessageResourceType = typeof(ProductMessages)
+        , ErrorMessageResourceName = nameof(ProductMessages.StockRangeError))]
     [Required(ErrorMessageResourceType = typeof(ProductMessages)
-        ,ErrorMessageResourceName = nameof(ProductMessages.StockRequired))]
+        , ErrorMessageResourceName = nameof(ProductMessages.StockRequired))]
     public int Stock { get; set; } = 0;
 
     public List<int>? Categories { get; set; }
