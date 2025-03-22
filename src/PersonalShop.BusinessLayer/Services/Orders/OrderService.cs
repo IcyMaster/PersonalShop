@@ -3,7 +3,6 @@ using MassTransit;
 using PersonalShop.BusinessLayer.Builders.Caches;
 using PersonalShop.BusinessLayer.Common.Interfaces;
 using PersonalShop.BusinessLayer.Services.Carts.Commands;
-using PersonalShop.BusinessLayer.Services.Carts.Consumers;
 using PersonalShop.BusinessLayer.Services.Interfaces;
 using PersonalShop.BusinessLayer.Services.Orders.Dtos;
 using PersonalShop.BusinessLayer.Services.Products.Commands;
