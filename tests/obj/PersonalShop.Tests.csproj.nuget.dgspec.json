@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj": {}
+    "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\tests\\PersonalShop.Tests.csproj": {}
   },
   "projects": {
-    "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.BusinessLayer\\PersonalShop.BusinessLayer.csproj": {
+    "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.BusinessLayer\\PersonalShop.BusinessLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.BusinessLayer\\PersonalShop.BusinessLayer.csproj",
+        "projectUniqueName": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.BusinessLayer\\PersonalShop.BusinessLayer.csproj",
         "projectName": "PersonalShop.BusinessLayer",
-        "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.BusinessLayer\\PersonalShop.BusinessLayer.csproj",
-        "packagesPath": "C:\\Users\\M.Taheri\\.nuget\\packages\\",
-        "outputPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.BusinessLayer\\obj\\",
+        "projectPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.BusinessLayer\\PersonalShop.BusinessLayer.csproj",
+        "packagesPath": "C:\\Users\\devic\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.BusinessLayer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\M.Taheri\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\devic\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -33,11 +33,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Domain\\PersonalShop.Domain.csproj": {
-                "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Domain\\PersonalShop.Domain.csproj"
+              "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Domain\\PersonalShop.Domain.csproj": {
+                "projectPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Domain\\PersonalShop.Domain.csproj"
               },
-              "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj": {
-                "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj"
+              "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj": {
+                "projectPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj"
               }
             }
           }
@@ -51,8 +51,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -91,24 +90,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.DataAccessLayer\\PersonalShop.DataAccessLayer.csproj": {
+    "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.DataAccessLayer\\PersonalShop.DataAccessLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.DataAccessLayer\\PersonalShop.DataAccessLayer.csproj",
+        "projectUniqueName": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.DataAccessLayer\\PersonalShop.DataAccessLayer.csproj",
         "projectName": "PersonalShop.DataAccessLayer",
-        "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.DataAccessLayer\\PersonalShop.DataAccessLayer.csproj",
-        "packagesPath": "C:\\Users\\M.Taheri\\.nuget\\packages\\",
-        "outputPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.DataAccessLayer\\obj\\",
+        "projectPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.DataAccessLayer\\PersonalShop.DataAccessLayer.csproj",
+        "packagesPath": "C:\\Users\\devic\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.DataAccessLayer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\M.Taheri\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\devic\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -124,14 +123,14 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.BusinessLayer\\PersonalShop.BusinessLayer.csproj": {
-                "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.BusinessLayer\\PersonalShop.BusinessLayer.csproj"
+              "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.BusinessLayer\\PersonalShop.BusinessLayer.csproj": {
+                "projectPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.BusinessLayer\\PersonalShop.BusinessLayer.csproj"
               },
-              "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Domain\\PersonalShop.Domain.csproj": {
-                "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Domain\\PersonalShop.Domain.csproj"
+              "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Domain\\PersonalShop.Domain.csproj": {
+                "projectPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Domain\\PersonalShop.Domain.csproj"
               },
-              "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj": {
-                "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj"
+              "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj": {
+                "projectPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj"
               }
             }
           }
@@ -145,8 +144,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -191,24 +189,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Domain\\PersonalShop.Domain.csproj": {
+    "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Domain\\PersonalShop.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Domain\\PersonalShop.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Domain\\PersonalShop.Domain.csproj",
         "projectName": "PersonalShop.Domain",
-        "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Domain\\PersonalShop.Domain.csproj",
-        "packagesPath": "C:\\Users\\M.Taheri\\.nuget\\packages\\",
-        "outputPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Domain\\obj\\",
+        "projectPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Domain\\PersonalShop.Domain.csproj",
+        "packagesPath": "C:\\Users\\devic\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\M.Taheri\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\devic\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -224,8 +222,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj": {
-                "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj"
+              "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj": {
+                "projectPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj"
               }
             }
           }
@@ -239,8 +237,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -267,24 +264,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj": {
+    "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj",
+        "projectUniqueName": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj",
         "projectName": "PersonalShop.Shared",
-        "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj",
-        "packagesPath": "C:\\Users\\M.Taheri\\.nuget\\packages\\",
-        "outputPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.Shared\\obj\\",
+        "projectPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Shared\\PersonalShop.Shared.csproj",
+        "packagesPath": "C:\\Users\\devic\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.Shared\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\M.Taheri\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\devic\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -311,8 +308,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -339,24 +335,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj": {
+    "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\tests\\PersonalShop.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
+        "projectUniqueName": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
         "projectName": "PersonalShop.Tests",
-        "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
-        "packagesPath": "C:\\Users\\M.Taheri\\.nuget\\packages\\",
-        "outputPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\tests\\obj\\",
+        "projectPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\tests\\PersonalShop.Tests.csproj",
+        "packagesPath": "C:\\Users\\devic\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\tests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\M.Taheri\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\devic\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -372,8 +368,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.DataAccessLayer\\PersonalShop.DataAccessLayer.csproj": {
-                "projectPath": "D:\\Programing\\Project\\Shared\\PersonalShop\\src\\PersonalShop.DataAccessLayer\\PersonalShop.DataAccessLayer.csproj"
+              "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.DataAccessLayer\\PersonalShop.DataAccessLayer.csproj": {
+                "projectPath": "C:\\Users\\devic\\OneDrive\\دسکتاپ\\Mohammad\\PersonalShop\\src\\PersonalShop.DataAccessLayer\\PersonalShop.DataAccessLayer.csproj"
               }
             }
           }
@@ -387,8 +383,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -435,7 +430,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
